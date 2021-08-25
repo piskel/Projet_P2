@@ -89,7 +89,7 @@ void mGraphics_DrawImage(bool *buffer, const bool *image, point imageSize, point
 		point imgDrawPos = {i%imageSize.x, (i/imageSize.x)};
 		point displayDrawPos = {imgDrawPos.x+pos.x, imgDrawPos.y+pos.y};
 
-		mGraphics_DrawPixel(buffer, displayDrawPos, image[(imgDrawPos.x+(imageSize.x-imgDrawPos.y)*imageSize.x)]);
+		mGraphics_DrawPixel(buffer, displayDrawPos, image[(imgDrawPos.x+(imgDrawPos.y)*imageSize.x)] == !inverseColor);
 		}
 
 	}
@@ -98,8 +98,6 @@ void mGraphics_DrawImage(bool *buffer, const bool *image, point imageSize, point
 
 void mGraphics_DrawText(bool *buffer, char *text, point pos, bool inverseColor)
 	{
-
-
 
 	for(int i = 0; i < strlen(text); i++)
 		{
