@@ -10,7 +10,7 @@ Description dans le fichier iPit.h
 ------------------------------------------------------------
 */
 
-#include <iPit.h>
+#include <Interfaces/iPit.h>
 #include <MKL46Z4.h>
 
 //------------------------------------------------------------

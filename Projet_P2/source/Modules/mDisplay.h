@@ -8,7 +8,7 @@
 #ifndef MDISPLAY_H_
 #define MDISPLAY_H_
 
-#include "def.h"
+#include <def.h>
 
 
 // Ratio: 102x64

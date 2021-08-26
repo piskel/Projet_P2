@@ -1,12 +1,12 @@
 /*
 ------------------------------------------------------------
-Copyright 2003-200x Haute Ecole ARC Ingénierie,
+Copyright 2003-200x Haute Ecole ARC Ingï¿½nierie,
 All rights reserved
 ------------------------------------------------------------
 Nom du fichier : iCpu.h
 Auteur et Date : Monnerat Serge, 12 mars 20xx
 
-But : configuration du périphérique MCG
+But : configuration du pï¿½riphï¿½rique MCG
 
 Modifications
 Date		Faite		Ctrl		Description
@@ -17,7 +17,7 @@ Date		Faite		Ctrl		Description
 #ifndef __ICPU__
 #define __ICPU__
 
-#include "def.h"
+#include <def.h>
 
 //------------------------------------------------------------
 // Core and peripheral clock init

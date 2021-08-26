@@ -5,10 +5,9 @@
  *      Author: luc.froideva
  */
 
-#include "mGraphics.h"
-
 #include <math.h>
-#include "mDisplay.h"
+#include <Modules/mDisplay.h>
+#include <Modules/mGraphics.h>
 
 
 // TODO Rename white variable to something else

@@ -5,7 +5,7 @@
  *      Author: luc.froideva
  */
 
-#include "pixelFont.h"
+#include <pixelFont.h>
 
 
 
@@ -77,8 +77,8 @@ const font pixelFont4x5 = {
 			0b0,
 			0b0,
 			0b0,
-			0b0,
-			0b0,
+			0b00100000011001000011, // ?
+			0b11100001110110010110, // @
 			0b10011001111110010110, // A
 			0b01111001011110010111,
 			0b01101001000110010110,

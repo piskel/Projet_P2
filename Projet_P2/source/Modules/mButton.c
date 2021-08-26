@@ -6,8 +6,8 @@
  */
 
 
-#include "iDio.h"
-#include "mButton.h"
+#include <Interfaces/iDio.h>
+#include <Modules/mButton.h>
 
 void mButton_Setup()
 	{

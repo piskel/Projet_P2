@@ -33,17 +33,17 @@
  * @brief   Application entry point.
  */
 
+#include <def.h>
 #include <iDio.h>
+#include <mButton.h>
+#include <mCpu.h>
+#include <mDisplay.h>
+#include <mGpio.h>
+#include <mGraphics.h>
 #include "MKL46Z4.h"
 
 /* TODO: insert other include files here. */
-#include "def.h"
 #include "math.h"
-#include "mCpu.h"
-#include "mButton.h"
-#include "mGpio.h"
-#include "mDisplay.h"
-#include "mGraphics.h"
 
 
 extern const font pixelFont4x5;

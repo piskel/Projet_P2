@@ -8,7 +8,7 @@
 #ifndef ISPI_H_
 #define ISPI_H_
 
-#include "def.h"
+#include <def.h>
 
 void iSpi_Setup();
 

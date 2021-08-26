@@ -1,12 +1,12 @@
 /*
 ------------------------------------------------------------
-Copyright 2003-200x Haute Ecole ARC Ingénierie,
+Copyright 2003-200x Haute Ecole ARC Ingï¿½nierie,
 All rights reserved
 ------------------------------------------------------------
 Nom du fichier : mCpu.h
 Auteur et Date : Monnerat Serge, 12 mars 20xx
 
-But : module permettant l’utilisation et le setup du MCG
+But : module permettant lï¿½utilisation et le setup du MCG
 
 Modifications
 Date		Faite		Ctrl		Description
@@ -17,7 +17,7 @@ Date		Faite		Ctrl		Description
 #ifndef __mCpu__
 #define __mCpu__
 
-#include "def.h"
+#include <def.h>
 
 //-----------------------------------------------------------------------
 // Low level CPU setup

@@ -10,7 +10,7 @@ Description dans le fichier iCpu.h
 ------------------------------------------------------------
 */
 
-#include <iCpu.h>
+#include <Interfaces/iCpu.h>
 #include <MKL46Z4.h>
 
 //------------------------------------------------------------

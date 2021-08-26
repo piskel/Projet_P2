@@ -1,12 +1,12 @@
 /*
 ------------------------------------------------------------
-Copyright 2003-200x Haute Ecole ARC Ingénierie,
+Copyright 2003-200x Haute Ecole ARC Ingï¿½nierie,
 All rights reserved
 ------------------------------------------------------------
 Nom du fichier : iPit.h
 Auteur et Date : Monnerat Serge, 12 mars 20xx
 
-But : interface du périphérique PIT
+But : interface du pï¿½riphï¿½rique PIT
 
 Modifications
 Date		Faite		Ctrl		Description
@@ -17,9 +17,9 @@ Date		Faite		Ctrl		Description
 #ifndef __iPit__
 #define __iPit__
 
-#include "def.h"
+#include <def.h>
 
-// Enumération des PIT
+// Enumï¿½ration des PIT
 typedef enum
 {
 	kPit0,
@@ -28,8 +28,8 @@ typedef enum
 
 //------------------------------------------------------------
 // Configuration du PIT
-// aPIT0PeriodeMs  	: période en ms du PIT0
-// aPIT1PeriodeMs  	: période en ms du PIT1
+// aPIT0PeriodeMs  	: pï¿½riode en ms du PIT0
+// aPIT1PeriodeMs  	: pï¿½riode en ms du PIT1
 //------------------------------------------------------------
 void iPit_Config(unsigned int aPIT0PeriodeMs,unsigned int aPIT1PeriodeMs);
 
@@ -40,14 +40,14 @@ void iPit_Config(unsigned int aPIT0PeriodeMs,unsigned int aPIT1PeriodeMs);
 void iPit_StartPit(PitEnum aPit);
 
 //------------------------------------------------------------
-// Lecture du flag indiquant que 500ms sont échus
-// Retour  : état du flag
+// Lecture du flag indiquant que 500ms sont ï¿½chus
+// Retour  : ï¿½tat du flag
 //------------------------------------------------------------
 bool iPit_GetFlag(void);
 
 //------------------------------------------------------------
-// Reset du flag indiquant que 500ms sont échus
-// Retour  : état du flag
+// Reset du flag indiquant que 500ms sont ï¿½chus
+// Retour  : ï¿½tat du flag
 //------------------------------------------------------------
 void iPit_ResetFlag(void);
 
@@ -58,21 +58,21 @@ void iPit_InitDelay(void);
 
 //------------------------------------------------------------
 // Prise d'un delays
-// aDelay: l'attente à effectuer (multiple de la période PIT)
-// Retour: le numéro du delay attribué ou -1 si plus de delay dispo
+// aDelay: l'attente ï¿½ effectuer (multiple de la pï¿½riode PIT)
+// Retour: le numï¿½ro du delay attribuï¿½ ou -1 si plus de delay dispo
 //------------------------------------------------------------
 int iPit_GetDelay(unsigned int aDelay);
 
 //------------------------------------------------------------
-// Contrôle si le délais est échu
-// aDelayNb	: le numéro du compteur de temps
-// Retour		: l'état du flag
+// Contrï¿½le si le dï¿½lais est ï¿½chu
+// aDelayNb	: le numï¿½ro du compteur de temps
+// Retour		: l'ï¿½tat du flag
 //------------------------------------------------------------
 bool iPit_IsDelayDone(unsigned int aDelayNb);
 
 //------------------------------------------------------------
-// Libère un compteur de temps
-// aDelayNb	: le numéro du compteur de temps
+// Libï¿½re un compteur de temps
+// aDelayNb	: le numï¿½ro du compteur de temps
 //------------------------------------------------------------
 void iPit_DelayRelease(unsigned int aDelayNb);
 

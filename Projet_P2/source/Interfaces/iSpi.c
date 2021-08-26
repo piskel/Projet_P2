@@ -5,9 +5,9 @@
  *      Author: luc.froideva
  */
 
-#include "iSpi.h"
+#include <Interfaces/iDio.h>
+#include <Interfaces/iSpi.h>
 #include <MKL46Z4.h>
-#include "iDio.h"
 
 void iSpi_Setup()
 	{
@@ -82,8 +82,8 @@ void iSpi_SendData(char data)
 	SPI1->DL = data;
 
 	while(!iSpi_IsLastTickReceived()){}
-	char DH = SPI1->DH;
-	char DL = SPI1->DL;
+//	char DH = SPI1->DH;
+//	char DL = SPI1->DL;
 	// TODO: Check if SPRF is 0
 
 	}

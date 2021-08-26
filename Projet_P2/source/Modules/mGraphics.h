@@ -8,9 +8,9 @@
 #ifndef MGRAPHICS_H_
 #define MGRAPHICS_H_
 
-#include "def.h"
+#include <def.h>
+#include <pixelFont.h>
 #include "string.h"
-#include "pixelFont.h"
 
 
 typedef struct Point

@@ -11,8 +11,8 @@ Description dans le fichier mCpu.h
 */
 
 
-#include <iCpu.h>
-#include "mCpu.h"
+#include <Interfaces/iCpu.h>
+#include <Modules/mCpu.h>
 
 //-----------------------------------------------------------------------
 // Congiguration g�n�rale de la CPU

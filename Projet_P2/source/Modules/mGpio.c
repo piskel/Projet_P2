@@ -6,8 +6,8 @@
  */
 
 
-#include "mGpio.h"
-#include "iDio.h"
+#include <Interfaces/iDio.h>
+#include <Modules/mGpio.h>
 
 void mGpio_Setup()
 	{

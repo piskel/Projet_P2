@@ -5,10 +5,10 @@
  *      Author: luc.froideva
  */
 
+#include <Interfaces/iDio.h>
+#include <Interfaces/iSpi.h>
 #include <math.h>
-#include "mDisplay.h"
-#include "iSpi.h"
-#include "iDio.h"
+#include <Modules/mDisplay.h>
 
 void mDisplay_Setup()
 	{
