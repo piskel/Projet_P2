@@ -172,6 +172,7 @@ int main(void)
 
 			const UIPage page =
 				{
+					name: "test",
 					pUIElementTab: uiElementTab,
 					nbUIElements: 1
 				};

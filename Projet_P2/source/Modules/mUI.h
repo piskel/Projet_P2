@@ -87,8 +87,8 @@ typedef struct UIButton
 
 typedef struct UIPage
 	{
+		char* name;
 		UIElement** pUIElementTab;
-//		int* idUIElements;
 		int nbUIElements;
 
 	} UIPage;
@@ -96,11 +96,16 @@ typedef struct UIPage
 typedef struct UIContext
 	{
 		UIPage* pUIPage;
-		UIElement* pUIElement;
-//		int pageId;
-//		int elementId;
+		int uiElementId;
 	} UIContext;
 
+
+void mUI_Setup();
+
+void mUI_AddPage(char* pageName);
+void mUI_AddElement(UIElement* uiElement, char* pageName);
+void mUI_AddLabel(UILabel* uiLabel, char* pageName);
+void mUI_AddButton(UIButton* uiButton, char* pageName);
 
 void mUI_HandleElement(const UIElement* uiElement);
 void mUI_HandleAction(const UIAction* uiAction);
@@ -108,7 +113,6 @@ void mUI_HandleAction(const UIAction* uiAction);
 void mUI_ActionFocusPage(int idPage);
 void mUI_ActionFocusElement(int idElement);
 
-void mUI_Test(UIPage page);
 void mUI_PrintPage(const UIPage uiPage);
 void mUI_PrintElement(const UIElement* uiElement, bool* buffer);
 void mUI_PrintLabel(const UILabel* uiLabel, bool* buffer);

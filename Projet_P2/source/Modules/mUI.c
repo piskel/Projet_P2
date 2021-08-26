@@ -11,9 +11,43 @@
 
 #include "pixelFont.h"
 
-static bool* buffer[DISPLAY_HEIGHT*DISPLAY_WIDTH];
+#define UI_MAX_PAGES 64
+#define UI_MAX_ELEMENTS 512
+
+static bool buffer[DISPLAY_HEIGHT*DISPLAY_WIDTH];
+
+static UIContext uiContext;
+
+static UIPage* uiPageTab[UI_MAX_PAGES];
+static UIElement* uiElementTab[UI_MAX_ELEMENTS];
 
 extern const font pixelFont4x5;
+
+
+void mUI_Setup()
+	{
+
+	}
+
+void mUI_AddPage(char* pageName)
+	{
+
+	}
+
+void mUI_AddElement(UIElement* uiElement, char* pageName)
+	{
+
+	}
+
+void mUI_AddLabel(UILabel* uiLabel, char* pageName)
+	{
+
+	}
+
+void mUI_AddButton(UIButton* uiButton, char* pageName)
+	{
+
+	}
 
 void mUI_HandleElement(const UIElement* uiElement)
 	{
@@ -57,14 +91,8 @@ void mUI_ActionFocusElement(int idElement)
 
 
 
-void mUI_Test(UIPage page)
-	{
-	return;
-	}
-
 void mUI_PrintPage(const UIPage uiPage)
 	{
-//	bool buffer[DISPLAY_BUFFER_SIZE];
 	mGraphics_FillBuffer(buffer, false);
 
 	for(int i = 0; i < uiPage.nbUIElements; i++)
