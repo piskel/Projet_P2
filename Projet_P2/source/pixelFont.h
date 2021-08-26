@@ -13,8 +13,4 @@
 #define PIXEL_FONT_WIDTH 4
 #define PIXEL_FONT_HEIGHT 5
 
-
-const bool* pixelFont_AsciiToFont(char letter);
-
-
 #endif /* PIXELFONT_H_ */

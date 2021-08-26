@@ -9,7 +9,9 @@
 
 #include <math.h>
 #include "mDisplay.h"
+#include "pixelFont.h"
 
+extern const unsigned long textFont[128];
 
 // TODO Rename white variable to something else
 void mGraphics_FillBuffer(bool *buffer, bool white)
@@ -101,16 +103,26 @@ void mGraphics_DrawText(bool *buffer, char *text, point pos, bool inverseColor)
 
 	for(int i = 0; i < strlen(text); i++)
 		{
+
+		bool bmpChar[PIXEL_FONT_WIDTH*PIXEL_FONT_HEIGHT];
+		for(int j = 0; j < PIXEL_FONT_WIDTH*PIXEL_FONT_HEIGHT; j++)
+			{
+				bmpChar[j] = (textFont[text[i]] >> j) & 0x01;
+			}
 		mGraphics_DrawImage(
 				buffer,
-				pixelFont_AsciiToFont(text[i]),
+				bmpChar,
 				(point){PIXEL_FONT_WIDTH, PIXEL_FONT_HEIGHT},
-				(point){pos.x+(i*(PIXEL_FONT_WIDTH+1)), pos.y},
+				(point){pos.x+i*(PIXEL_FONT_WIDTH+1), pos.y},
 				inverseColor);
 		}
 
 	}
 
+point mGraphics_GetTextSize(char* text)
+	{
+	return (point){strlen(text)*5-1, 5};
+	}
 
 void mGraphics_Print(bool *buffer)
 	{

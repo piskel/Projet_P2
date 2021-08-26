@@ -91,7 +91,6 @@ void mDisplay_SendBuffer(bool *buffer)
 		for(int j = 0; j < 8; j++)
 			{
 			 line |= buffer[posX+102*(posY*8+7-j)] << j;
-
 			}
 
 		mDisplay_SendCommand(0xb0+7-posY);

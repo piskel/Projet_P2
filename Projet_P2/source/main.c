@@ -70,9 +70,13 @@ int main(void)
 	mDisplay_Setup();
 
 	bool btn0Mem = false;
-	bool btn0 = false;
 	bool btn1Mem = false;
+	bool btn2Mem = false;
+	bool btn3Mem = false;
+	bool btn0 = false;
 	bool btn1 = false;
+	bool btn2 = false;
+	bool btn3 = false;
 
 	bool buffer[DISPLAY_BUFFER_SIZE];
 
@@ -85,6 +89,8 @@ int main(void)
 		{
 		btn0 = mButton_Read(kMaskButton0);
 		btn1 = mButton_Read(kMaskButton1);
+		btn2 = mButton_Read(kMaskButton2);
+		btn3 = mButton_Read(kMaskButton3);
 
 		if(btn0 != btn0Mem && btn0)
 			{
@@ -104,18 +110,38 @@ int main(void)
 			interval++;
 
 			}
+
 		if(btn1 != btn1Mem && btn1)
 			{
 			mGraphics_FillBuffer(buffer, false);
 
-//			mGraphics_DrawImage(buffer, pixFont[0], (point){4, 5}, (point){0, 0}, false);
-			mGraphics_DrawText(buffer, "Hello world", (point){10, 10}, false);
+			mGraphics_DrawBox(buffer, (point){0, 0}, (point){101, 6}, true, 1, true);
+			mGraphics_DrawText(buffer, "Hello world", (point){1, 1}, true);
 
 
 			mGraphics_Print(buffer);
 			}
+
+		if(btn2 != btn2Mem && btn2)
+			{
+			mGraphics_FillBuffer(buffer, false);
+
+
+			mGraphics_DrawLine(buffer, (point){0, 0}, (point){101, 63}, true, 1);
+
+			mGraphics_Print(buffer);
+
+			}
+
+		if(btn3 != btn3Mem && btn3)
+		{
+
+		}
+
 		btn0Mem = btn0;
 		btn1Mem = btn1;
+		btn2Mem = btn2;
+		btn3Mem = btn3;
 
 		}
 
