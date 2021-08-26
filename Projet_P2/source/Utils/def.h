@@ -32,6 +32,12 @@ typedef int bool;
 #define FALSE 0
 #define false 0
 
+
+#define DISPLAY_HEIGHT 64
+#define DISPLAY_WIDTH 102
+#define DISPLAY_MEM_SIZE 816
+#define DISPLAY_BUFFER_SIZE 6528
+
 typedef struct Point
 	{
 		int x;

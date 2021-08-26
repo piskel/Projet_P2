@@ -12,10 +12,6 @@
 
 
 // Ratio: 102x64
-#define DISPLAY_HEIGHT 64
-#define DISPLAY_WIDTH 102
-#define DISPLAY_MEM_SIZE 816
-#define DISPLAY_BUFFER_SIZE 6528
 
 
 void mDisplay_Setup();

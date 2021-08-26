@@ -117,9 +117,9 @@ void mGraphics_DrawText(bool *buffer, char *text, font f, point pos, bool invers
 
 	}
 
-point mGraphics_GetTextSize(char* text)
+point mGraphics_GetTextSize(char* text, font f)
 	{
-	return (point){strlen(text)*5-1, 5};
+	return (point){strlen(text)*(f.width+1)-1, f.height};
 	}
 
 void mGraphics_Print(bool *buffer)

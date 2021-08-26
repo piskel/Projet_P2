@@ -8,6 +8,11 @@
 
 #include <Modules/mUI.h>
 
+#include "pixelFont.h"
+
+
+extern const font pixelFont4x5;
+
 void mUI_HandleElement(const UIElement* uiElement)
 	{
 	switch (uiElement->aUIElementType) {
@@ -27,12 +32,12 @@ void mUI_HandleAction(const UIAction* uiAction)
 	{
 	switch (uiAction->aUIActionType) {
 		case kUIActionFocusPage:;
-			const UIActionFocusPage * uiActionFocusPage = (UIActionFocusPage*)uiAction;
+			const UIActionFocusPage* uiActionFocusPage = (UIActionFocusPage*)uiAction;
 			mUI_ActionFocusPage(uiActionFocusPage->idPage);
 			break;
 
 		case kUIActionFocusElement:;
-			const UIActionFocusElement * uiActionFocusElement = (UIActionFocusElement*)uiAction;
+			const UIActionFocusElement* uiActionFocusElement = (UIActionFocusElement*)uiAction;
 			mUI_ActionFocusElement(uiActionFocusElement->idElement);
 			break;
 		}
@@ -48,4 +53,58 @@ void mUI_ActionFocusElement(int idElement)
 
 	}
 
+
+
+
+void mUI_PrintPage(const UIPage* uiPage)
+	{
+	bool buffer[DISPLAY_BUFFER_SIZE];
+	mGraphics_FillBuffer(buffer, false);
+
+	for(int i = 0; i < uiPage->nbUIElements; i++)
+		{
+		UIElement *uiElement = uiPage->pUIElementTab[i];
+		mUI_PrintElement(uiElement, buffer);
+		}
+	mGraphics_Print(buffer);
+	}
+
+void mUI_PrintElement(const UIElement* uiElement, bool* buffer)
+	{
+
+	switch (uiElement->aUIElementType)
+		{
+		case kUILabel:;
+			const UILabel* uiLabel = (UILabel*)uiElement;
+			mUI_PrintLabel(uiLabel, buffer);
+			break;
+
+		case kUIButton:;
+			const UIButton* uiButton = (UIButton*)uiElement;
+			mUI_PrintButton(uiButton, buffer);
+			break;
+		}
+	}
+
+
+void mUI_PrintLabel(const UILabel* uiLabel, bool* buffer)
+	{
+	mGraphics_DrawText(buffer, uiLabel->text, pixelFont4x5, uiLabel->super.pos, false);
+	}
+
+void mUI_PrintButton(const UIButton* uiButton, bool* buffer)
+	{
+	// TODO Ability to change the font
+	point textSize = mGraphics_GetTextSize(uiButton->text, pixelFont4x5);
+	point buttonStartPos = uiButton->super.pos;
+
+	int thickness = 1;
+
+	point buttonEndPos = {
+			x: buttonStartPos.x+textSize.x + 2*thickness-1,
+			y: buttonStartPos.y+textSize.y + 2*thickness-1
+	};
+	mGraphics_DrawBox(buffer, buttonStartPos, buttonEndPos, true, 1, true);
+	mGraphics_DrawText(buffer, uiButton->text, pixelFont4x5, (point){buttonStartPos.x+1, buttonStartPos.y+1}, true);
+	}
 

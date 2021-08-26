@@ -20,7 +20,7 @@ void mGraphics_DrawCircle(bool *buffer, point startPos, point endPos, bool white
 void mGraphics_DrawPixel(bool *buffer, point pos, bool white);
 void mGraphics_DrawImage(bool *buffer, const bool *image, point imageSize, point pos, bool inverseColor);
 void mGraphics_DrawText(bool *buffer, char *text, font f, point pos, bool inverseColor);
-point mGraphics_GetTextSize(char* text);
+point mGraphics_GetTextSize(char* text, font f);
 
 void mGraphics_Print(bool *buffer);
 

@@ -41,7 +41,7 @@
 #include <mGpio.h>
 #include <mGraphics.h>
 #include "MKL46Z4.h"
-#include "mUI.h"
+#include <mUI.h>
 
 /* TODO: insert other include files here. */
 #include "math.h"
@@ -154,7 +154,7 @@ int main(void)
 					idPage: 0
 					};
 
-			const UIButton elementTest =
+			const UIButton elementTest = (UIButton)
 				{
 				super: (UIElement)
 					{
@@ -162,10 +162,24 @@ int main(void)
 					pos: (point){0, 0}
 					},
 				text: "test",
-				aUIAction: &actionTest
+				aUIAction: (UIAction*)&actionTest
 				};
 
-			mUI_HandleElement(&elementTest);
+//			mUI_HandleElement((UIElement*) &elementTest);
+
+			UIElement* uiElementTab[1];
+			uiElementTab[0] = (UIElement*)&elementTest;
+
+			const UIPage page =
+				{
+					pUIElementTab: uiElementTab,
+					nbUIElements: 1
+				};
+
+			mUI_PrintPage(&page);
+//			mUI_PrintElement(&elementTest, buffer);
+//			mGraphics_Print(buffer);
+
 			}
 
 		btn0Mem = btn0;
