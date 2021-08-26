@@ -32,6 +32,13 @@ typedef int bool;
 #define FALSE 0
 #define false 0
 
+typedef struct Point
+	{
+		int x;
+		int y;
+	} point;
+
+
 //-----------------------------------------------------------------------------
 // D�claration des macros permettant l'enable/disable des interruptions
 //-----------------------------------------------------------------------------

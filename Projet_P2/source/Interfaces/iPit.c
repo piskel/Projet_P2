@@ -65,6 +65,7 @@ void iPit_Config(unsigned int aPIT0PeriodeMs,unsigned int aPIT1PeriodeMs)
 	// Enable du clock pour le p�riph�rique PIT
 	aPtr=(unsigned long*)kSIM_SCGC6;
 	*aPtr|=(1<<23);
+//	SIM->SCGC6 |= SIM_SCGC6_PIT_MASK;
 	
 	// PIT Module Control Register (PIT_MCR)
 	// Le clock du PIT est enable

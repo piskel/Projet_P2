@@ -13,13 +13,6 @@
 #include "string.h"
 
 
-typedef struct Point
-	{
-		int x;
-		int y;
-	} point;
-
-
 void mGraphics_FillBuffer(bool *buffer, bool white);
 void mGraphics_DrawLine(bool *buffer, point startPos, point endPos, bool white, int thickness);
 void mGraphics_DrawBox(bool *buffer, point startPos, point endPos, bool white, int thickness, bool fill);

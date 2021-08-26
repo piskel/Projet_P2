@@ -8,6 +8,8 @@
 #ifndef MBUTTON_H_
 #define MBUTTON_H_
 
+#include "def.h"
+
 typedef enum
 {
 	kMaskButton0=0,

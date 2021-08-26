@@ -5,4 +5,8 @@
  *      Author: luc.froideva
  */
 
+#include "gMBox.h"
 
+InputStruct gInput;
+ComputeStruct gCompute;
+OutputStruct gOutput;

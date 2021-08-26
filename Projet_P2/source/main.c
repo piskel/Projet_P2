@@ -41,6 +41,7 @@
 #include <mGpio.h>
 #include <mGraphics.h>
 #include "MKL46Z4.h"
+#include "mUI.h"
 
 /* TODO: insert other include files here. */
 #include "math.h"
@@ -68,7 +69,8 @@ int main(void)
 	{
 
 	mCpu_Setup();
-	iDio_EnablePortClk();
+//	iDio_EnablePortClk();
+
 	mButton_Setup();
 	mGpio_Setup();
 	mDisplay_Setup();
@@ -89,12 +91,15 @@ int main(void)
 
 	double interval = 0;
 
+
 	while(1)
 		{
 		btn0 = mButton_Read(kMaskButton0);
 		btn1 = mButton_Read(kMaskButton1);
 		btn2 = mButton_Read(kMaskButton2);
 		btn3 = mButton_Read(kMaskButton3);
+
+
 
 		if(btn0 != btn0Mem && btn0)
 			{
@@ -138,9 +143,30 @@ int main(void)
 			}
 
 		if(btn3 != btn3Mem && btn3)
-		{
+			{
 
-		}
+			const UIActionFocusPage actionTest = (UIActionFocusPage)
+					{
+					super: (UIAction)
+						{
+						aUIActionType: kUIActionFocusPage
+						},
+					idPage: 0
+					};
+
+			const UIButton elementTest =
+				{
+				super: (UIElement)
+					{
+					aUIElementType: kUIButton,
+					pos: (point){0, 0}
+					},
+				text: "test",
+				aUIAction: &actionTest
+				};
+
+			mUI_HandleElement(&elementTest);
+			}
 
 		btn0Mem = btn0;
 		btn1Mem = btn1;
