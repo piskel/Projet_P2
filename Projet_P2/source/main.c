@@ -44,6 +44,10 @@
 #include "mGpio.h"
 #include "mDisplay.h"
 #include "mGraphics.h"
+
+
+extern const font pixelFont4x5;
+
 /* TODO: insert other definitions and declarations here. */
 
 /*
@@ -116,7 +120,7 @@ int main(void)
 			mGraphics_FillBuffer(buffer, false);
 
 			mGraphics_DrawBox(buffer, (point){0, 0}, (point){101, 6}, true, 1, true);
-			mGraphics_DrawText(buffer, "Hello world", (point){1, 1}, true);
+			mGraphics_DrawText(buffer, "Hello world", pixelFont4x5, (point){1, 1}, true);
 
 
 			mGraphics_Print(buffer);
