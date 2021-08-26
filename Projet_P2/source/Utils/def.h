@@ -26,7 +26,7 @@ Date		Faite		Ctrl		Description
 //-----------------------------------------------------------------------------
 // D�claration des types
 //-----------------------------------------------------------------------------
-typedef int bool;
+typedef char bool;
 #define TRUE 1
 #define true 1
 #define FALSE 0

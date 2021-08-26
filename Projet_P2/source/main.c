@@ -176,7 +176,7 @@ int main(void)
 					nbUIElements: 1
 				};
 
-			mUI_PrintPage(&page);
+			mUI_PrintPage(page);
 //			mUI_PrintElement(&elementTest, buffer);
 //			mGraphics_Print(buffer);
 

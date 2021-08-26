@@ -7,9 +7,11 @@
 
 
 #include <Modules/mUI.h>
+#include <def.h>
 
 #include "pixelFont.h"
 
+static bool* buffer[DISPLAY_HEIGHT*DISPLAY_WIDTH];
 
 extern const font pixelFont4x5;
 
@@ -55,18 +57,23 @@ void mUI_ActionFocusElement(int idElement)
 
 
 
-
-void mUI_PrintPage(const UIPage* uiPage)
+void mUI_Test(UIPage page)
 	{
-	bool buffer[DISPLAY_BUFFER_SIZE];
+	return;
+	}
+
+void mUI_PrintPage(const UIPage uiPage)
+	{
+//	bool buffer[DISPLAY_BUFFER_SIZE];
 	mGraphics_FillBuffer(buffer, false);
 
-	for(int i = 0; i < uiPage->nbUIElements; i++)
+	for(int i = 0; i < uiPage.nbUIElements; i++)
 		{
-		UIElement *uiElement = uiPage->pUIElementTab[i];
+		UIElement *uiElement = uiPage.pUIElementTab[i];
 		mUI_PrintElement(uiElement, buffer);
 		}
 	mGraphics_Print(buffer);
+	return;
 	}
 
 void mUI_PrintElement(const UIElement* uiElement, bool* buffer)

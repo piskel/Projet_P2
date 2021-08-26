@@ -108,7 +108,8 @@ void mUI_HandleAction(const UIAction* uiAction);
 void mUI_ActionFocusPage(int idPage);
 void mUI_ActionFocusElement(int idElement);
 
-void mUI_PrintPage(const UIPage* uiPage);
+void mUI_Test(UIPage page);
+void mUI_PrintPage(const UIPage uiPage);
 void mUI_PrintElement(const UIElement* uiElement, bool* buffer);
 void mUI_PrintLabel(const UILabel* uiLabel, bool* buffer);
 void mUI_PrintButton(const UIButton* uiButton, bool* buffer);
