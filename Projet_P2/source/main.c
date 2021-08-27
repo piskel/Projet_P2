@@ -74,6 +74,7 @@ int main(void)
 	mButton_Setup();
 	mGpio_Setup();
 	mDisplay_Setup();
+	mUI_Setup();
 
 	bool btn0Mem = false;
 	bool btn1Mem = false;
@@ -145,42 +146,7 @@ int main(void)
 		if(btn3 != btn3Mem && btn3)
 			{
 
-			const UIActionFocusPage actionTest = (UIActionFocusPage)
-					{
-					super: (UIAction)
-						{
-						aUIActionType: kUIActionFocusPage
-						},
-					idPage: 0
-					};
-
-			const UIButton elementTest = (UIButton)
-				{
-				super: (UIElement)
-					{
-					aUIElementType: kUIButton,
-					pos: (point){0, 0}
-					},
-				text: "test",
-				aUIAction: (UIAction*)&actionTest
-				};
-
-//			mUI_HandleElement((UIElement*) &elementTest);
-
-			UIElement* uiElementTab[1];
-			uiElementTab[0] = (UIElement*)&elementTest;
-
-			const UIPage page =
-				{
-					name: "test",
-					pUIElementTab: uiElementTab,
-					nbUIElements: 1
-				};
-
-			mUI_PrintPage(page);
-//			mUI_PrintElement(&elementTest, buffer);
-//			mGraphics_Print(buffer);
-
+			mUI_PrintPage("error_page");
 			}
 
 		btn0Mem = btn0;

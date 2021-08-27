@@ -36,19 +36,17 @@ typedef struct UIAction
 typedef struct UIActionFocusPage
 	{
 		UIAction super;
-		int idPage;
+		char* uiPageName;
 
 	} UIActionFocusPage;
 
 typedef struct UIActionFocusElement
 	{
 		UIAction super;
-		int idElement;
+		char* uiPageName;
+		char* uiElementName;
 
 	} UIActionFocusElement;
-
-
-
 
 
 
@@ -65,6 +63,7 @@ typedef enum UIElementType
 
 typedef struct UIElement
 	{
+		char* name;
 		UIElementType aUIElementType;
 		point pos;
 	} UIElement;
@@ -88,33 +87,42 @@ typedef struct UIButton
 typedef struct UIPage
 	{
 		char* name;
-		UIElement** pUIElementTab;
+		char** tabUIElementName;
 		int nbUIElements;
 
 	} UIPage;
 
 typedef struct UIContext
 	{
-		UIPage* pUIPage;
-		int uiElementId;
+		char* uiPageName;
+		char* uiElementName;
 	} UIContext;
 
 
 void mUI_Setup();
 
-void mUI_AddPage(char* pageName);
-void mUI_AddElement(UIElement* uiElement, char* pageName);
-void mUI_AddLabel(UILabel* uiLabel, char* pageName);
-void mUI_AddButton(UIButton* uiButton, char* pageName);
+void mUI_CreatePage(const char* uiPageName);
+void mUI_DeletePage(const char* uiPageName);
+UIPage* mUI_GetPage(const char* uiPageName);
 
-void mUI_HandleElement(const UIElement* uiElement);
+//void mUI_CreateElement(char* uiElementName, point pos);
+void mUI_CreateLabel(const char* uiElementName, point pos, const char* text);
+void mUI_CreateButton(const char* uiElementName, point pos, const char* text, UIAction* pUIAction);
+void mUI_DeleteElement(const char* uiElementName);
+UIElement* mUI_GetElement(const char* uiElementName);
+
+void mUI_AddElementToPage(const char* uiElementName, const char* uiPageName);
+
+// TODO MAKE SURE TO DELETE ALL ACTIONS LINKED TO ELEMENTS !!!
+
+void mUI_HandleElement(const char* uiElementName);
 void mUI_HandleAction(const UIAction* uiAction);
 
-void mUI_ActionFocusPage(int idPage);
-void mUI_ActionFocusElement(int idElement);
+void mUI_ActionFocusPage(const char* uiPageName);
+void mUI_ActionFocusElement(const char* uiPageName, const char* uiElementName);
 
-void mUI_PrintPage(const UIPage uiPage);
-void mUI_PrintElement(const UIElement* uiElement, bool* buffer);
+void mUI_PrintPage(const char* uiPageId);
+void mUI_PrintElement(const char* uiElementName, bool* buffer);
 void mUI_PrintLabel(const UILabel* uiLabel, bool* buffer);
 void mUI_PrintButton(const UIButton* uiButton, bool* buffer);
 
