@@ -42,6 +42,8 @@
 #include <mGraphics.h>
 #include "MKL46Z4.h"
 #include <mUI.h>
+#include "mWLSensor.h"
+#include "mDelay.h"
 
 /* TODO: insert other include files here. */
 #include "math.h"
@@ -71,10 +73,13 @@ int main(void)
 	mCpu_Setup();
 //	iDio_EnablePortClk();
 
+	mDelay_Setup();
 	mButton_Setup();
 	mGpio_Setup();
 	mDisplay_Setup();
 	mUI_Setup();
+	mWLSensor_Setup();
+
 
 	bool btn0Mem = false;
 	bool btn1Mem = false;
@@ -89,6 +94,8 @@ int main(void)
 
 	mGraphics_FillBuffer(buffer, false);
 	mGraphics_Print(buffer);
+
+	float waterLevel = 0;
 
 	double interval = 0;
 
@@ -134,12 +141,7 @@ int main(void)
 
 		if(btn2 != btn2Mem && btn2)
 			{
-			mGraphics_FillBuffer(buffer, false);
-
-
-			mGraphics_DrawLine(buffer, (point){0, 0}, (point){101, 63}, true, 1);
-
-			mGraphics_Print(buffer);
+			waterLevel = mWLSensor_GetWaterLevel();
 
 			}
 
