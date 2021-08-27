@@ -44,6 +44,7 @@
 #include <mUI.h>
 #include "mWLSensor.h"
 #include "mDelay.h"
+#include "stdlib.h"
 
 /* TODO: insert other include files here. */
 #include "math.h"
@@ -95,9 +96,21 @@ int main(void)
 	mGraphics_FillBuffer(buffer, false);
 	mGraphics_Print(buffer);
 
-	float waterLevel = 0;
+	int waterLevel = 0;
 
 	double interval = 0;
+
+	mUI_CreatePage("water_level");
+	mUI_CreateLabel("water_level_label", (point){0, 0}, "NaN");
+	mUI_CreateLabel("a", (point){0, 0}, "abcdefghijk");
+	mUI_CreateLabel("b", (point){0, 10}, "lmnopqrstuv");
+	mUI_CreateLabel("c", (point){0, 20}, "wxyz");
+
+
+	mUI_AddElementToPage("water_level_label", "water_level");
+	mUI_AddElementToPage("a", "water_level");
+	mUI_AddElementToPage("b", "water_level");
+	mUI_AddElementToPage("c", "water_level");
 
 
 	while(1)
@@ -141,7 +154,17 @@ int main(void)
 
 		if(btn2 != btn2Mem && btn2)
 			{
-			waterLevel = mWLSensor_GetWaterLevel();
+			char level[5];
+			waterLevel = mWLSensor_GetWaterLevel()*100;
+
+			itoa(waterLevel, level, 10);
+
+			UILabel* pUILabel = (UILabel*)mUI_GetElement("water_level_label");
+
+			pUILabel->text = level;
+			mUI_PrintPage("water_level");
+
+
 
 			}
 

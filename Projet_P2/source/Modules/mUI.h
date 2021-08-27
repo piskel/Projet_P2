@@ -126,4 +126,9 @@ void mUI_PrintElement(const char* uiElementName, bool* buffer);
 void mUI_PrintLabel(const UILabel* uiLabel, bool* buffer);
 void mUI_PrintButton(const UIButton* uiButton, bool* buffer);
 
+// +: down, - up
+void mUI_ContextMoveElement(int shift);
+void mUI_TriggerAction();
+
+
 #endif /* MUI_H_ */

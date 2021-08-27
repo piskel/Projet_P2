@@ -36,6 +36,8 @@ void mUI_Setup()
 	{
 	mUI_CreatePage("error_page");
 	mUI_CreateLabel("error_label", (point){0, 0}, "ERROR");
+
+//	mUI_CreateButton("error_button", (point){0, 0}, "ERROR", pUIAction);
 	mUI_AddElementToPage("error_label", "error_page");
 	}
 
@@ -244,5 +246,27 @@ void mUI_PrintButton(const UIButton* uiButton, bool* buffer)
 	};
 	mGraphics_DrawBox(buffer, buttonStartPos, buttonEndPos, true, 1, true);
 	mGraphics_DrawText(buffer, uiButton->text, pixelFont4x5, (point){buttonStartPos.x+1, buttonStartPos.y+1}, true);
+	}
+
+void mUI_ContextMoveElement(int shift)
+	{
+	UIPage* uiPage = mUI_GetPage(uiContext.uiPageName);
+
+	int elementPosition = 0;
+
+	for(int i = 0; i < uiPage->nbUIElements; i++)
+		{
+		UIElement* cursorUIElement = mUI_GetElement(uiPage->tabUIElementName[i]);
+		if(strcmp(cursorUIElement->name, uiContext.uiElementName)) elementPosition = i;
+		}
+	elementPosition = (elementPosition + shift)%uiPage->nbUIElements;
+
+	uiContext.uiElementName = mUI_GetElement(uiPage->tabUIElementName[elementPosition])->name;
+
+	}
+
+void mUI_TriggerAction()
+	{
+
 	}
 
