@@ -170,7 +170,11 @@ void mGUI_PrintElement(const char* name)
 
 void mGUI_PrintText(UIText* pUIText)
 	{
-	mGraphics_DrawText(buffer, pUIText->text, pixelFont4x5, pUIText->super.position, pUIText->super.selected);
+	point textSize = mGraphics_GetTextSize(pUIText->text, pixelFont4x5);
+	point textPosition = {pUIText->super.position.x+1, pUIText->super.position.y+1};
+	point endPosition = {pUIText->super.position.x+textSize.x+1, pUIText->super.position.y+textSize.y+1};
+	mGraphics_DrawBox(buffer, pUIText->super.position, endPosition, pUIText->super.selected, 1, true);
+	mGraphics_DrawText(buffer, pUIText->text, pixelFont4x5, textPosition, pUIText->super.selected);
 	}
 
 void mGUI_PrintImage(UIImage* pUIImage)
@@ -196,8 +200,34 @@ void mGUI_SetCurrentPage(const char* uiPageName)
 		}
 	}
 
+// true: down, false: up
 void mGUI_NavigateInteractive(bool direction)
 	{
+	UIPage* pUIPage = mGUI_GetPageFromName(uiContext.uiPageName);
+
+	for(int i = 0; i < pUIPage->nbUIElement; i++)
+		{
+		UIElement* pUIElement = mGUI_GetElementFromName(pUIPage->uiElementNameTab[i]);
+		pUIElement->selected = false;
+		}
+
+	int step = direction ? 1 : -1;
+	int currentCursor = (uiContext.cursor + pUIPage->nbUIElement + step)%pUIPage->nbUIElement;
+
+	while(currentCursor != uiContext.cursor)
+		{
+			UIElement* pUIElement = mGUI_GetElementFromName(pUIPage->uiElementNameTab[currentCursor]);
+
+			if(pUIElement->interactive == true)
+				{
+				pUIElement->selected = true;
+				uiContext.cursor = currentCursor;
+				break;
+				}
+
+			currentCursor = (currentCursor+pUIPage->nbUIElement+step)%pUIPage->nbUIElement;
+		}
+
 	}
 
 void mGUI_PrintCurrentPage()
@@ -205,6 +235,7 @@ void mGUI_PrintCurrentPage()
 	mGUI_PrintPage(uiContext.uiPageName);
 	}
 
+//  FIXME Doesn't work
 void mGUI_CopyString(const char* source, char* target)
 	{
 	target = (char*) malloc(strlen(source)+1);

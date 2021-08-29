@@ -134,7 +134,9 @@ int main(void)
 
 		if(btn1 != btn1Mem && btn1)
 			{
+
 			mGUI_SetCurrentPage("main_page");
+			mGUI_NavigateInteractive(false);
 			mGUI_PrintCurrentPage();
 			}
 
