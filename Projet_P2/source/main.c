@@ -41,10 +41,11 @@
 #include <mGpio.h>
 #include <mGraphics.h>
 #include "MKL46Z4.h"
-#include <mUI.h>
+//#include <mUI.h>
 #include "mWLSensor.h"
 #include "mDelay.h"
 #include "stdlib.h"
+#include "mGUI.h"
 
 /* TODO: insert other include files here. */
 #include "math.h"
@@ -78,9 +79,11 @@ int main(void)
 	mButton_Setup();
 	mGpio_Setup();
 	mDisplay_Setup();
-	mUI_Setup();
+//	mUI_Setup();
 	mWLSensor_Setup();
+	mGUI_Setup();
 
+	bool buffer[DISPLAY_HEIGHT*DISPLAY_WIDTH];
 
 	bool btn0Mem = false;
 	bool btn1Mem = false;
@@ -91,26 +94,27 @@ int main(void)
 	bool btn2 = false;
 	bool btn3 = false;
 
-	bool buffer[DISPLAY_BUFFER_SIZE];
-
-	mGraphics_FillBuffer(buffer, false);
-	mGraphics_Print(buffer);
-
-	int waterLevel = 0;
-
-	double interval = 0;
-
-	mUI_CreatePage("water_level");
-	mUI_CreateLabel("water_level_label", (point){0, 0}, "NaN");
-	mUI_CreateLabel("a", (point){0, 0}, "abcdefghijk");
-	mUI_CreateLabel("b", (point){0, 10}, "lmnopqrstuv");
-	mUI_CreateLabel("c", (point){0, 20}, "wxyz");
 
 
-	mUI_AddElementToPage("water_level_label", "water_level");
-	mUI_AddElementToPage("a", "water_level");
-	mUI_AddElementToPage("b", "water_level");
-	mUI_AddElementToPage("c", "water_level");
+//	mUI_CreatePage("splash_page");
+//	mUI_CreateLabel("splash_label", (point){10, 10}, "Projet P2");
+//
+//	mUI_AddElementToPage("splash_label", "splash_page");
+//
+//
+//	mUI_PrintPage("splash_page");
+
+	int interval = 0;
+
+
+	mGUI_CreatePage("main_page");
+	mGUI_CreateText("sensor_item_text", (point){0, 0}, true, "Sensors");
+	mGUI_CreateText("settings_item_text", (point){0, 8}, true, "Settings");
+	mGUI_CreateText("about_item_text", (point){0, 16}, true, "About");
+
+	mGUI_AddElementToPage("sensor_item_text", "main_page");
+	mGUI_AddElementToPage("settings_item_text", "main_page");
+	mGUI_AddElementToPage("about_item_text", "main_page");
 
 
 	while(1)
@@ -124,54 +128,33 @@ int main(void)
 
 		if(btn0 != btn0Mem && btn0)
 			{
-			mGraphics_FillBuffer(buffer, false);
-
-			point a = {x:20+cos(interval/10)*20, 			y:20+sin(interval/10)*20};
-			point b = {x:20+cos(interval/10 + 2*M_PI/3)*20, y:20+sin(interval/10 + 2*M_PI/3)*20};
-			point c = {x:20+cos(interval/10 + 4*M_PI/3)*20, y:20+sin(interval/10 + 4*M_PI/3)*20};
-
-
-			mGraphics_DrawLine(buffer, a, b, true, 1);
-			mGraphics_DrawLine(buffer, b, c, true, 1);
-			mGraphics_DrawLine(buffer, c, a, true, 1);
-
-
-			mGraphics_Print(buffer);
-			interval++;
-
+			mGUI_SetCurrentPage("error_page");
+			mGUI_PrintCurrentPage();
 			}
 
 		if(btn1 != btn1Mem && btn1)
 			{
-			mGraphics_FillBuffer(buffer, false);
-
-			mGraphics_DrawBox(buffer, (point){0, 0}, (point){101, 6}, true, 1, true);
-			mGraphics_DrawText(buffer, "Hello world", pixelFont4x5, (point){1, 1}, true);
-
-
-			mGraphics_Print(buffer);
+			mGUI_SetCurrentPage("main_page");
+			mGUI_PrintCurrentPage();
 			}
 
-		if(btn2 != btn2Mem && btn2)
+		if(btn2)
 			{
-			char level[5];
-			waterLevel = mWLSensor_GetWaterLevel()*100;
 
-			itoa(waterLevel, level, 10);
+			mGraphics_FillBuffer(buffer, false);
+			for(int i = 0; i < DISPLAY_WIDTH; i++)
+				{
+				int py = (int)(cos((double)((double)i/10.0+(double)interval/5))*10.0)+30;
+				mGraphics_DrawPixel(buffer, (point){i, py}, true);
+				}
 
-			UILabel* pUILabel = (UILabel*)mUI_GetElement("water_level_label");
-
-			pUILabel->text = level;
-			mUI_PrintPage("water_level");
-
-
-
+			mGraphics_Print(buffer);
+			interval++;
 			}
 
 		if(btn3 != btn3Mem && btn3)
 			{
 
-			mUI_PrintPage("error_page");
 			}
 
 		btn0Mem = btn0;
