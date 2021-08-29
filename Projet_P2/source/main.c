@@ -104,23 +104,32 @@ int main(void)
 //
 //	mUI_PrintPage("splash_page");
 
-	int interval = 0;
 
 
 	mGUI_CreatePage("main_page");
 	mGUI_CreateText("sensor_item_text", (point){0, 0}, true, "Sensors");
 	mGUI_CreateText("settings_item_text", (point){0, 8}, true, "Settings");
 	mGUI_CreateText("about_item_text", (point){0, 16}, true, "About");
-
 	mGUI_CreateText("test_item_text", (point){30, 30}, true, "X");
+
+
+	mGUI_CreateText("info_text", (point){10, 50}, true, "NaN");
+
 
 	mGUI_AddElementToPage("sensor_item_text", "main_page");
 	mGUI_AddElementToPage("settings_item_text", "main_page");
 	mGUI_AddElementToPage("about_item_text", "main_page");
 	mGUI_AddElementToPage("test_item_text", "main_page");
+	mGUI_AddElementToPage("info_text", "main_page");
+
 
 
 	mGUI_SetCurrentPage("main_page");
+
+
+	UIText* pTestText = (UIText*) mGUI_GetElementFromName("test_item_text");
+
+	int interval = 0;
 
 	while(1)
 		{
@@ -136,53 +145,28 @@ int main(void)
 		if(btn1 != btn1Mem && btn1)
 			{
 			mGUI_NavigateInteractive(false);
-			mGUI_PrintCurrentPage();
 			}
 
 		if(btn2 != btn2Mem && btn2)
 			{
 
 			mGUI_NavigateInteractive(true);
-			mGUI_PrintCurrentPage();
 			}
 
 		if(btn3 != btn3Mem && btn3)
 			{
+			UIText* pUIText = (UIText*) mGUI_GetElementFromName("info_text");
+			pUIText->text = mGUI_GetCurrentElementName();
 
 			}
 
-//		if(btn0 != btn0Mem && btn0)
-//			{
-//			mGUI_SetCurrentPage("error_page");
-//			mGUI_PrintCurrentPage();
-//			}
-//
-//		if(btn1 != btn1Mem && btn1)
-//			{
-//
-//			mGUI_SetCurrentPage("main_page");
-//			mGUI_NavigateInteractive(false);
-//			mGUI_PrintCurrentPage();
-//			}
-//
-//		if(btn2)
-//			{
-//
-//			mGraphics_FillBuffer(buffer, false);
-//			for(int i = 0; i < DISPLAY_WIDTH; i++)
-//				{
-//				int py = (int)(cos((double)((double)i/10.0+(double)interval/5))*10.0)+30;
-//				mGraphics_DrawPixel(buffer, (point){i, py}, true);
-//				}
-//
-//			mGraphics_Print(buffer);
-//			interval++;
-//			}
-//
-//		if(btn3 != btn3Mem && btn3)
-//			{
-//
-//			}
+
+		mGUI_PrintCurrentPage();
+
+
+		pTestText->super.position = (point){(int)(cos((double)interval/50)*15)+30, (int)(sin((double)interval/50)*15)+30};
+
+		interval = (interval+1)%1000000;
 
 		btn0Mem = btn0;
 		btn1Mem = btn1;

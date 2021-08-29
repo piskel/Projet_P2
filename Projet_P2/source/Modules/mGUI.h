@@ -74,6 +74,9 @@ void mGUI_SetCurrentPage(const char* uiPageName);
 void mGUI_PrintCurrentPage();
 void mGUI_NavigateInteractive(bool direction);
 
+char* mGUI_GetCurrentPageName();
+char* mGUI_GetCurrentElementName();
+
 void mGUI_CopyString(const char* source, char* target);
 
 #endif /* MODULES_MGUI_H_ */
