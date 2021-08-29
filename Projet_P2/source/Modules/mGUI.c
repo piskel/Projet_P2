@@ -235,6 +235,18 @@ void mGUI_PrintCurrentPage()
 	mGUI_PrintPage(uiContext.uiPageName);
 	}
 
+
+char* mGUI_GetCurrentPageName()
+	{
+	return uiContext.uiPageName;
+	}
+
+char* mGUI_GetCurrentElementName()
+	{
+	return mGUI_GetPageFromName(uiContext.uiPageName)->uiElementNameTab[uiContext.cursor];
+	}
+
+
 //  FIXME Doesn't work
 void mGUI_CopyString(const char* source, char* target)
 	{
