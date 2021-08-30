@@ -217,27 +217,31 @@ void mGUI_NavigateInteractive(bool direction)
 	{
 	UIPage* pUIPage = mGUI_GetPageFromName(uiContext.uiPageName);
 
+	bool check = false;
 	for(int i = 0; i < pUIPage->nbUIElement; i++)
 		{
 		UIElement* pUIElement = mGUI_GetElementFromName(pUIPage->uiElementNameTab[i]);
 		pUIElement->selected = false;
+		if(pUIElement->interactive) check = true;
 		}
+
+	if(!check) return;
 
 	int step = direction ? 1 : -1;
 	int currentCursor = (uiContext.cursor + pUIPage->nbUIElement + step)%pUIPage->nbUIElement;
 
 	do{
-			UIElement* pUIElement = mGUI_GetElementFromName(pUIPage->uiElementNameTab[currentCursor]);
+		UIElement* pUIElement = mGUI_GetElementFromName(pUIPage->uiElementNameTab[currentCursor]);
 
-			if(pUIElement->interactive == true)
-				{
-				pUIElement->selected = true;
-				uiContext.cursor = currentCursor;
-				break;
-				}
+		if(pUIElement->interactive == true)
+			{
+			pUIElement->selected = true;
+			uiContext.cursor = currentCursor;
+			break;
+			}
 
-			currentCursor = (currentCursor+pUIPage->nbUIElement+step)%pUIPage->nbUIElement;
-		}while(currentCursor != uiContext.cursor);
+		currentCursor = (currentCursor+pUIPage->nbUIElement+step)%pUIPage->nbUIElement;
+	}while(currentCursor != uiContext.cursor);
 
 
 	}
