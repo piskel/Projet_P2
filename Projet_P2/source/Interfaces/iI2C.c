@@ -267,8 +267,12 @@ void iI2C0_WaitEndOfRxOrTx(void)
 	{
 		// Wait for IICIF flag
 		// I2C Status register (I2Cx_S)
+		int wd = 100000;
 		while ((I2C0->S & I2C_S_IICIF_MASK) == 0)
-			;
+		{
+			if(wd <= 0) return;
+			wd--;
+		};
 		// Clear the IICIF flag
 		I2C0->S |= I2C_S_IICIF_MASK;
 	}
