@@ -46,6 +46,7 @@
 #include "mDelay.h"
 #include "stdlib.h"
 #include "mGUI.h"
+#include "mBLE.h"
 
 /* TODO: insert other include files here. */
 #include "math.h"
@@ -71,7 +72,7 @@ extern const font pixelFont4x5;
 
 int main(void)
 	{
-
+	EnableInterrupts;
 	mCpu_Setup();
 //	iDio_EnablePortClk();
 
@@ -82,6 +83,9 @@ int main(void)
 //	mUI_Setup();
 	mWLSensor_Setup();
 	mGUI_Setup();
+	mBLE_Setup();
+
+	mBLE_Start();
 
 	bool buffer[DISPLAY_HEIGHT*DISPLAY_WIDTH];
 
@@ -113,7 +117,7 @@ int main(void)
 	mGUI_CreateText("test_item_text", (point){30, 30}, true, "X");
 
 
-	mGUI_CreateText("info_text", (point){10, 50}, true, "NaN");
+	mGUI_CreateText("info_text", (point){10, 50}, false, "NaN");
 
 
 	mGUI_AddElementToPage("sensor_item_text", "main_page");
@@ -140,6 +144,12 @@ int main(void)
 
 		if(btn0 != btn0Mem && btn0)
 			{
+			UIText* uiBLE = (UIText*) mGUI_GetElementFromName("test_item_text");
+			mBLE_WriteString("AT+NAMEBOUP");
+
+			uiBLE->text = mBLE_ReadData();
+
+//			uiBLE->text = mBLE_ReadChar();
 			}
 
 		if(btn1 != btn1Mem && btn1)
