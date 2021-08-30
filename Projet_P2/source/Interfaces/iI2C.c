@@ -37,18 +37,6 @@ void iI2C0_Config()
 		iDio_PinConfig(kPortC, kPin8, kAlternate2); // SCL
 		iDio_PinConfig(kPortC, kPin9, kAlternate2); // SDA
 
-//		switch (aPin)
-//			{
-//		case kPin_B0_B1:
-//			// Port C I2C pin setup for I2C (alternate 2)
-//			// Pin Control Register n (PORTx_PCRn)
-//			PORTB->PCR[0] &= (~PORT_PCR_MUX_MASK);
-//			PORTB->PCR[0] |= PORT_PCR_MUX(2);
-//			PORTB->PCR[1] &= (~PORT_PCR_MUX_MASK);
-//			PORTB->PCR[1] |= PORT_PCR_MUX(2);
-//			break;
-//			}
-
 	}
 
 void iI2C1_Config()
@@ -71,25 +59,6 @@ void iI2C1_Config()
 		iDio_PinConfig(kPortC, kPin10, kAlternate2); // SCL
 		iDio_PinConfig(kPortC, kPin11, kAlternate2); // SDA
 
-//		switch (aPin)
-//			{
-//		case kPin_C1_C2:
-//			// Port C I2C pin setup for I2C (alternate 2)
-//			// Pin Control Register n (PORTx_PCRn)
-//			PORTC->PCR[1] &= (~PORT_PCR_MUX_MASK);
-//			PORTC->PCR[1] |= PORT_PCR_MUX(2);
-//			PORTC->PCR[2] &= (~PORT_PCR_MUX_MASK);
-//			PORTC->PCR[2] |= PORT_PCR_MUX(2);
-//			break;
-//		case kPin_E0_E1:
-//			// Port C I2C pin setup for I2C (alternate 2)
-//			// Pin Control Register n (PORTx_PCRn)
-//			PORTE->PCR[0] &= (~PORT_PCR_MUX_MASK);
-//			PORTE->PCR[0] |= PORT_PCR_MUX(6);
-//			PORTE->PCR[1] &= (~PORT_PCR_MUX_MASK);
-//			PORTE->PCR[1] |= PORT_PCR_MUX(6);
-//			break;
-//			}
 
 	}
 
@@ -281,7 +250,12 @@ void iI2C1_WaitEndOfRxOrTx(void)
 	{
 		// Wait for IICIF flag
 		// I2C Status register (I2Cx_S)
+		int wd = 100000;
 		while ((I2C1->S & I2C_S_IICIF_MASK) == 0)
+		{
+			if(wd <= 0) return;
+			wd--;
+		};
 			;
 		// Clear the IICIF flag
 		I2C1->S |= I2C_S_IICIF_MASK;
