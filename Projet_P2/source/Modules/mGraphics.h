@@ -13,6 +13,7 @@
 #include "string.h"
 
 
+void mGraphics_Setup();
 void mGraphics_FillBuffer(bool *buffer, bool white);
 void mGraphics_DrawLine(bool *buffer, point startPos, point endPos, bool white, int thickness);
 void mGraphics_DrawBox(bool *buffer, point startPos, point endPos, bool white, int thickness, bool fill);

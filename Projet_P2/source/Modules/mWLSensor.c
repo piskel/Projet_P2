@@ -32,7 +32,7 @@ bool mWLSensor_ReadValues()
 
 	if (!fail && !iI2C0_StartCom()) fail = true;
 	if (!fail && !iI2C0_SendSlaveAdd(WL_SENSOR_ADDR_H)) fail = true;
-	if (!fail && !iI2C0_ReadBytesAndStopCom(sensorData, 12)) fail = true;
+	if (!fail && !iI2C0_ReadBytesAndStopCom(tmpSensorData, 12)) fail = true;
 
 	if (!fail && !iI2C0_StartCom()) fail = true;
 	if (!fail && !iI2C0_SendSlaveAdd(WL_SENSOR_ADDR_L)) fail = true;

@@ -9,6 +9,10 @@
 #include <Modules/mDisplay.h>
 #include <Modules/mGraphics.h>
 
+void mGraphics_Setup()
+	{
+	mDisplay_Setup();
+	}
 
 // TODO Rename white variable to something else
 void mGraphics_FillBuffer(bool *buffer, bool white)

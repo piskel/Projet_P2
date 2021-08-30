@@ -8,5 +8,7 @@
 #include "gMBox.h"
 
 InputStruct gInput;
+SensorsStruct gSensors;
+GUIStruct gGUI;
 ComputeStruct gCompute;
 OutputStruct gOutput;

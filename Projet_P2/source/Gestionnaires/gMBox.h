@@ -11,21 +11,36 @@
 #include "def.h"
 
 typedef struct
-{
-	bool buttonTab[3];
-}InputStruct;
+	{
+	bool buttonStateTab[4];
+	bool buttonJustPressedTab[4];
+	}InputStruct;
 
 typedef struct
-{
-
-}ComputeStruct;
+	{
+	float waterLevel;
+	}SensorsStruct;
 
 typedef struct
-{
+	{
+	char* currentPageName;
+	char* currentElementName;
+	}GUIStruct;
 
-}OutputStruct;
+typedef struct
+	{
+
+	}ComputeStruct;
+
+typedef struct
+	{
+
+	}OutputStruct;
 
 extern InputStruct gInput;
+extern SensorsStruct gSensors;
+extern GUIStruct gGUI;
+extern ComputeStruct gCompute;
 extern OutputStruct gOutput;
 
 #endif /* GMBOX_H_ */

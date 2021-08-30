@@ -33,26 +33,10 @@
  * @brief   Application entry point.
  */
 
-#include <def.h>
-#include <iDio.h>
-#include <mButton.h>
 #include <mCpu.h>
-#include <mDisplay.h>
-#include <mGpio.h>
-#include <mGraphics.h>
-#include "MKL46Z4.h"
-//#include <mUI.h>
-#include "mWLSensor.h"
-#include "mDelay.h"
-#include "stdlib.h"
-#include "mGUI.h"
-#include "mBLE.h"
+#include "gInput.h"
 
 /* TODO: insert other include files here. */
-#include "math.h"
-
-
-extern const font pixelFont4x5;
 
 /* TODO: insert other definitions and declarations here. */
 
@@ -72,118 +56,120 @@ extern const font pixelFont4x5;
 
 int main(void)
 	{
-	EnableInterrupts;
 	mCpu_Setup();
+
+	gInput_Setup();
+	gSensors_Setup();
+	gGUI_Setup();
+	gCompute_Setup();
+	gOutput_Setup();
+
+
+	while(true)
+	{
+		gInput_Execute();
+		gSensors_Execute();
+		gGUI_Execute();
+	}
+
+
+//	EnableInterrupts;
+//	mCpu_Setup();
 //	iDio_EnablePortClk();
-
-	mDelay_Setup();
-	mButton_Setup();
-	mGpio_Setup();
-	mDisplay_Setup();
-//	mUI_Setup();
-	mWLSensor_Setup();
-	mGUI_Setup();
-	mBLE_Setup();
-
-	mBLE_Start();
-
-	bool buffer[DISPLAY_HEIGHT*DISPLAY_WIDTH];
-
-	bool btn0Mem = false;
-	bool btn1Mem = false;
-	bool btn2Mem = false;
-	bool btn3Mem = false;
-	bool btn0 = false;
-	bool btn1 = false;
-	bool btn2 = false;
-	bool btn3 = false;
-
-
-
-//	mUI_CreatePage("splash_page");
-//	mUI_CreateLabel("splash_label", (point){10, 10}, "Projet P2");
 //
-//	mUI_AddElementToPage("splash_label", "splash_page");
+//	mDelay_Setup();
+//	mButton_Setup();
+//	mGpio_Setup();
+//	mDisplay_Setup();
+//	mGUI_Setup();
+//	mBLE_Setup();
+//	mSoilSensor_Setup();
+//	mBLE_Start();
+//
+//	bool btn0Mem = false;
+//	bool btn1Mem = false;
+//	bool btn2Mem = false;
+//	bool btn3Mem = false;
+//	bool btn0 = false;
+//	bool btn1 = false;
+//	bool btn2 = false;
+//	bool btn3 = false;
 //
 //
-//	mUI_PrintPage("splash_page");
-
-
-
-	mGUI_CreatePage("main_page");
-	mGUI_CreateText("sensor_item_text", (point){0, 0}, true, "Sensors");
-	mGUI_CreateText("settings_item_text", (point){0, 8}, true, "Settings");
-	mGUI_CreateText("about_item_text", (point){0, 16}, true, "About");
-	mGUI_CreateText("test_item_text", (point){30, 30}, true, "X");
-
-
-	mGUI_CreateText("info_text", (point){10, 50}, false, "NaN");
-
-
-	mGUI_AddElementToPage("sensor_item_text", "main_page");
-	mGUI_AddElementToPage("settings_item_text", "main_page");
-	mGUI_AddElementToPage("about_item_text", "main_page");
-	mGUI_AddElementToPage("test_item_text", "main_page");
-	mGUI_AddElementToPage("info_text", "main_page");
-
-
-
-	mGUI_SetCurrentPage("main_page");
-
-
-	UIText* pTestText = (UIText*) mGUI_GetElementFromName("test_item_text");
-
-	int interval = 0;
-
-	while(1)
-		{
-		btn0 = mButton_Read(kMaskButton0);
-		btn1 = mButton_Read(kMaskButton1);
-		btn2 = mButton_Read(kMaskButton2);
-		btn3 = mButton_Read(kMaskButton3);
-
-		if(btn0 != btn0Mem && btn0)
-			{
-			UIText* uiBLE = (UIText*) mGUI_GetElementFromName("test_item_text");
-			mBLE_WriteString("AT+NAMEBOUP");
-
-			uiBLE->text = mBLE_ReadData();
-
-//			uiBLE->text = mBLE_ReadChar();
-			}
-
-		if(btn1 != btn1Mem && btn1)
-			{
-			mGUI_NavigateInteractive(false);
-			}
-
-		if(btn2 != btn2Mem && btn2)
-			{
-
-			mGUI_NavigateInteractive(true);
-			}
-
-		if(btn3 != btn3Mem && btn3)
-			{
-			UIText* pUIText = (UIText*) mGUI_GetElementFromName("info_text");
-			pUIText->text = mGUI_GetCurrentElementName();
-
-			}
-
-
-		mGUI_PrintCurrentPage();
-
-
-		pTestText->super.position = (point){(int)(cos((double)interval/50)*15)+30, (int)(sin((double)interval/50)*15)+30};
-
-		interval = (interval+1)%1000000;
-
-		btn0Mem = btn0;
-		btn1Mem = btn1;
-		btn2Mem = btn2;
-		btn3Mem = btn3;
-
-		}
+//
+//	mGUI_CreatePage("main_page");
+//	mGUI_CreateText("sensor_item_text", (point){0, 0}, true, "Sensors");
+//	mGUI_CreateText("settings_item_text", (point){0, 8}, true, "Settings");
+//	mGUI_CreateText("about_item_text", (point){0, 16}, true, "About");
+//	mGUI_CreateText("test_item_text", (point){30, 30}, true, "X");
+//
+//
+//	mGUI_CreateText("info_text", (point){10, 50}, false, "NaN");
+//
+//
+//	mGUI_AddElementToPage("sensor_item_text", "main_page");
+//	mGUI_AddElementToPage("settings_item_text", "main_page");
+//	mGUI_AddElementToPage("about_item_text", "main_page");
+//	mGUI_AddElementToPage("test_item_text", "main_page");
+//	mGUI_AddElementToPage("info_text", "main_page");
+//
+//
+//
+//	mGUI_SetCurrentPage("main_page");
+//
+//
+//	UIText* pTestText = (UIText*) mGUI_GetElementFromName("test_item_text");
+//
+//	int interval = 0;
+//
+//	while(1)
+//		{
+//		btn0 = mButton_Read(kMaskButton0);
+//		btn1 = mButton_Read(kMaskButton1);
+//		btn2 = mButton_Read(kMaskButton2);
+//		btn3 = mButton_Read(kMaskButton3);
+//
+//		if(btn0 != btn0Mem && btn0)
+//			{
+////			UIText* uiBLE = (UIText*) mGUI_GetElementFromName("test_item_text");
+////			mBLE_WriteString("AT+NAMEBOUP");
+////			uiBLE->text = mBLE_ReadData();
+//			mSoilSensor_ReadValues();
+//
+//			}
+//
+//		if(btn1 != btn1Mem && btn1)
+//			{
+//			mGUI_NavigateInteractive(false);
+//			}
+//
+//		if(btn2 != btn2Mem && btn2)
+//			{
+//
+//			mGUI_NavigateInteractive(true);
+//			}
+//
+//		if(btn3 != btn3Mem && btn3)
+//			{
+//			UIText* pUIText = (UIText*) mGUI_GetElementFromName("info_text");
+//			pUIText->text = mGUI_GetCurrentElementName();
+//
+//			}
+//
+//
+//		mGUI_PrintCurrentPage();
+//
+//
+//		pTestText->super.position = (point){(int)(cos((double)interval/50)*15)+30, (int)(sin((double)interval/50)*15)+30};
+//
+//		interval = (interval+1)%1000000;
+//
+//		btn0Mem = btn0;
+//		btn1Mem = btn1;
+//		btn2Mem = btn2;
+//		btn3Mem = btn3;
+//
+//		}
 
 	return 0;
 	}

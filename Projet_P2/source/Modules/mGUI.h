@@ -23,6 +23,7 @@ typedef struct UIElement
 	UIElementType uiElementType;
 	bool interactive;
 	bool selected;
+	char* linkedPage;
 	}UIElement;
 
 typedef struct UIText
@@ -57,8 +58,8 @@ void mGUI_Setup();
 
 void mGUI_CreatePage(const char* name);
 
-void mGUI_CreateText(const char* name, point position, bool interactive, const char* text);
-void mGUI_CreateImage(const char* name, point position, bool interactive, bool* image, point imageSize);
+void mGUI_CreateText(const char* name, point position, bool interactive, const char* linkedPage, const char* text);
+void mGUI_CreateImage(const char* name, point position, bool interactive, const char* linkedPage, bool* image, point imageSize);
 
 UIPage* mGUI_GetPageFromName(const char* name);
 UIElement* mGUI_GetElementFromName(const char* name);
@@ -76,6 +77,8 @@ void mGUI_NavigateInteractive(bool direction);
 
 char* mGUI_GetCurrentPageName();
 char* mGUI_GetCurrentElementName();
+
+void mGUI_GoToLinkedPage();
 
 void mGUI_CopyString(const char* source, char* target);
 

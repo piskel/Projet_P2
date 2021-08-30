@@ -27,11 +27,13 @@ static int nbUIElement = 0;
 
 void mGUI_Setup()
 	{
+	mGraphics_Setup();
+
 	uiPageTab = (UIPage**) malloc(sizeof(UIPage*));
 	uiElementTab = (UIElement**) malloc(sizeof(UIElement*));
 
 	mGUI_CreatePage("error_page");
-	mGUI_CreateText("error_text", (point){0, 0}, false, "ERROR");
+	mGUI_CreateText("error_text", (point){0, 0}, false, "", "ERROR");
 	mGUI_AddElementToPage("error_text", "error_page");
 
 	uiContext.uiPageName = "error_page";
@@ -55,7 +57,7 @@ void mGUI_CreatePage(const char* name)
 	nbUIPage++;
 	}
 
-void mGUI_CreateText(const char* name, point position, bool interactive, const char* text)
+void mGUI_CreateText(const char* name, point position, bool interactive, const char* linkedPage, const char* text)
 	{
 	uiElementTab = (UIElement**) realloc(uiElementTab, (nbUIElement+1)*sizeof(UIElement*));
 	uiElementTab[nbUIElement] = (UIElement*) malloc(sizeof(UIText));
@@ -68,13 +70,14 @@ void mGUI_CreateText(const char* name, point position, bool interactive, const c
 	pUIText->super.uiElementType = kUIText;
 	pUIText->super.interactive = interactive;
 	pUIText->super.selected = false;
+	pUIText->super.linkedPage = linkedPage;
 //	mGUI_CopyString(text, pUIText->text);
 	pUIText->text = text;
 
 	nbUIElement++;
 	}
 
-void mGUI_CreateImage(const char* name, point position, bool interactive, bool* image, point imageSize)
+void mGUI_CreateImage(const char* name, point position, bool interactive, const char* linkedPage, bool* image, point imageSize)
 	{
 	uiElementTab = (UIElement**) realloc(uiElementTab, (nbUIElement+1)*sizeof(UIElement*));
 	uiElementTab[nbUIElement] = (UIElement*) malloc(sizeof(UIImage));
@@ -87,6 +90,7 @@ void mGUI_CreateImage(const char* name, point position, bool interactive, bool* 
 	pUIImage->super.uiElementType = kUIImage;
 	pUIImage->super.interactive = interactive;
 	pUIImage->super.selected = false;
+	pUIImage->super.linkedPage = linkedPage;
 
 	memcpy(pUIImage->image, image, sizeof(bool)*imageSize.x*imageSize.y);
 	pUIImage->imageSize = imageSize;
@@ -184,6 +188,14 @@ void mGUI_PrintImage(UIImage* pUIImage)
 
 void mGUI_SetCurrentPage(const char* uiPageName)
 	{
+	UIPage* pUICurrentPage = mGUI_GetPageFromName(uiContext.uiPageName);
+
+	for(int i = 0; i < pUICurrentPage->nbUIElement; i++)
+	{
+		UIElement* pUIElement = mGUI_GetElementFromName(pUICurrentPage->uiElementNameTab[i]);
+		pUIElement->selected = false;
+	}
+
 	UIPage* pUIPage = mGUI_GetPageFromName(uiPageName);
 	uiContext.uiPageName = pUIPage->name;
 	uiContext.cursor = -1;
@@ -214,8 +226,7 @@ void mGUI_NavigateInteractive(bool direction)
 	int step = direction ? 1 : -1;
 	int currentCursor = (uiContext.cursor + pUIPage->nbUIElement + step)%pUIPage->nbUIElement;
 
-	while(currentCursor != uiContext.cursor)
-		{
+	do{
 			UIElement* pUIElement = mGUI_GetElementFromName(pUIPage->uiElementNameTab[currentCursor]);
 
 			if(pUIElement->interactive == true)
@@ -226,7 +237,8 @@ void mGUI_NavigateInteractive(bool direction)
 				}
 
 			currentCursor = (currentCursor+pUIPage->nbUIElement+step)%pUIPage->nbUIElement;
-		}
+		}while(currentCursor != uiContext.cursor);
+
 
 	}
 
@@ -246,6 +258,12 @@ char* mGUI_GetCurrentElementName()
 	return mGUI_GetPageFromName(uiContext.uiPageName)->uiElementNameTab[uiContext.cursor];
 	}
 
+
+void mGUI_GoToLinkedPage()
+	{
+	UIElement* pUIElement = mGUI_GetElementFromName(mGUI_GetCurrentElementName());
+	mGUI_SetCurrentPage(pUIElement->linkedPage);
+	}
 
 //  FIXME Doesn't work
 void mGUI_CopyString(const char* source, char* target)
