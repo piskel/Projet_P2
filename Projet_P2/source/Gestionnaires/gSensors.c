@@ -11,22 +11,32 @@
 #include "mDelay.h"
 
 #include "mWLSensor.h"
+#include "mSoilSensor.h"
 
-#define SOIL_SENSOR_DELAY_MS 50
+#define SENSOR_DELAY_MS 500
 
 void gSensors_Setup()
 	{
 	mWLSensor_Setup();
-	mDelay_Setup();
+	mSoilSensor_Setup();
 
-	mDelay_GetDelay(SOIL_SENSOR_DELAY_MS);
+	mDelay_Setup();
+	mDelay_GetDelay(SENSOR_DELAY_MS);
 	}
 
 void gSensors_Execute()
 	{
+	if(mDelay_IsDelayDone(0))
+		{
+
+		gSensors.waterLevel = mWLSensor_GetWaterLevel();
+
+		mSoilSensor_ReadValues();
+		mSoilSensor_RequestValues();
 
 
-	gSensors.waterLevel = mWLSensor_GetWaterLevel();
-
+		mDelay_ResetFlag();
+		mDelay_GetDelay(SENSOR_DELAY_MS);
+		}
 
 	}
