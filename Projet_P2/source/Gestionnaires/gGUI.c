@@ -53,8 +53,6 @@ void gGUI_Setup()
 	mGUI_SetCurrentPage("main_menu_page");
 
 
-	mPump_Setup();
-
 	}
 
 void gGUI_Execute()
@@ -65,13 +63,10 @@ void gGUI_Execute()
 		}
 	else if(gInput.buttonJustPressedTab[1]) // Move up
 		{
-		mPump_Enable();
 		mGUI_NavigateInteractive(false);
 		}
 	else if(gInput.buttonJustPressedTab[2]) // Move down
 		{
-
-		mPump_Disable();
 		mGUI_NavigateInteractive(true);
 		}
 	else if(gInput.buttonJustPressedTab[3])
