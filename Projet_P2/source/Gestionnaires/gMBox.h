@@ -35,7 +35,6 @@ typedef struct
 
 typedef struct
 	{
-
 	}OutputStruct;
 
 extern InputStruct gInput;

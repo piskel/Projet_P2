@@ -10,9 +10,6 @@
 
 #include "def.h"
 
-#define SOIL_SENSOR_ADDR 0x36
-
-
 void mSoilSensor_Setup();
 void mSoilSensor_RequestValues();
 bool mSoilSensor_ReadValues();

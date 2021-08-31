@@ -10,7 +10,8 @@
 
 void mMemory_Setup();
 
-void mMemory_Read(unsigned int address, unsigned int data);
+void mMemory_Read(unsigned int address);
+void mMemory_Write(unsigned int address, char data);
 
 
 #endif /* MODULES_MMEMORY_H_ */

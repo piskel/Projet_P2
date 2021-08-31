@@ -12,11 +12,18 @@
 
 #include "mPump.h"
 
+
+#include "mLightSensor.h"
+
 char** pagePath;
 
 void gGUI_Setup()
 	{
 	mGUI_Setup();
+
+	///////////////////////////////////////////////////////////
+	// MAIN MENU //////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
 
 	mGUI_CreatePage("main_menu_page");
 
@@ -29,6 +36,9 @@ void gGUI_Setup()
 	mGUI_CreateText("main_menu_about", (point){0, 16}, true, "about_page", "About");
 	mGUI_AddElementToPage("main_menu_about", "main_menu_page");
 
+	///////////////////////////////////////////////////////////
+	// SENSORS MENU ///////////////////////////////////////////
+	///////////////////////////////////////////////////////////
 
 
 	mGUI_CreatePage("sensors_menu_page");
@@ -40,26 +50,51 @@ void gGUI_Setup()
 	mGUI_AddElementToPage("sensors_menu_soil_humidity", "sensors_menu_page");
 
 
+	mGUI_CreateText("sensors_menu_light_uv_ir", (point){0, 16}, true, "light_uv_ir_page", "Light/UV/IR");
+	mGUI_AddElementToPage("sensors_menu_light_uv_ir", "sensors_menu_page");
+
+	///////////////////////////////////////////////////////////
+	// WATER LEVEL ////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
+
 	mGUI_CreatePage("water_level_page");
 	mGUI_CreateText("water_level_text", (point){0, 0}, false, "", "N/A");
 	mGUI_AddElementToPage("water_level_text", "water_level_page");
 
 
+	///////////////////////////////////////////////////////////
+	// SOIL HUMIDITY //////////////////////////////////////////
+	///////////////////////////////////////////////////////////
+
 	mGUI_CreatePage("soil_humidity_page");
 	mGUI_CreateText("soil_humidity_text", (point){0, 0}, false, "", "N/A");
 	mGUI_AddElementToPage("soil_humidity_text", "soil_humidity_page");
 
+	///////////////////////////////////////////////////////////
+	// UV/LIGHT/IR ////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
+
+	mGUI_CreatePage("light_uv_ir_page");
+	mGUI_CreateText("light_text", (point){0, 0}, false, "", "N/A");
+	mGUI_CreateText("uv_page", (point){0, 8}, false, "", "N/A");
+	mGUI_CreateText("ir_page", (point){0, 16}, false, "", "N/A");
+	mGUI_AddElementToPage("light_text", "light_uv_ir_page");
+	mGUI_AddElementToPage("uv_page", "light_uv_ir_page");
+	mGUI_AddElementToPage("ir_page", "light_uv_ir_page");
+
 
 	mGUI_SetCurrentPage("main_menu_page");
 
-
+	mLightSensor_Setup();
 	}
 
 void gGUI_Execute()
 	{
+	unsigned int test;
 	if(gInput.buttonJustPressedTab[0])
 		{
 		mGUI_SetCurrentPage("main_menu_page");
+		test = mLightSensor_GetVisibleLight();
 		}
 	else if(gInput.buttonJustPressedTab[1]) // Move up
 		{
@@ -79,12 +114,12 @@ void gGUI_Execute()
 
 
 
-	char waterLeveText[3];
-	itoa((int)(gSensors.waterLevel*100), waterLeveText, 10);
+	char waterLeveText[10];
+	itoa((int)(gSensors.waterLevel), waterLeveText, 10);
 	pUIWaterLevelText->text = waterLeveText;
 
-	char soilHumidity[3];
-	itoa((int)(gSensors.soilHumidity*100), soilHumidity, 10);
+	char soilHumidity[10];
+	itoa((int)(gSensors.soilHumidity), soilHumidity, 10);
 	pUISoilHumidityText->text = soilHumidity;
 
 	mGUI_PrintCurrentPage();

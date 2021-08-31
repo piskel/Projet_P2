@@ -33,6 +33,7 @@ void gSensors_Execute()
 
 		mSoilSensor_ReadValues();
 		gSensors.soilHumidity = mSoilSensor_GetHumidity();
+
 		mSoilSensor_RequestValues();
 
 

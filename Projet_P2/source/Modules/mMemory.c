@@ -12,6 +12,7 @@
 #include "iDio.h"
 
 #define MEM_READ_BIT 0x01
+#define MEM_WRITE_BIT 0x00
 #define MEM_ADDR_BASE 0b10100000
 #define MEM_ADDR_A0 1
 #define MEM_ADDR_A1 1
