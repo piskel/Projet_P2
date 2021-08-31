@@ -19,6 +19,7 @@ typedef struct
 typedef struct
 	{
 	float waterLevel;
+	float soilHumidity;
 	}SensorsStruct;
 
 typedef struct

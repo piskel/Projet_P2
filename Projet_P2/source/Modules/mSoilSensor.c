@@ -56,6 +56,8 @@ bool mSoilSensor_ReadValues()
 
 float mSoilSensor_GetHumidity()
 	{
-	return 0;
+	int value = sensorData[0] << 8 | sensorData[1];
+	float result = (float)(value-200)/1800*100;
+	return result;
 	}
 
