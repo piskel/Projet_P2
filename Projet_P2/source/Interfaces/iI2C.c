@@ -36,7 +36,7 @@ void iI2C0_Config()
 		// SDA Hold = 0.54us (max 0.9us)
 		// SCL start Hold = 1.08us (min 0.6us)
 		// SCL stop Hold = 1.38 us (min 0.6us
-		I2C0->F = 0;
+		I2C0->F = 0x00;
 		I2C0->F |= I2C_F_ICR(0x12) | I2C_F_MULT(0);
 
 

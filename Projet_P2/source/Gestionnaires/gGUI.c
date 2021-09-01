@@ -51,6 +51,9 @@ void gGUI_Setup()
 	mGUI_CreateText("sensors_menu_light_uv_ir", (point){0, 16}, true, "light_uv_ir_page", "Light/UV/IR");
 	mGUI_AddElementToPage("sensors_menu_light_uv_ir", "sensors_menu_page");
 
+	mGUI_CreateText("sensors_menu_temp_press_hum", (point){0, 24}, true, "temp_press_hum_page", "Temp/Press/Hum");
+	mGUI_AddElementToPage("sensors_menu_temp_press_hum", "sensors_menu_page");
+
 	///////////////////////////////////////////////////////////
 	// WATER LEVEL ////////////////////////////////////////////
 	///////////////////////////////////////////////////////////
@@ -80,6 +83,17 @@ void gGUI_Setup()
 	mGUI_AddElementToPage("ir_text", "light_uv_ir_page");
 	mGUI_AddElementToPage("uv_text", "light_uv_ir_page");
 
+	///////////////////////////////////////////////////////////
+	// TMP/PRESS/HUM //////////////////////////////////////////
+	///////////////////////////////////////////////////////////
+
+	mGUI_CreatePage("temp_press_hum_page");
+	mGUI_CreateText("temp_text", (point){0, 0}, false, "", "N/A");
+	mGUI_CreateText("press_text", (point){0, 8}, false, "", "N/A");
+	mGUI_CreateText("hum_text", (point){0, 16}, false, "", "N/A");
+	mGUI_AddElementToPage("temp_text", "temp_press_hum_page");
+	mGUI_AddElementToPage("press_text", "temp_press_hum_page");
+	mGUI_AddElementToPage("hum_text", "temp_press_hum_page");
 
 	mGUI_SetCurrentPage("main_menu_page");
 
