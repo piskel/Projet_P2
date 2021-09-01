@@ -20,7 +20,7 @@
 
 void mMemory_Setup()
 	{
-	iI2C0_Config();
+	iI2C1_Config();
 
 	iDio_EnablePortClk();
 

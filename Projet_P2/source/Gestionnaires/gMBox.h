@@ -20,6 +20,9 @@ typedef struct
 	{
 	float waterLevel;
 	float soilHumidity;
+	unsigned int visibleLight;
+	unsigned int ir;
+	unsigned int uv;
 	}SensorsStruct;
 
 typedef struct

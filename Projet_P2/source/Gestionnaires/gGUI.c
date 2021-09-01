@@ -13,8 +13,6 @@
 #include "mPump.h"
 
 
-#include "mLightSensor.h"
-
 char** pagePath;
 
 void gGUI_Setup()
@@ -76,25 +74,22 @@ void gGUI_Setup()
 
 	mGUI_CreatePage("light_uv_ir_page");
 	mGUI_CreateText("light_text", (point){0, 0}, false, "", "N/A");
-	mGUI_CreateText("uv_page", (point){0, 8}, false, "", "N/A");
-	mGUI_CreateText("ir_page", (point){0, 16}, false, "", "N/A");
+	mGUI_CreateText("uv_text", (point){0, 8}, false, "", "N/A");
+	mGUI_CreateText("ir_text", (point){0, 16}, false, "", "N/A");
 	mGUI_AddElementToPage("light_text", "light_uv_ir_page");
-	mGUI_AddElementToPage("uv_page", "light_uv_ir_page");
-	mGUI_AddElementToPage("ir_page", "light_uv_ir_page");
+	mGUI_AddElementToPage("uv_text", "light_uv_ir_page");
+	mGUI_AddElementToPage("ir_text", "light_uv_ir_page");
 
 
 	mGUI_SetCurrentPage("main_menu_page");
 
-	mLightSensor_Setup();
 	}
 
 void gGUI_Execute()
 	{
-	unsigned int test;
 	if(gInput.buttonJustPressedTab[0])
 		{
 		mGUI_SetCurrentPage("main_menu_page");
-		test = mLightSensor_GetVisibleLight();
 		}
 	else if(gInput.buttonJustPressedTab[1]) // Move up
 		{
@@ -111,6 +106,9 @@ void gGUI_Execute()
 
 	UIText* pUIWaterLevelText = (UIText*)mGUI_GetElementFromName("water_level_text");
 	UIText* pUISoilHumidityText = (UIText*)mGUI_GetElementFromName("soil_humidity_text");
+	UIText* pUILightText = (UIText*)mGUI_GetElementFromName("light_text");
+	UIText* pUIIRText = (UIText*)mGUI_GetElementFromName("ir_text");
+	UIText* pUIUVText = (UIText*)mGUI_GetElementFromName("uv_text");
 
 
 
@@ -121,6 +119,18 @@ void gGUI_Execute()
 	char soilHumidity[10];
 	itoa((int)(gSensors.soilHumidity), soilHumidity, 10);
 	pUISoilHumidityText->text = soilHumidity;
+
+	char visibleLight[10];
+	itoa((int)(gSensors.visibleLight), visibleLight, 10);
+	pUILightText->text = visibleLight;
+
+	char ir[10];
+	itoa((int)(gSensors.ir), ir, 10);
+	pUIIRText->text = ir;
+
+	char uv[10];
+	itoa((int)(gSensors.uv), uv, 10);
+	pUIUVText->text = uv;
 
 	mGUI_PrintCurrentPage();
 

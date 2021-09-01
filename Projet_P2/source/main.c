@@ -57,7 +57,6 @@
 int main(void)
 	{
 	mCpu_Setup();
-
 	gInput_Setup();
 	gSensors_Setup();
 	gGUI_Setup();

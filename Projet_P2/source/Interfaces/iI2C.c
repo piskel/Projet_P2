@@ -20,6 +20,7 @@
 
 void iI2C0_Config()
 	{
+		iDio_EnablePortClk();
 		// I2C clock enable
 		// System Clock Gating Control Register 4 (SIM_SCGC4)
 		SIM->SCGC4 |= SIM_SCGC4_I2C0_MASK;
@@ -42,6 +43,7 @@ void iI2C0_Config()
 void iI2C1_Config()
 	{
 
+		iDio_EnablePortClk();
 		// I2C clock enable
 		// System Clock Gating Control Register 4 (SIM_SCGC4)
 		SIM->SCGC4 |= SIM_SCGC4_I2C1_MASK;
@@ -309,7 +311,12 @@ bool iI2C0_StartCom(void)
 		iI2C0_SetAckMode(kNoAck);
 
 		// Attend que le bus soit libre
-		while (true == iI2C0_ReadStatus(kBUSY));
+		int wd = 10000;
+		while (true == iI2C0_ReadStatus(kBUSY))
+		{
+			wd--;
+			if(wd <= 0) return false;
+		};
 
 		//-----------------------------------------------------------------------------
 		// D'abords en WRITE afin de transmettre le registre

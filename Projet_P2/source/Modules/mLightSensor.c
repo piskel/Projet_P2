@@ -9,19 +9,47 @@
 #include "mLightSensor.h"
 
 #include "iI2C.h"
-
+#include "iDio.h"
 
 #define LIGHT_SENSOR_ADDR 0x60 // Slave address
 #define LIGHT_SENSOR_WRITE_BIT 0x00
 #define LIGHT_SENSOR_READ_BIT 0x01
 #define LIGHT_SENSOR_ADDR_AUTO_INC 0x40
-#define LIGHT_SENSOR
+
+#define LIGHT_SENSOR_INT_CFG_REGISTER 0x03
+#define LIGHT_SENSOR_IRQ_ENABLE_REGISTER 0x04
+#define LIGHT_SENSOR_COMMAND_REGISTER 0x18
+#define LIGHT_SENSOR_PARAM_WR_REGISTER 0x17
+#define LIGHT_SENSOR_PARAM_RD_REGISTER 0x2E
+#define LIGHT_SENSOR_RESPONSE_REGISTER 0x20
+#define LIGHT_SENSOR_MEAS_0_REGISTER 0x08
+#define LIGHT_SENSOR_MEAS_1_REGISTER 0x09
+#define LIGHT_SENSOR_PARAM_QUERY_REGISTER 0b10000000
+#define LIGHT_SENSOR_PARAM_SET_REGISTER 0b10100000
+#define LIGHT_SENSOR_CHLIST_RAM_REGISTER 0x01
+#define LIGHT_SENSOR_PSALS_AUTO_COMMAND 0b00001111
 
 
 void mLightSensor_Setup()
 	{
 	iI2C1_Config();
-	mLightSensor_SendCommand(0b000001111);
+	iDio_EnablePortClk();
+
+	iDio_PinConfig(kPortC, kPin0, kAlternate1);
+	iDio_SetPortDirection(kPortC, kMaskIo0, kIoInput);
+
+	mLightSensor_SendCommand(0x00, 0x00);
+
+
+	mLightSensor_SingleWrite(LIGHT_SENSOR_MEAS_0_REGISTER, 0x01);
+	mLightSensor_SingleWrite(LIGHT_SENSOR_MEAS_1_REGISTER, 0x10);
+
+	char result = mLightSensor_SendCommand(LIGHT_SENSOR_PARAM_SET_REGISTER|LIGHT_SENSOR_CHLIST_RAM_REGISTER, 0b11110000);
+
+	mLightSensor_SendCommand(LIGHT_SENSOR_PSALS_AUTO_COMMAND, 0x00);
+
+	mLightSensor_SingleWrite(LIGHT_SENSOR_INT_CFG_REGISTER, 0x01);
+	mLightSensor_SingleWrite(LIGHT_SENSOR_IRQ_ENABLE_REGISTER, 0x01);
 	}
 
 void mLightSensor_SingleWrite(char address, char data)
@@ -29,41 +57,63 @@ void mLightSensor_SingleWrite(char address, char data)
 	iI2C1_Enable();
 	if(!iI2C1_StartCom()){return;}
 	if(!iI2C1_SendSlaveAdd(LIGHT_SENSOR_ADDR << 1 | LIGHT_SENSOR_WRITE_BIT)){return;}
-	if(!iI2C1_SendByte((address & 0x3F) | LIGHT_SENSOR_ADDR_AUTO_INC)){return;}
+	if(!iI2C1_SendByte((address & 0x3F)| LIGHT_SENSOR_ADDR_AUTO_INC)){return;}
 	if(!iI2C1_SendByte(data)){return;}
-	iI2C1_SetStopState();
+	iI2C1_StopCom();
 	iI2C1_Disable();
 	}
 
  char mLightSensor_SingleRead(char address)
 	{
-	char data = 0x00;
+	char data;
 	iI2C1_Enable();
 	if(!iI2C1_StartCom()){return 0x00;}
+	if(!iI2C1_SendSlaveAdd(LIGHT_SENSOR_ADDR << 1 | LIGHT_SENSOR_WRITE_BIT)){return 0x00;}
+	if(!iI2C1_SendByte(address)){return 0x00;}
+	iI2C1_SetRepeatedStartSate();
 	if(!iI2C1_SendSlaveAdd(LIGHT_SENSOR_ADDR << 1 | LIGHT_SENSOR_READ_BIT)){return 0x00;}
 	if (!iI2C1_ReadBytesAndStopCom(&data, 1)){return 0x00;}
-	iI2C1_SetStopState();
 	iI2C1_Disable();
 	return data;
 	}
 
- void mLightSensor_SendCommand(char command)
+ char mLightSensor_SendCommand(char command, char param_wr)
  	 {
-	 mLightSensor_SingleWrite(0x18, command);
+	 mLightSensor_SingleWrite(LIGHT_SENSOR_PARAM_WR_REGISTER, param_wr);
+//	 mLightSensor_SingleWrite(LIGHT_SENSOR_PARAM_RD_REGISTER, param_rd);
+	 mLightSensor_SingleWrite(LIGHT_SENSOR_COMMAND_REGISTER, command);
+	 return mLightSensor_SingleRead(LIGHT_SENSOR_RESPONSE_REGISTER);
  	 }
 
  unsigned int mLightSensor_GetVisibleLight()
  	 {
+	 while(iDio_GetPort(kPortC, kMaskIo0) == true){};
+
 	 char vis[2] = {0x00, 0x00};
 	 vis[0] = mLightSensor_SingleRead(0x22);
 	 vis[1] = mLightSensor_SingleRead(0x23);
 
-	 int result = vis[0] | vis[1] << 8;
-	 return result;
+	 return vis[0] | vis[1] << 8;
  	 }
 
  unsigned int mLightSensor_GetIR()
  	 {
+	 while(iDio_GetPort(kPortC, kMaskIo0) == true){};
 
+	 char vis[2] = {0x00, 0x00};
+	 vis[0] = mLightSensor_SingleRead(0x24);
+	 vis[1] = mLightSensor_SingleRead(0x25);
+
+	 return vis[0] | vis[1] << 8;
  	 }
 
+ unsigned int mLightSensor_GetUV()
+ 	 {
+	 while(iDio_GetPort(kPortC, kMaskIo0) == true){};
+
+	 char vis[2] = {0x00, 0x00};
+	 vis[0] = mLightSensor_SingleRead(0x2C);
+	 vis[1] = mLightSensor_SingleRead(0x2D);
+
+	 return vis[0] | vis[1] << 8;
+ 	 }
