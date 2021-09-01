@@ -109,7 +109,7 @@ char mBME280_ReadData(char address)
 	if(!iI2C0_StartCom()){return 0x00;}
 	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_WRITE_BIT)){return 0x00;}
 	if(!iI2C0_SendByte(address)){return 0x00;}
-	iI2C1_SetRepeatedStartSate();
+	iI2C0_SetRepeatedStartSate();
 	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_READ_BIT)){return 0x00;}
 	if (!iI2C0_ReadBytesAndStopCom(&data, 1)){return 0x00;}
 	iI2C0_Disable();
@@ -122,7 +122,7 @@ void mBME280_ReadMultData(char address, char* data, int size)
 	if(!iI2C0_StartCom()){return;}
 	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_WRITE_BIT)){return;}
 	if(!iI2C0_SendByte(address)){return;}
-	iI2C1_SetRepeatedStartSate();
+	iI2C0_SetRepeatedStartSate();
 	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_READ_BIT)){return;}
 	if (!iI2C0_ReadBytesAndStopCom(data, size)){return;}
 	iI2C0_Disable();
