@@ -10,8 +10,6 @@
 
 #include "def.h"
 
-#define WL_SENSOR_ADDR_L 0xEF
-#define WL_SENSOR_ADDR_H 0xF1
 
 void mWLSensor_Setup();
 

@@ -47,7 +47,9 @@ void gSensors_Execute()
 		gSensors.uv = mLightSensor_GetUV();
 
 		// BME280
-		char test = mBME280_GetTemperature();
+		gSensors.temperature = mBME280_GetTemperature();
+		gSensors.pressure = mBME280_GetPressure();
+		gSensors.humidity = mBME280_GetHumidity();
 
 		mDelay_ResetFlag();
 		mDelay_GetDelay(SENSOR_DELAY_MS);

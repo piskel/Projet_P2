@@ -11,6 +11,9 @@
 
 #include "iI2C.h"
 
+#define WL_SENSOR_ADDR_L 0x77
+#define WL_SENSOR_ADDR_H 0x78
+
 
 static char sensorData[20];
 
@@ -31,11 +34,11 @@ bool mWLSensor_ReadValues()
 	bool fail = false;
 
 	if (!fail && !iI2C0_StartCom()) fail = true;
-	if (!fail && !iI2C0_SendSlaveAdd(WL_SENSOR_ADDR_H)) fail = true;
+	if (!fail && !iI2C0_SendSlaveAdd(WL_SENSOR_ADDR_H << 1 | 1)) fail = true;
 	if (!fail && !iI2C0_ReadBytesAndStopCom(tmpSensorData, 12)) fail = true;
 
 	if (!fail && !iI2C0_StartCom()) fail = true;
-	if (!fail && !iI2C0_SendSlaveAdd(WL_SENSOR_ADDR_L)) fail = true;
+	if (!fail && !iI2C0_SendSlaveAdd(WL_SENSOR_ADDR_L << 1 | 1)) fail = true;
 	if (!fail && !iI2C0_ReadBytesAndStopCom(&tmpSensorData[12], 8)) fail = true;
 
 	iI2C0_Disable();

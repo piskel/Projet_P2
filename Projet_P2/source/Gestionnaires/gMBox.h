@@ -23,6 +23,9 @@ typedef struct
 	unsigned int visibleLight;
 	unsigned int ir;
 	unsigned int uv;
+	int temperature;
+	int pressure;
+	int humidity;
 	}SensorsStruct;
 
 typedef struct
