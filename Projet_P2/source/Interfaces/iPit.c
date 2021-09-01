@@ -50,7 +50,7 @@ struct DelayStruct
 }; 
 
 static struct DelayStruct sDelayTab[kNbOfDelay];
-
+static bool isInit = false;
 //------------------------------------------------------------
 // Configuration du PIT
 // aPIT0PeriodeMs  	: p�riode en ms du PIT0
@@ -58,6 +58,7 @@ static struct DelayStruct sDelayTab[kNbOfDelay];
 //------------------------------------------------------------
 void iPit_Config(unsigned int aPIT0PeriodeMs,unsigned int aPIT1PeriodeMs)
 {
+	if(isInit) return;
 	static unsigned long aTmp=0;
 	unsigned long *aPtr;
 	
@@ -113,6 +114,8 @@ void iPit_Config(unsigned int aPIT0PeriodeMs,unsigned int aPIT1PeriodeMs)
 	aPtr=(unsigned long*)kNVIC_IPR5;
 	*aPtr&=0xFF3FFFFF;			// Reset du champ
 	*aPtr|=(kPITPrio<<22);	// config du niveau d'interruption
+
+	isInit = true;
 }
 
 

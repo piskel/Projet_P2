@@ -14,9 +14,11 @@
 static UARTDataBuffer uart0DataBuffer;
 static UARTDataBuffer uart1DataBuffer;
 
+static bool isInit = false;
+
 void iUART_Config()
 	{
-
+	if(isInit) return;
 
 	iUART_ClearBuffer(kUART0);
 	iUART_ClearBuffer(kUART1);
@@ -67,6 +69,8 @@ void iUART_Config()
 	// Interrupts
 	UART0->C2|=UART_C2_RIE_MASK;
 	UART1->C2|=UART_C2_RIE_MASK;
+
+	isInit = true;
 	}
 
 void iUART_SetFrameType(UARTEnum aUART, bool data9bits)

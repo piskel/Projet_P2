@@ -47,6 +47,8 @@
 
 static BME280Data bme280Data;
 
+static bool BME280_I2C_Err_Flag = false;
+
 void mBME280_Setup()
 	{
 	iI2C0_Config();
@@ -84,11 +86,12 @@ void mBME280_Setup()
 	bme280Data.digH5 = tabCalibData[30] >> 4 | tabCalibData[31] << 4;
 	bme280Data.digH6 = tabCalibData[32];
 
-
+	BME280_I2C_Err_Flag = true;
 	}
 
 void mBME280_WriteData(char address, char data)
 	{
+
 	iI2C0_Enable();
 	if(!iI2C0_StartCom()){return;}
 	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_WRITE_BIT)){return;}

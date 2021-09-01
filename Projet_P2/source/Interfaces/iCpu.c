@@ -13,6 +13,8 @@ Description dans le fichier iCpu.h
 #include <Interfaces/iCpu.h>
 #include <MKL46Z4.h>
 
+
+static bool isInit = false;
 //------------------------------------------------------------
 // Core and peripheral clock init
 // External clock = 8MHz
@@ -23,7 +25,7 @@ Description dans le fichier iCpu.h
 //------------------------------------------------------------
 void iCpu_CLKInit(void)
 {;
-	
+	if(isInit) return;
 	// 1.	Configuration du type de quartz utilis�, 
 	// de l'échelle de sa fr�quence et du type de connexion du quartz externe de 8 MHz dans le registre MCG Control Register 2
 	MCG->C2 &= 0xC3;		// Reset des champs
@@ -59,6 +61,8 @@ void iCpu_CLKInit(void)
 
 	// 8.	Attendre que la PLL soit la source du clock CPU
 	while((MCG->S & 0x0C)!=0x0C); 		// Wait CLKST = 11
+
+	isInit = true;
 }
 
 

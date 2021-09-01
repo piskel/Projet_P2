@@ -9,8 +9,11 @@
 #include <Interfaces/iSpi.h>
 #include <MKL46Z4.h>
 
+static bool isInit = false;
+
 void iSpi_Setup()
 	{
+	if(isInit) return;
 	// Enable SCGC4 for SPI1
 	SIM->SCGC4 |= SIM_SCGC4_SPI1_MASK;
 
@@ -43,7 +46,7 @@ void iSpi_Setup()
 	// No interruptions
 	SPI1->C1 &= ~SPI_C1_SPIE_MASK;
 	SPI1->C1 &= ~SPI_C1_SPTIE_MASK;
-
+	isInit = true;
 	}
 
 

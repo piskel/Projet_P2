@@ -16,12 +16,15 @@
 
 #define I2C_WATCHDOG_SIZE 10000
 
+static bool isI2C0Init = false;
+static bool isI2C1Init = false;
 //------------------------------------------------------------
 // Configuration du module I2C
 //------------------------------------------------------------
 
 void iI2C0_Config()
 	{
+		if(isI2C0Init) return;
 		iDio_EnablePortClk();
 		// I2C clock enable
 		// System Clock Gating Control Register 4 (SIM_SCGC4)
@@ -40,11 +43,12 @@ void iI2C0_Config()
 		iDio_PinConfig(kPortC, kPin8, kAlternate2); // SCL
 		iDio_PinConfig(kPortC, kPin9, kAlternate2); // SDA
 
+		isI2C0Init = true;
 	}
 
 void iI2C1_Config()
 	{
-
+		if(isI2C1Init) return;
 		iDio_EnablePortClk();
 		// I2C clock enable
 		// System Clock Gating Control Register 4 (SIM_SCGC4)
@@ -63,7 +67,7 @@ void iI2C1_Config()
 		iDio_PinConfig(kPortC, kPin10, kAlternate2); // SCL
 		iDio_PinConfig(kPortC, kPin11, kAlternate2); // SDA
 
-
+		isI2C1Init = true;
 	}
 
 //------------------------------------------------------------
