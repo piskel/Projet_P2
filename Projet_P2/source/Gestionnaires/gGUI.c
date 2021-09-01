@@ -13,11 +13,11 @@
 #include "mPump.h"
 
 
-char** pagePath;
 
 void gGUI_Setup()
 	{
 	mGUI_Setup();
+
 
 	///////////////////////////////////////////////////////////
 	// MAIN MENU //////////////////////////////////////////////
@@ -74,11 +74,11 @@ void gGUI_Setup()
 
 	mGUI_CreatePage("light_uv_ir_page");
 	mGUI_CreateText("light_text", (point){0, 0}, false, "", "N/A");
-	mGUI_CreateText("uv_text", (point){0, 8}, false, "", "N/A");
-	mGUI_CreateText("ir_text", (point){0, 16}, false, "", "N/A");
+	mGUI_CreateText("ir_text", (point){0, 8}, false, "", "N/A");
+	mGUI_CreateText("uv_text", (point){0, 16}, false, "", "N/A");
 	mGUI_AddElementToPage("light_text", "light_uv_ir_page");
-	mGUI_AddElementToPage("uv_text", "light_uv_ir_page");
 	mGUI_AddElementToPage("ir_text", "light_uv_ir_page");
+	mGUI_AddElementToPage("uv_text", "light_uv_ir_page");
 
 
 	mGUI_SetCurrentPage("main_menu_page");

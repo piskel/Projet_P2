@@ -97,8 +97,8 @@ void iI2C1_SendData(char aData);
 //------------------------------------------------------------
 // Wait End of transmit or receive
 //------------------------------------------------------------
-void iI2C0_WaitEndOfRxOrTx(void);
-void iI2C1_WaitEndOfRxOrTx(void);
+bool iI2C0_WaitEndOfRxOrTx(void);
+bool iI2C1_WaitEndOfRxOrTx(void);
 
 //------------------------------------------------------------
 // Read received data, ! generate I2C clock if not in STOP mode

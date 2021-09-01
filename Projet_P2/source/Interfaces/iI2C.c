@@ -14,6 +14,8 @@
 #include <MKL46Z4.h>
 #include "iDio.h"
 
+#define I2C_WATCHDOG_SIZE 10000
+
 //------------------------------------------------------------
 // Configuration du module I2C
 //------------------------------------------------------------
@@ -234,33 +236,36 @@ void iI2C1_SendData(char aData)
 // Wait End of transmit or receive
 //------------------------------------------------------------
 
-void iI2C0_WaitEndOfRxOrTx(void)
+bool iI2C0_WaitEndOfRxOrTx(void)
 	{
 		// Wait for IICIF flag
 		// I2C Status register (I2Cx_S)
-		int wd = 100000;
+		int wd = I2C_WATCHDOG_SIZE;
 		while ((I2C0->S & I2C_S_IICIF_MASK) == 0)
 		{
-			if(wd <= 0) return;
+			if(wd <= 0) return false;
 			wd--;
 		};
 		// Clear the IICIF flag
 		I2C0->S |= I2C_S_IICIF_MASK;
+		return true;
 	}
 
-void iI2C1_WaitEndOfRxOrTx(void)
+bool iI2C1_WaitEndOfRxOrTx(void)
 	{
 		// Wait for IICIF flag
 		// I2C Status register (I2Cx_S)
-		int wd = 100000;
+
+		int wd = I2C_WATCHDOG_SIZE;
 		while ((I2C1->S & I2C_S_IICIF_MASK) == 0)
 		{
-			if(wd <= 0) return;
+			if(wd <= 0) return false;
 			wd--;
 		};
 			;
 		// Clear the IICIF flag
 		I2C1->S |= I2C_S_IICIF_MASK;
+		return true;
 	}
 
 //------------------------------------------------------------
@@ -311,7 +316,7 @@ bool iI2C0_StartCom(void)
 		iI2C0_SetAckMode(kNoAck);
 
 		// Attend que le bus soit libre
-		int wd = 10000;
+		int wd = I2C_WATCHDOG_SIZE;
 		while (true == iI2C0_ReadStatus(kBUSY))
 		{
 			wd--;
@@ -336,7 +341,12 @@ bool iI2C1_StartCom(void)
 		iI2C1_SetAckMode(kNoAck);
 
 		// Attend que le bus soit libre
-		while (true == iI2C1_ReadStatus(kBUSY));
+		int wd = I2C_WATCHDOG_SIZE;
+		while (true == iI2C1_ReadStatus(kBUSY))
+		{
+			wd--;
+			if(wd <= 0) return false;
+		};
 
 		//-----------------------------------------------------------------------------
 		// D'abords en WRITE afin de transmettre le registre
@@ -360,7 +370,7 @@ bool iI2C0_SendSlaveAdd(char aAdd)
 		iI2C0_SendData(aAdd);
 
 		// Attend la fin de la transmission
-		iI2C0_WaitEndOfRxOrTx();
+		if(!iI2C0_WaitEndOfRxOrTx()) return false;
 
 		if (iI2C0_ReadStatus(kRxAK))
 			{
@@ -380,7 +390,7 @@ bool iI2C1_SendSlaveAdd(char aAdd)
 		iI2C1_SendData(aAdd);
 
 		// Attend la fin de la transmission
-		iI2C1_WaitEndOfRxOrTx();
+		if(!iI2C1_WaitEndOfRxOrTx()) return false;
 
 		if (iI2C1_ReadStatus(kRxAK))
 			{
@@ -402,7 +412,7 @@ bool iI2C0_SendByte(char aData)
 		iI2C0_SendData(aData);
 
 		// Attend la fin de la transmission
-		iI2C0_WaitEndOfRxOrTx();
+		if(!iI2C0_WaitEndOfRxOrTx()) return false;
 
 		if (iI2C0_ReadStatus(kRxAK))
 			{
@@ -421,7 +431,7 @@ bool iI2C1_SendByte(char aData)
 		iI2C1_SendData(aData);
 
 		// Attend la fin de la transmission
-		iI2C1_WaitEndOfRxOrTx();
+		if(!iI2C1_WaitEndOfRxOrTx()) return false;
 
 		if (iI2C1_ReadStatus(kRxAK))
 			{
@@ -455,7 +465,8 @@ bool iI2C0_ReadBytes(char *aData, char aNbByte)
 			}
 
 		iI2C0_ReadData();
-		iI2C0_WaitEndOfRxOrTx();
+
+		if(!iI2C0_WaitEndOfRxOrTx()) return false;
 
 		for (int i = 0; i < aNbByte - 1; i++)
 			{
@@ -464,7 +475,7 @@ bool iI2C0_ReadBytes(char *aData, char aNbByte)
 					{
 						iI2C0_SetAckMode(kNoAck);
 					}
-				iI2C0_WaitEndOfRxOrTx();
+				if(!iI2C0_WaitEndOfRxOrTx()) return false;
 			}
 
 		return true;
@@ -488,7 +499,7 @@ bool iI2C1_ReadBytes(char *aData, char aNbByte)
 			}
 
 		iI2C1_ReadData();
-		iI2C1_WaitEndOfRxOrTx();
+		if(!iI2C1_WaitEndOfRxOrTx()) return false;
 
 		for (int i = 0; i < aNbByte - 1; i++)
 			{
@@ -497,7 +508,7 @@ bool iI2C1_ReadBytes(char *aData, char aNbByte)
 					{
 						iI2C1_SetAckMode(kNoAck);
 					}
-				iI2C1_WaitEndOfRxOrTx();
+				if(!iI2C1_WaitEndOfRxOrTx()) return false;
 			}
 
 		return true;
@@ -541,16 +552,18 @@ bool iI2C1_StopCom(void)
 //------------------------------------------------------------
 bool iI2C0_ReadBytesAndStopCom(char *aData, char aNbByte)
 	{
-		iI2C0_ReadBytes(aData, aNbByte);
-		iI2C0_StopCom();
-		iI2C0_ReadLastByte(aData, aNbByte);
-		return true;
+		bool check = true;
+		if(!iI2C0_ReadBytes(aData, aNbByte)) check = false;
+		if(!iI2C0_StopCom()) check = false;
+		if(!iI2C0_ReadLastByte(aData, aNbByte)) check = false;
+		return check;
 	}
 
 bool iI2C1_ReadBytesAndStopCom(char *aData, char aNbByte)
 	{
-		iI2C1_ReadBytes(aData, aNbByte);
-		iI2C1_StopCom();
-		iI2C1_ReadLastByte(aData, aNbByte);
-		return true;
+	bool check = true;
+	if(!iI2C1_ReadBytes(aData, aNbByte)) check = false;
+	if(!iI2C1_StopCom()) check = false;
+	if(!iI2C1_ReadLastByte(aData, aNbByte)) check = false;
+	return check;
 	}

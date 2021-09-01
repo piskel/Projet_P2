@@ -48,8 +48,6 @@ void mLightSensor_Setup()
 
 	mLightSensor_SendCommand(LIGHT_SENSOR_PSALS_AUTO_COMMAND, 0x00);
 
-//	mLightSensor_SingleWrite(LIGHT_SENSOR_INT_CFG_REGISTER, 0x01);
-//	mLightSensor_SingleWrite(LIGHT_SENSOR_IRQ_ENABLE_REGISTER, 0x01);
 	}
 
 void mLightSensor_SingleWrite(char address, char data)
@@ -80,7 +78,6 @@ void mLightSensor_SingleWrite(char address, char data)
  char mLightSensor_SendCommand(char command, char param_wr)
  	 {
 	 mLightSensor_SingleWrite(LIGHT_SENSOR_PARAM_WR_REGISTER, param_wr);
-//	 mLightSensor_SingleWrite(LIGHT_SENSOR_PARAM_RD_REGISTER, param_rd);
 	 mLightSensor_SingleWrite(LIGHT_SENSOR_COMMAND_REGISTER, command);
 	 return mLightSensor_SingleRead(LIGHT_SENSOR_RESPONSE_REGISTER);
  	 }

@@ -13,6 +13,7 @@
 #include "mWLSensor.h"
 #include "mSoilSensor.h"
 #include "mLightSensor.h"
+#include "mBME280.h"
 
 #define SENSOR_DELAY_MS 500
 
@@ -21,6 +22,7 @@ void gSensors_Setup()
 	mWLSensor_Setup();
 	mSoilSensor_Setup();
 	mLightSensor_Setup();
+	mBME280_Setup();
 
 	mDelay_Setup();
 	mDelay_GetDelay(SENSOR_DELAY_MS);
@@ -43,6 +45,9 @@ void gSensors_Execute()
 		gSensors.visibleLight = mLightSensor_GetVisibleLight();
 		gSensors.ir = mLightSensor_GetIR();
 		gSensors.uv = mLightSensor_GetUV();
+
+		// BME280
+		char test = mBME280_GetTemperature();
 
 		mDelay_ResetFlag();
 		mDelay_GetDelay(SENSOR_DELAY_MS);
