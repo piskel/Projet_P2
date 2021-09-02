@@ -17,6 +17,8 @@
 
 static char sensorData[20];
 
+static int mWLSensorErrorCounter = 0;
+
 
 void mWLSensor_Setup()
 	{
@@ -41,12 +43,16 @@ bool mWLSensor_ReadValues()
 	if (!fail && !iI2C0_SendSlaveAdd(WL_SENSOR_ADDR_L << 1 | 1)) fail = true;
 	if (!fail && !iI2C0_ReadBytesAndStopCom(&tmpSensorData[12], 8)) fail = true;
 
-	iI2C0_Disable();
 
 	if(!fail)
 		{
 		memcpy(sensorData, tmpSensorData, sizeof(char)*20);
 		}
+	else
+		{
+		mWLSensorErrorCounter++;
+		}
+	iI2C0_Disable();
 
 	return !fail;
 	}

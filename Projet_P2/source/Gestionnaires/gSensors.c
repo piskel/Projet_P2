@@ -17,6 +17,8 @@
 
 #define SENSOR_DELAY_MS 500
 
+int gSensorsDelayId = 0;
+
 void gSensors_Setup()
 	{
 	mWLSensor_Setup();
@@ -25,13 +27,14 @@ void gSensors_Setup()
 	mBME280_Setup();
 
 	mDelay_Setup();
-	mDelay_GetDelay(SENSOR_DELAY_MS);
+	gSensorsDelayId = mDelay_GetDelay(SENSOR_DELAY_MS);
 	}
 
 void gSensors_Execute()
 	{
-	if(mDelay_IsDelayDone(0))
+	if(mDelay_IsDelayDone(gSensorsDelayId))
 		{
+
 
 		// Water level
 		gSensors.waterLevel = mWLSensor_GetWaterLevel()*100;

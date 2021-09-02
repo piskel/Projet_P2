@@ -124,6 +124,10 @@ void gGUI_Execute()
 	UIText* pUIIRText = (UIText*)mGUI_GetElementFromName("ir_text");
 	UIText* pUIUVText = (UIText*)mGUI_GetElementFromName("uv_text");
 
+	UIText* pUITempText = (UIText*)mGUI_GetElementFromName("temp_text");
+	UIText* pUIPressText = (UIText*)mGUI_GetElementFromName("press_text");
+	UIText* pUIHumText = (UIText*)mGUI_GetElementFromName("hum_text");
+
 
 
 	char waterLeveText[10];
@@ -145,6 +149,21 @@ void gGUI_Execute()
 	char uv[10];
 	itoa((int)(gSensors.uv), uv, 10);
 	pUIUVText->text = uv;
+
+
+	char temp[10];
+	itoa((int)(gSensors.temperature), temp, 10);
+	pUITempText->text = temp;
+
+
+	char press[10];
+	itoa((int)(gSensors.pressure), press, 10);
+	pUIPressText->text = press;
+
+
+	char hum[10];
+	itoa((int)(gSensors.humidity), hum, 10);
+	pUIHumText->text = hum;
 
 	mGUI_PrintCurrentPage();
 

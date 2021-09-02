@@ -30,6 +30,8 @@
 #define LIGHT_SENSOR_PSALS_AUTO_COMMAND 0b00001111
 
 
+static int mLightSensorErrorCounter = 0;
+
 void mLightSensor_Setup()
 	{
 	iI2C1_Config();
@@ -53,10 +55,10 @@ void mLightSensor_Setup()
 void mLightSensor_SingleWrite(char address, char data)
 	{
 	iI2C1_Enable();
-	if(!iI2C1_StartCom()){return;}
-	if(!iI2C1_SendSlaveAdd(LIGHT_SENSOR_ADDR << 1 | LIGHT_SENSOR_WRITE_BIT)){return;}
-	if(!iI2C1_SendByte((address & 0x3F)| LIGHT_SENSOR_ADDR_AUTO_INC)){return;}
-	if(!iI2C1_SendByte(data)){return;}
+	if(!iI2C1_StartCom()){mLightSensorErrorCounter++;return;}
+	if(!iI2C1_SendSlaveAdd(LIGHT_SENSOR_ADDR << 1 | LIGHT_SENSOR_WRITE_BIT)){mLightSensorErrorCounter++;return;}
+	if(!iI2C1_SendByte((address & 0x3F)| LIGHT_SENSOR_ADDR_AUTO_INC)){mLightSensorErrorCounter++;return;}
+	if(!iI2C1_SendByte(data)){mLightSensorErrorCounter++;return;}
 	iI2C1_StopCom();
 	iI2C1_Disable();
 	}
@@ -65,12 +67,12 @@ void mLightSensor_SingleWrite(char address, char data)
 	{
 	char data;
 	iI2C1_Enable();
-	if(!iI2C1_StartCom()){return 0x00;}
-	if(!iI2C1_SendSlaveAdd(LIGHT_SENSOR_ADDR << 1 | LIGHT_SENSOR_WRITE_BIT)){return 0x00;}
-	if(!iI2C1_SendByte(address)){return 0x00;}
+	if(!iI2C1_StartCom()){mLightSensorErrorCounter++;return 0x00;}
+	if(!iI2C1_SendSlaveAdd(LIGHT_SENSOR_ADDR << 1 | LIGHT_SENSOR_WRITE_BIT)){mLightSensorErrorCounter++;return 0x00;}
+	if(!iI2C1_SendByte(address)){mLightSensorErrorCounter++;return 0x00;}
 	iI2C1_SetRepeatedStartSate();
-	if(!iI2C1_SendSlaveAdd(LIGHT_SENSOR_ADDR << 1 | LIGHT_SENSOR_READ_BIT)){return 0x00;}
-	if (!iI2C1_ReadBytesAndStopCom(&data, 1)){return 0x00;}
+	if(!iI2C1_SendSlaveAdd(LIGHT_SENSOR_ADDR << 1 | LIGHT_SENSOR_READ_BIT)){mLightSensorErrorCounter++;return 0x00;}
+	if (!iI2C1_ReadBytesAndStopCom(&data, 1)){mLightSensorErrorCounter++;return 0x00;}
 	iI2C1_Disable();
 	return data;
 	}

@@ -64,6 +64,8 @@ int main(void)
 	gOutput_Setup();
 
 
+
+
 	while(true)
 	{
 		gInput_Execute();

@@ -49,6 +49,8 @@ static BME280Data bme280Data;
 
 static bool BME280_I2C_Err_Flag = false;
 
+static int mBME280ErrorCounter = 0;
+
 void mBME280_Setup()
 	{
 	iI2C0_Config();
@@ -93,10 +95,10 @@ void mBME280_WriteData(char address, char data)
 	{
 
 	iI2C0_Enable();
-	if(!iI2C0_StartCom()){return;}
-	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_WRITE_BIT)){return;}
-	if(!iI2C0_SendByte(address)){return;}
-	if(!iI2C0_SendByte(data)){return;}
+	if(!iI2C0_StartCom()){mBME280ErrorCounter++;return;}
+	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_WRITE_BIT)){mBME280ErrorCounter++;return;}
+	if(!iI2C0_SendByte(address)){mBME280ErrorCounter++;return;}
+	if(!iI2C0_SendByte(data)){mBME280ErrorCounter++;return;}
 	iI2C0_StopCom();
 	iI2C0_Disable();
 	}
@@ -106,12 +108,12 @@ char mBME280_ReadData(char address)
 	{
 	char data;
 	iI2C0_Enable();
-	if(!iI2C0_StartCom()){return 0x00;}
-	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_WRITE_BIT)){return 0x00;}
-	if(!iI2C0_SendByte(address)){return 0x00;}
+	if(!iI2C0_StartCom()){mBME280ErrorCounter++;return 0x00;}
+	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_WRITE_BIT)){mBME280ErrorCounter++;return 0x00;}
+	if(!iI2C0_SendByte(address)){mBME280ErrorCounter++;return 0x00;}
 	iI2C0_SetRepeatedStartSate();
-	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_READ_BIT)){return 0x00;}
-	if (!iI2C0_ReadBytesAndStopCom(&data, 1)){return 0x00;}
+	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_READ_BIT)){mBME280ErrorCounter++;return 0x00;}
+	if (!iI2C0_ReadBytesAndStopCom(&data, 1)){mBME280ErrorCounter++;return 0x00;}
 	iI2C0_Disable();
 	return data;
 	}
@@ -119,12 +121,12 @@ char mBME280_ReadData(char address)
 void mBME280_ReadMultData(char address, char* data, int size)
 	{
 	iI2C0_Enable();
-	if(!iI2C0_StartCom()){return;}
-	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_WRITE_BIT)){return;}
-	if(!iI2C0_SendByte(address)){return;}
+	if(!iI2C0_StartCom()){mBME280ErrorCounter++;return;}
+	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_WRITE_BIT)){mBME280ErrorCounter++;return;}
+	if(!iI2C0_SendByte(address)){mBME280ErrorCounter++;return;}
 	iI2C0_SetRepeatedStartSate();
-	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_READ_BIT)){return;}
-	if (!iI2C0_ReadBytesAndStopCom(data, size)){return;}
+	if(!iI2C0_SendSlaveAdd(BME280_ADDR << 1 | BME280_READ_BIT)){mBME280ErrorCounter++;return;}
+	if (!iI2C0_ReadBytesAndStopCom(data, size)){mBME280ErrorCounter++;return;}
 	iI2C0_Disable();
 	}
 
