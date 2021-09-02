@@ -20,10 +20,13 @@ static bool buffer[DISPLAY_HEIGHT*DISPLAY_WIDTH];
 
 static UIPage** uiPageTab;
 static UIElement** uiElementTab;
-static UIContext uiContext;
+//static UIContext uiContext;
 
 static int nbUIPage = 0;
 static int nbUIElement = 0;
+
+static UIContext** uiContextTab;
+static int uiContextTabSize = 0;
 
 void mGUI_Setup()
 	{
@@ -31,13 +34,14 @@ void mGUI_Setup()
 
 	uiPageTab = (UIPage**) malloc(sizeof(UIPage*));
 	uiElementTab = (UIElement**) malloc(sizeof(UIElement*));
+	uiContextTab = (UIContext**) malloc(sizeof(UIContext*));
 
 	mGUI_CreatePage("error_page");
 	mGUI_CreateText("error_text", (point){0, 0}, false, "", "ERROR");
 	mGUI_AddElementToPage("error_text", "error_page");
 
-	uiContext.uiPageName = "error_page";
-	uiContext.cursor = -1;
+//	uiContext.uiPageName = "error_page";
+//	uiContext.cursor = -1;
 
 	mGUI_SetCurrentPage("error_page");
 	}
@@ -48,7 +52,6 @@ void mGUI_CreatePage(const char* name)
 	uiPageTab = (UIPage**) realloc(uiPageTab, (nbUIPage+1)*sizeof(UIPage*));
 	uiPageTab[nbUIPage] = (UIPage*) malloc(sizeof(UIPage));
 
-//	mGUI_CopyString(name, uiPageTab[nbUIPage]->name);
 	uiPageTab[nbUIPage]->name = name;
 	uiPageTab[nbUIPage]->nbUIElement = 0;
 	uiPageTab[nbUIPage]->uiElementNameTab = (char**) malloc(sizeof(char*));
@@ -64,14 +67,12 @@ void mGUI_CreateText(const char* name, point position, bool interactive, const c
 
 	UIText* pUIText = (UIText*)uiElementTab[nbUIElement];
 
-//	mGUI_CopyString(name, pUIText->super.name);
 	pUIText->super.name = name;
 	pUIText->super.position = position;
 	pUIText->super.uiElementType = kUIText;
 	pUIText->super.interactive = interactive;
 	pUIText->super.selected = false;
 	pUIText->super.linkedPage = linkedPage;
-//	mGUI_CopyString(text, pUIText->text);
 	pUIText->text = text;
 
 	nbUIElement++;
@@ -84,7 +85,6 @@ void mGUI_CreateImage(const char* name, point position, bool interactive, const 
 
 	UIImage* pUIImage = (UIImage*)uiElementTab[nbUIElement];
 
-//	mGUI_CopyString(name, uiElementTab[nbUIElement]->name);
 	pUIImage->super.name = name;
 	pUIImage->super.position = position;
 	pUIImage->super.uiElementType = kUIImage;
@@ -129,7 +129,6 @@ void mGUI_AddElementToPage(const char* uiElementName, const char* uiPageName)
 	UIPage* pUIPage = mGUI_GetPageFromName(uiPageName);
 
 	pUIPage->uiElementNameTab = (char**) realloc(pUIPage->uiElementNameTab, (pUIPage->nbUIElement+1)*sizeof(char*));
-//	mGUI_CopyString(uiElementName, pUIPage->uiElementNameTab[pUIPage->nbUIElement]);
 	pUIPage->uiElementNameTab[pUIPage->nbUIElement] = uiElementName;
 
 	pUIPage->nbUIElement++;
@@ -186,38 +185,86 @@ void mGUI_PrintImage(UIImage* pUIImage)
 
 	}
 
-void mGUI_SetCurrentPage(const char* uiPageName)
+void mGUI_SetInitContext(const char* uiPageName)
 	{
-	UIPage* pUICurrentPage = mGUI_GetPageFromName(uiContext.uiPageName);
-
-	for(int i = 0; i < pUICurrentPage->nbUIElement; i++)
-	{
-		UIElement* pUIElement = mGUI_GetElementFromName(pUICurrentPage->uiElementNameTab[i]);
-		pUIElement->selected = false;
-	}
+	uiContextTab[0] = (UIContext*) malloc(sizeof(UIContext));
 
 	UIPage* pUIPage = mGUI_GetPageFromName(uiPageName);
-	uiContext.uiPageName = pUIPage->name;
-	uiContext.cursor = -1;
+	uiContextTab[0]->uiPageName = pUIPage->name;
+	uiContextTab[0]->cursor = -1;
 
+	if(uiContextTabSize == 0)  uiContextTabSize = 1;
+
+	// Sets the initial cursor position
 	for(int i = 0; i < pUIPage->nbUIElement; i++)
 		{
 		UIElement* pUIElement = mGUI_GetElementFromName(pUIPage->uiElementNameTab[i]);
 		if(pUIElement->interactive == true)
 			{
-			uiContext.cursor = i;
+			uiContextTab[0]->cursor = i;
 			pUIElement->selected =  true;
 			break;
 			}
 		}
 	}
 
+void mGUI_SetCurrentPage(const char* uiPageName)
+	{
+
+	if(uiContextTabSize == 0)
+	{
+		mGUI_SetInitContext(uiPageName);
+		return;
+	}
+
+	if(strcmp(uiPageName, mGUI_GetCurrentPageName())==0) return;
+
+	UIPage* pUICurrentPage = mGUI_GetPageFromName(uiContextTab[uiContextTabSize-1]->uiPageName);
+
+	// Deselects all the elements on the current page
+	for(int i = 0; i < pUICurrentPage->nbUIElement; i++)
+	{
+		UIElement* pUIElement = mGUI_GetElementFromName(pUICurrentPage->uiElementNameTab[i]);
+		pUIElement->selected = false;
+	}
+
+	uiContextTabSize++;
+	uiContextTab = (UIContext**) realloc(uiContextTab, uiContextTabSize*sizeof(UIContext*));
+
+	uiContextTab[uiContextTabSize-1] = (UIContext*) malloc(sizeof(UIContext));
+
+	UIPage* pUIPage = mGUI_GetPageFromName(uiPageName);
+	uiContextTab[uiContextTabSize-1]->uiPageName = pUIPage->name;
+	uiContextTab[uiContextTabSize-1]->cursor = -1;
+
+	mGUI_NavigateInteractive(true);
+	}
+
+
+void mGUI_PreviousContext()
+	{
+	// Abort if there is one or no context in the tab
+	if(uiContextTabSize <= 1) return;
+
+	uiContextTabSize--;
+
+	free(uiContextTab[uiContextTabSize]); // Free value in the tab
+
+	// Rescale the tab size
+	uiContextTab = (UIContext**) realloc(uiContextTab, uiContextTabSize*sizeof(UIContext*));
+
+
+	UIElement* pUIElement = mGUI_GetElementFromName(mGUI_GetCurrentElementName());
+	pUIElement->selected = true;
+	}
+
 // true: down, false: up
 void mGUI_NavigateInteractive(bool direction)
 	{
-	UIPage* pUIPage = mGUI_GetPageFromName(uiContext.uiPageName);
+	UIPage* pUIPage = mGUI_GetPageFromName(uiContextTab[uiContextTabSize-1]->uiPageName);
 
 	bool check = false;
+	// Deselects all the elements and checks if there are any interactive ones
 	for(int i = 0; i < pUIPage->nbUIElement; i++)
 		{
 		UIElement* pUIElement = mGUI_GetElementFromName(pUIPage->uiElementNameTab[i]);
@@ -225,10 +272,13 @@ void mGUI_NavigateInteractive(bool direction)
 		if(pUIElement->interactive) check = true;
 		}
 
+	// Abort if there are no interactive elements
 	if(!check) return;
 
+
 	int step = direction ? 1 : -1;
-	int currentCursor = (uiContext.cursor + pUIPage->nbUIElement + step)%pUIPage->nbUIElement;
+
+	int currentCursor = (uiContextTab[uiContextTabSize-1]->cursor + pUIPage->nbUIElement + step)%pUIPage->nbUIElement;
 
 	do{
 		UIElement* pUIElement = mGUI_GetElementFromName(pUIPage->uiElementNameTab[currentCursor]);
@@ -236,30 +286,30 @@ void mGUI_NavigateInteractive(bool direction)
 		if(pUIElement->interactive == true)
 			{
 			pUIElement->selected = true;
-			uiContext.cursor = currentCursor;
+			uiContextTab[uiContextTabSize-1]->cursor = currentCursor;
 			break;
 			}
 
 		currentCursor = (currentCursor+pUIPage->nbUIElement+step)%pUIPage->nbUIElement;
-	}while(currentCursor != uiContext.cursor);
+	}while(currentCursor != uiContextTab[uiContextTabSize-1]->cursor);
 
 
 	}
 
 void mGUI_PrintCurrentPage()
 	{
-	mGUI_PrintPage(uiContext.uiPageName);
+	mGUI_PrintPage(uiContextTab[uiContextTabSize-1]->uiPageName);
 	}
 
 
 char* mGUI_GetCurrentPageName()
 	{
-	return uiContext.uiPageName;
+	return uiContextTab[uiContextTabSize-1]->uiPageName;
 	}
 
 char* mGUI_GetCurrentElementName()
 	{
-	return mGUI_GetPageFromName(uiContext.uiPageName)->uiElementNameTab[uiContext.cursor];
+	return mGUI_GetPageFromName(uiContextTab[uiContextTabSize-1]->uiPageName)->uiElementNameTab[uiContextTab[uiContextTabSize-1]->cursor];
 	}
 
 

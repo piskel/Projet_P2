@@ -95,7 +95,8 @@ void gGUI_Setup()
 	mGUI_AddElementToPage("press_text", "temp_press_hum_page");
 	mGUI_AddElementToPage("hum_text", "temp_press_hum_page");
 
-	mGUI_SetCurrentPage("main_menu_page");
+//	mGUI_SetCurrentPage("main_menu_page");
+	mGUI_SetInitContext("main_menu_page");
 
 	}
 
@@ -103,7 +104,8 @@ void gGUI_Execute()
 	{
 	if(gInput.buttonJustPressedTab[0])
 		{
-		mGUI_SetCurrentPage("main_menu_page");
+//		mGUI_SetCurrentPage("main_menu_page");
+		mGUI_PreviousContext();
 		}
 	else if(gInput.buttonJustPressedTab[1]) // Move up
 		{

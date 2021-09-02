@@ -71,6 +71,7 @@ void mGUI_PrintElement(const char* name);
 void mGUI_PrintText(UIText* pUIText);
 void mGUI_PrintImage(UIImage* pUIImage);
 
+void mGUI_SetInitContext(const char* uiPageName);
 void mGUI_SetCurrentPage(const char* uiPageName);
 void mGUI_PrintCurrentPage();
 void mGUI_NavigateInteractive(bool direction);
