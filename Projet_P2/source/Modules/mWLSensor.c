@@ -22,6 +22,7 @@ static int mWLSensorErrorCounter = 0;
 
 void mWLSensor_Setup()
 	{
+	mWLSensorErrorCounter = 0;
 	iI2C0_Config();
 	}
 

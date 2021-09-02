@@ -53,6 +53,7 @@ static int mBME280ErrorCounter = 0;
 
 void mBME280_Setup()
 	{
+	mBME280ErrorCounter = 0;
 	iI2C0_Config();
 
 	char tabCalibData[33];

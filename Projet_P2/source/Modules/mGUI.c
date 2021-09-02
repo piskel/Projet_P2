@@ -216,8 +216,7 @@ void mGUI_SetCurrentPage(const char* uiPageName)
 		mGUI_SetInitContext(uiPageName);
 		return;
 	}
-
-	if(strcmp(uiPageName, mGUI_GetCurrentPageName())==0) return;
+	if(strcmp(mGUI_GetPageFromName(uiPageName)->name, mGUI_GetCurrentPageName())==0) return;
 
 	UIPage* pUICurrentPage = mGUI_GetPageFromName(uiContextTab[uiContextTabSize-1]->uiPageName);
 
@@ -253,9 +252,11 @@ void mGUI_PreviousContext()
 	// Rescale the tab size
 	uiContextTab = (UIContext**) realloc(uiContextTab, uiContextTabSize*sizeof(UIContext*));
 
-
-	UIElement* pUIElement = mGUI_GetElementFromName(mGUI_GetCurrentElementName());
-	pUIElement->selected = true;
+	if(uiContextTab[uiContextTabSize-1]->cursor >= 0)
+		{
+		UIElement* pUIElement = mGUI_GetElementFromName(mGUI_GetCurrentElementName());
+		pUIElement->selected = true;
+		}
 	}
 
 // true: down, false: up

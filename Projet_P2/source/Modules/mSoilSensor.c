@@ -28,6 +28,7 @@ static int mSoilSensorErrorCounter = 0;
 
 void mSoilSensor_Setup()
 	{
+	mSoilSensorErrorCounter = 0;
 	iI2C0_Config();
 
 	}

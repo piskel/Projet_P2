@@ -45,14 +45,14 @@ Description dans le fichier iDio.h
 #define kPORTE_PCR0			0x4004D000
 
 
-static bool isInit = false;
+static bool iDioisInit = false;
 
 //-----------------------------------------------------------------------------
 // Enable du clock des GPIO
 //-----------------------------------------------------------------------------
 void iDio_EnablePortClk(void)
 {
-	if(isInit) return;
+	if(iDioisInit) return;
 		// Pointeur permettant d'acc�der aux registres d'enable des clocks des port IO
 //	unsigned long *aSIMSCGC5Addr=(unsigned long*)0x40048038;
 	
@@ -68,7 +68,7 @@ void iDio_EnablePortClk(void)
 			SIM_SCGC5_PORTD_MASK +
 			SIM_SCGC5_PORTE_MASK;
 
-	isInit = true;
+	iDioisInit = true;
 }
 
 //-----------------------------------------------------------------------------

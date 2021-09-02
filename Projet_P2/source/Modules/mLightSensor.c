@@ -34,6 +34,7 @@ static int mLightSensorErrorCounter = 0;
 
 void mLightSensor_Setup()
 	{
+	mLightSensorErrorCounter = 0;
 	iI2C1_Config();
 	iDio_EnablePortClk();
 
