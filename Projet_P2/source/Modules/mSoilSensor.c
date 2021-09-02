@@ -40,7 +40,7 @@ void mSoilSensor_RequestValues()
 	if(!iI2C0_SendSlaveAdd(SOIL_SENSOR_ADDR << 1 | SOIL_SENSOR_WRITE_BIT)){return;}
 	if(!iI2C0_SendByte(SOIL_SENSOR_MOISTURE_BASE_REG)){return;}
 	if(!iI2C0_SendByte(SOIL_SENSOR_MOISTURE_FUNC_REG)){return;}
-	iI2C0_SetStopState();
+	iI2C0_StopCom();
 	iI2C0_Disable();
 
 	}
