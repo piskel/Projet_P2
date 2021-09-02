@@ -25,6 +25,9 @@ static bool isI2C1Init = false;
 void iI2C0_Config()
 	{
 		if(isI2C0Init) return;
+
+		void iI2C0_Reset();
+
 		iDio_EnablePortClk();
 		// I2C clock enable
 		// System Clock Gating Control Register 4 (SIM_SCGC4)
@@ -49,6 +52,8 @@ void iI2C0_Config()
 void iI2C1_Config()
 	{
 		if(isI2C1Init) return;
+
+		void iI2C1_Reset();
 		iDio_EnablePortClk();
 		// I2C clock enable
 		// System Clock Gating Control Register 4 (SIM_SCGC4)
@@ -69,6 +74,42 @@ void iI2C1_Config()
 
 		isI2C1Init = true;
 	}
+
+
+
+void iI2C0_Reset(void)
+    {
+        I2C0->A1 = 0x00;
+        I2C0->F = 0x00;
+        I2C0->C1 = 0x00;
+        I2C0->S = 0x80;
+        I2C0->D = 0x00;
+        I2C0->C2 = 0x00;
+        I2C0->FLT = 0x00;
+        I2C0->RA = 0x00;
+        I2C0->SMB = 0x00;
+        I2C0->A2 = 0xC2;
+        I2C0->SLTH = 0x00;
+        I2C0->SLTL = 0x00;
+    }
+
+void iI2C1_Reset(void)
+    {
+        I2C1->A1 = 0x00;
+        I2C1->F = 0x00;
+        I2C1->C1 = 0x00;
+        I2C1->S = 0x80;
+        I2C1->D = 0x00;
+        I2C1->C2 = 0x00;
+        I2C1->FLT = 0x00;
+        I2C1->RA = 0x00;
+        I2C1->SMB = 0x00;
+        I2C1->A2 = 0xC2;
+        I2C1->SLTH = 0x00;
+        I2C1->SLTL = 0x00;
+    }
+
+
 
 //------------------------------------------------------------
 // I2C interface enable

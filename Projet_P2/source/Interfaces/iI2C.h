@@ -46,6 +46,11 @@ typedef enum
 void iI2C0_Config();
 void iI2C1_Config();
 
+
+void iI2C0_Reset(void);
+
+void iI2C1_Reset(void);
+
 //------------------------------------------------------------
 // I2C interface enable
 //------------------------------------------------------------

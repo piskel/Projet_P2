@@ -33,8 +33,13 @@
  * @brief   Application entry point.
  */
 
-#include <mCpu.h>
+#include "mCpu.h"
 #include "gInput.h"
+#include "gCOM.h"
+#include "gSensors.h"
+#include "gGUI.h"
+#include "gCompute.h"
+#include "gOutput.h"
 
 /* TODO: insert other include files here. */
 
@@ -57,7 +62,9 @@
 int main(void)
 	{
 	mCpu_Setup();
+
 	gInput_Setup();
+	gCOM_Setup();
 	gSensors_Setup();
 	gGUI_Setup();
 	gCompute_Setup();
@@ -69,6 +76,7 @@ int main(void)
 	while(true)
 	{
 		gInput_Execute();
+		gCOM_Execute();
 		gSensors_Execute();
 		gGUI_Execute();
 	}

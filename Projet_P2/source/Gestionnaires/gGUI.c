@@ -28,16 +28,18 @@ void gGUI_Setup()
 	mGUI_CreateText("main_menu_sensors", (point){0, 0}, true, "sensors_menu_page",  "Sensors");
 	mGUI_AddElementToPage("main_menu_sensors", "main_menu_page");
 
-	mGUI_CreateText("main_menu_settings", (point){0, 8}, true, "settings_menu_page", "Settings");
+	mGUI_CreateText("main_menu_com", (point){0, 8}, true, "com_menu_page", "Communication");
+	mGUI_AddElementToPage("main_menu_com", "main_menu_page");
+
+	mGUI_CreateText("main_menu_settings", (point){0, 16}, true, "settings_menu_page", "Settings");
 	mGUI_AddElementToPage("main_menu_settings", "main_menu_page");
 
-	mGUI_CreateText("main_menu_about", (point){0, 16}, true, "about_page", "About");
+	mGUI_CreateText("main_menu_about", (point){0, 24}, true, "about_page", "About");
 	mGUI_AddElementToPage("main_menu_about", "main_menu_page");
 
 	///////////////////////////////////////////////////////////
 	// SENSORS MENU ///////////////////////////////////////////
 	///////////////////////////////////////////////////////////
-
 
 	mGUI_CreatePage("sensors_menu_page");
 
@@ -95,7 +97,24 @@ void gGUI_Setup()
 	mGUI_AddElementToPage("press_text", "temp_press_hum_page");
 	mGUI_AddElementToPage("hum_text", "temp_press_hum_page");
 
-//	mGUI_SetCurrentPage("main_menu_page");
+
+	///////////////////////////////////////////////////////////
+	// COM MENU ///////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
+
+	mGUI_CreatePage("com_menu_page");
+	mGUI_CreateText("com_menu_ble", (point){0, 0}, true, "ble_page","Bluetooth \x15");
+	mGUI_AddElementToPage("com_menu_ble", "com_menu_page");
+
+
+	///////////////////////////////////////////////////////////
+	// BLUETOOTH //////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
+
+	mGUI_CreatePage("ble_page");
+	mGUI_CreateText("ble_status_text", (point){0, 0}, false, "","N/A");
+	mGUI_AddElementToPage("ble_status_text", "ble_page");
+
 	mGUI_SetInitContext("main_menu_page");
 
 	}
@@ -129,6 +148,7 @@ void gGUI_Execute()
 	UIText* pUITempText = (UIText*)mGUI_GetElementFromName("temp_text");
 	UIText* pUIPressText = (UIText*)mGUI_GetElementFromName("press_text");
 	UIText* pUIHumText = (UIText*)mGUI_GetElementFromName("hum_text");
+	UIText* pUIBleText = (UIText*)mGUI_GetElementFromName("ble_text");
 
 
 
@@ -166,6 +186,8 @@ void gGUI_Execute()
 	char hum[10];
 	itoa((int)(gSensors.humidity), hum, 10);
 	pUIHumText->text = hum;
+
+//	pUIBleText->text = gCOM.bleData;
 
 	mGUI_PrintCurrentPage();
 

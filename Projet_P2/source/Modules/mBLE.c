@@ -7,7 +7,13 @@
 
 #include "mBLE.h"
 #include "iUART.h"
+#include "string.h"
 // BLE Baud rate: 115200
+
+#define BLE_COM_RENAME "AT+NAME"
+#define BLE_COM_RENAME_RES "OK+Set:"
+
+static bool mBleRunning = false;
 
 
 void mBLE_Setup()
@@ -21,12 +27,14 @@ void mBLE_Start()
 	{
 	iUART_SetTX(kUART1, true);
 	iUART_SetRX(kUART1, true);
+	mBleRunning = true;
 	}
 
 void mBLE_Stop()
 	{
 	iUART_SetTX(kUART1, false);
 	iUART_SetRX(kUART1, false);
+	mBleRunning = false;
 	}
 
 
@@ -50,4 +58,25 @@ char* mBLE_ReadData()
 //	while(!iUART_GetFlag(kUART1, kUARTFlagRDRF));
 	return iUART_GetData(kUART1);
 	}
+
+
+//bool mBLE_RenameDevice(char* name)
+//	{
+//	char command[32] = BLE_COM_RENAME;
+//	char response[32] = BLE_COM_RENAME_RES;
+//
+//	char tmpName[strlen(name)+1];
+//	strcpy(tmpName, name);
+//	int test = strlen(tmpName);
+//	strcat(command, tmpName);
+//	strcat(response, tmpName);
+//
+//	iUART_ClearBuffer(kUART1);
+//	mBLE_Start();
+//	mBLE_WriteString(command);
+//	mBLE_Stop();
+//	char* result = mBLE_ReadData();
+//
+//	return strcmp(result, response);
+//	}
 

@@ -18,6 +18,13 @@ typedef struct
 
 typedef struct
 	{
+//	char bleData[32];
+	bool bleRunning;
+
+	}COMStruct;
+
+typedef struct
+	{
 	float waterLevel;
 	float soilHumidity;
 	unsigned int visibleLight;
@@ -44,6 +51,7 @@ typedef struct
 	}OutputStruct;
 
 extern InputStruct gInput;
+extern COMStruct gCOM;
 extern SensorsStruct gSensors;
 extern GUIStruct gGUI;
 extern ComputeStruct gCompute;

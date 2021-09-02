@@ -313,9 +313,16 @@ char* mGUI_GetCurrentElementName()
 	return mGUI_GetPageFromName(uiContextTab[uiContextTabSize-1]->uiPageName)->uiElementNameTab[uiContextTab[uiContextTabSize-1]->cursor];
 	}
 
+UIContext* mGUI_GetCurrentContext()
+	{
+	return uiContextTab[uiContextTabSize-1];
+	}
+
 
 void mGUI_GoToLinkedPage()
 	{
+	UIContext* pUIContext = mGUI_GetCurrentContext();
+	if(pUIContext->cursor < 0) return;
 	UIElement* pUIElement = mGUI_GetElementFromName(mGUI_GetCurrentElementName());
 	mGUI_SetCurrentPage(pUIElement->linkedPage);
 	}
