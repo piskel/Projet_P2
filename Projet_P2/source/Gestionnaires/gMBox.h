@@ -48,6 +48,7 @@ typedef struct
 
 typedef struct
 	{
+	bool enablePump;
 	}OutputStruct;
 
 extern InputStruct gInput;

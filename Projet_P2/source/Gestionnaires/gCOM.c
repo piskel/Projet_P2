@@ -10,7 +10,7 @@
 
 #include "mBLE.h"
 
-#define COM_QUERY_GET_DATA 0x20
+//#define COM_QUERY_GET_DATA 0x20
 
 //static char gComBleBuffer[32];
 //static char gComUARTBuffer[32];
@@ -28,11 +28,27 @@ void gCOM_Setup()
 
 void gCOM_Execute()
 	{
+	gCOM_BLEHandler();
 
-
-	mBLE_ReadData();
-
-
-	char* test = mBLE_ReadData();
 
 	}
+
+void gCOM_BLEHandler()
+	{
+	char bluetoothData[32];
+
+	strcpy(bluetoothData, mBLE_ReadData());
+	mBLE_ClearBuffer();
+
+	switch ((COMQuery)bluetoothData[0])
+		{
+		case kCOMQueryGetData:;
+			mBLE_WriteString(gSensors.visibleLight);
+			break;
+		default:
+			break;
+		}
+
+	}
+
+
