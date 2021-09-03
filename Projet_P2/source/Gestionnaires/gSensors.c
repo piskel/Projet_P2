@@ -15,7 +15,7 @@
 #include "mLightSensor.h"
 #include "mBME280.h"
 
-#define SENSOR_DELAY_MS 500
+#define SENSOR_DELAY_MS 50
 
 int gSensorsDelayId = 0;
 
@@ -55,7 +55,7 @@ void gSensors_Execute()
 		gSensors.humidity = mBME280_GetHumidity();
 
 //		mDelay_ResetFlag();
-		mDelay_DelayRelease(SENSOR_DELAY_MS);
+		mDelay_DelayRelease(gSensorsDelayId);
 		gSensorsDelayId = mDelay_GetDelay(SENSOR_DELAY_MS);
 		}
 
