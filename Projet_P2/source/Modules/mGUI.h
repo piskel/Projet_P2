@@ -56,10 +56,10 @@ typedef struct UIContext
 
 void mGUI_Setup();
 
-void mGUI_CreatePage(const char* name);
+UIPage* mGUI_CreatePage(const char* name);
 
-void mGUI_CreateText(const char* name, point position, bool interactive, const char* linkedPage, const char* text);
-void mGUI_CreateImage(const char* name, point position, bool interactive, const char* linkedPage, bool* image, point imageSize);
+UIText* mGUI_CreateText(const char* name, point position, bool interactive, const char* linkedPage, const char* text);
+UIImage* mGUI_CreateImage(const char* name, point position, bool interactive, const char* linkedPage, bool* image, point imageSize);
 
 UIPage* mGUI_GetPageFromName(const char* name);
 UIElement* mGUI_GetElementFromName(const char* name);

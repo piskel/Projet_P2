@@ -46,7 +46,7 @@ void mGUI_Setup()
 	mGUI_SetCurrentPage("error_page");
 	}
 
-void mGUI_CreatePage(const char* name)
+UIPage* mGUI_CreatePage(const char* name)
 	{
 
 	uiPageTab = (UIPage**) realloc(uiPageTab, (nbUIPage+1)*sizeof(UIPage*));
@@ -58,9 +58,11 @@ void mGUI_CreatePage(const char* name)
 
 
 	nbUIPage++;
+
+	return uiPageTab[nbUIPage];
 	}
 
-void mGUI_CreateText(const char* name, point position, bool interactive, const char* linkedPage, const char* text)
+UIText* mGUI_CreateText(const char* name, point position, bool interactive, const char* linkedPage, const char* text)
 	{
 	uiElementTab = (UIElement**) realloc(uiElementTab, (nbUIElement+1)*sizeof(UIElement*));
 	uiElementTab[nbUIElement] = (UIElement*) malloc(sizeof(UIText));
@@ -76,9 +78,11 @@ void mGUI_CreateText(const char* name, point position, bool interactive, const c
 	pUIText->text = text;
 
 	nbUIElement++;
+
+	return uiElementTab[nbUIElement];
 	}
 
-void mGUI_CreateImage(const char* name, point position, bool interactive, const char* linkedPage, bool* image, point imageSize)
+UIImage* mGUI_CreateImage(const char* name, point position, bool interactive, const char* linkedPage, bool* image, point imageSize)
 	{
 	uiElementTab = (UIElement**) realloc(uiElementTab, (nbUIElement+1)*sizeof(UIElement*));
 	uiElementTab[nbUIElement] = (UIElement*) malloc(sizeof(UIImage));
@@ -96,6 +100,8 @@ void mGUI_CreateImage(const char* name, point position, bool interactive, const 
 	pUIImage->imageSize = imageSize;
 
 	nbUIElement++;
+
+	return uiElementTab[nbUIElement];
 	}
 
 
