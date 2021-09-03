@@ -8,16 +8,24 @@
 #include "mBLE.h"
 #include "iUART.h"
 #include "string.h"
+#include "mDelay.h"
 // BLE Baud rate: 115200
 
+#define BLE_COM_RES "OK+Set:"
 #define BLE_COM_RENAME "AT+NAME"
-#define BLE_COM_RENAME_RES "OK+Set:"
+#define BLE_COM_SET_BAUD "AT+BAUD"
+#define BLE_BUFFER_MAX_SIZE 32
+
 
 static bool mBleRunning = false;
+
+static char mBleBuffer[BLE_BUFFER_MAX_SIZE];
+
 
 
 void mBLE_Setup()
 	{
+	mBLE_ClearBuffer();
 	iUART_Config();
 	iUART_SetParity(kUART1, false);
 	iUART_SetFrameType(kUART1, false);
@@ -56,9 +64,40 @@ void mBLE_WriteString(char* data)
 char* mBLE_ReadData()
 	{
 //	while(!iUART_GetFlag(kUART1, kUARTFlagRDRF));
-	return iUART_GetData(kUART1);
+//	char* tmpData = iUART_GetData(kUART1);
+//	mBLE_ClearBuffer();
+//	if(strlen(tmpData) <= BLE_BUFFER_MAX_SIZE)
+//		{
+//		strcpy(mBleBuffer, tmpData);
+//		}
+
+//	char data[32];
+//	mBLE_ClearBuffer();
+
+	bool test = iUART_ReceptionDone(kUART1);
+
+
+	bool isUARTBufferEmpty = false;
+	int index = 0;
+	do
+		{
+		if(index >= BLE_BUFFER_MAX_SIZE-1) break;
+		isUARTBufferEmpty = iUART_GetCharFromBuffer(kUART1, &(mBleBuffer[index]));
+		index++;
+		}
+	while(!isUARTBufferEmpty || !iUART_ReceptionDone(kUART1));
+//	mBleBuffer[index] = 0;
+	return mBleBuffer;
 	}
 
+void mBLE_ClearBuffer()
+	{
+	for(int i = 0; i < BLE_BUFFER_MAX_SIZE; i++)
+		{
+		mBleBuffer[i] = 0;
+		}
+
+	}
 
 //bool mBLE_RenameDevice(char* name)
 //	{

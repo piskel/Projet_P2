@@ -19,6 +19,7 @@ void mBLE_WriteChar(char data);
 void mBLE_WriteString(char* data);
 
 char* mBLE_ReadData();
+void mBLE_ClearBuffer();
 
 //bool mBLE_RenameDevice(char* name);
 

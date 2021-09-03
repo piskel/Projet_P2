@@ -1,6 +1,6 @@
 /*
 ------------------------------------------------------------
-Copyright 2003-20xx Haute école ARC Ingéniérie, Switzerland. 
+Copyright 2003-20xx Haute ï¿½cole ARC Ingï¿½niï¿½rie, Switzerland. 
 All rights reserved.
 ------------------------------------------------------------
 Nom du fichier :	mDelay.c
@@ -16,25 +16,29 @@ Description dans le fichier iAd.h
 #define kPit0Per 1
 #define kPit1Per 10
 
+static mDelayIsInit = false;
+
 //------------------------------------------------------------
 // Configuration du module mDelay
 //------------------------------------------------------------
 void mDelay_Setup(void)
 {
+	if(mDelayIsInit) return;
 	// Configuration des PIT
 	iPit_Config(kPit0Per,kPit1Per);
 	
-	// Démarrage du PIT0
+	// Dï¿½marrage du PIT0
 	iPit_StartPit(kPit0);
 	
 	// Initialise la structure des compteurs de temps
 	iPit_InitDelay();
+	mDelayIsInit = true;
 }
 
 
 //------------------------------------------------------------
-// Lecture du flag indiquant que 500ms sont échus
-// Retour  : état du flag
+// Lecture du flag indiquant que 500ms sont ï¿½chus
+// Retour  : ï¿½tat du flag
 //------------------------------------------------------------
 bool mDelay_GetFlag(void)
 {
@@ -42,8 +46,8 @@ bool mDelay_GetFlag(void)
 }
 
 //------------------------------------------------------------
-// Reset du flag indiquant que 500ms sont échus
-// Retour  : état du flag
+// Reset du flag indiquant que 500ms sont ï¿½chus
+// Retour  : ï¿½tat du flag
 //------------------------------------------------------------
 void mDelay_ResetFlag(void)
 {
@@ -52,8 +56,8 @@ void mDelay_ResetFlag(void)
 
 //------------------------------------------------------------
 // Configuration des compteurs de temps
-// aDelay	: le temps à écouler
-// Retour	: le numéro du compteur de temps (-1) si plus de 
+// aDelay	: le temps ï¿½ ï¿½couler
+// Retour	: le numï¿½ro du compteur de temps (-1) si plus de 
 //					compteurs libres
 //------------------------------------------------------------
 int mDelay_GetDelay(unsigned int aDelay)
@@ -62,9 +66,9 @@ int mDelay_GetDelay(unsigned int aDelay)
 } 
 
 //------------------------------------------------------------
-// Contrôle si le délais est échu
-// aDelayNb	: le numéro du compteur de temps
-// Retour		: l'état du flag
+// Contrï¿½le si le dï¿½lais est ï¿½chu
+// aDelayNb	: le numï¿½ro du compteur de temps
+// Retour		: l'ï¿½tat du flag
 //------------------------------------------------------------
 bool mDelay_IsDelayDone(unsigned int aDelayNb)
 {
@@ -72,8 +76,8 @@ bool mDelay_IsDelayDone(unsigned int aDelayNb)
 }
 
 //------------------------------------------------------------
-// Libère un compteur de temps
-// aDelayNb	: le numéro du compteur de temps
+// Libï¿½re un compteur de temps
+// aDelayNb	: le numï¿½ro du compteur de temps
 //------------------------------------------------------------
 void mDelay_DelayRelease(unsigned int aDelayNb)
 {

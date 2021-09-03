@@ -16,7 +16,10 @@
 typedef struct UARTDataBuffer
 	{
 	char buffer[UART_BUFFER_SIZE];
-	int index;
+	int indexIn;
+	int indexOut;
+	int bytesReceived;
+	bool isFull;
 	}UARTDataBuffer;
 
 typedef enum
@@ -58,8 +61,11 @@ void iUART_SetTX(UARTEnum aUART, bool enable);
 void iUART_SetRX(UARTEnum aUART, bool enable);
 
 bool iUART_GetFlag(UARTEnum aUART, UARTFlagEnum aUARTFlag);
+bool iUART_ReceptionDone(UARTEnum aUART);
+
 
 char* iUART_GetData(UARTEnum aUART);
+bool iUART_GetCharFromBuffer(UARTEnum aUART, char *data);
 void iUART_SetData(UARTEnum aUART, char data);
 
 void iUART_ClearBuffer(UARTEnum aUART);

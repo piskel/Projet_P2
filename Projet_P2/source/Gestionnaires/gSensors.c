@@ -54,8 +54,9 @@ void gSensors_Execute()
 		gSensors.pressure = mBME280_GetPressure();
 		gSensors.humidity = mBME280_GetHumidity();
 
-		mDelay_ResetFlag();
-		mDelay_GetDelay(SENSOR_DELAY_MS);
+//		mDelay_ResetFlag();
+		mDelay_DelayRelease(SENSOR_DELAY_MS);
+		gSensorsDelayId = mDelay_GetDelay(SENSOR_DELAY_MS);
 		}
 
 	}

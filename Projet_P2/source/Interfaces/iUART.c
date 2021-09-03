@@ -10,15 +10,29 @@
 #include "MKL46Z4.h"
 #include "iDio.h"
 #include "core_cm0plus.h"
+#include "mDelay.h"
+
+#define UART_DELAY_MS 50
 
 static UARTDataBuffer uart0DataBuffer;
 static UARTDataBuffer uart1DataBuffer;
 
-static bool isInit = false;
+static bool mDelayIsInit = false;
+
+static int uart0DelayId;
+static int uart1DelayId;
+
 
 void iUART_Config()
 	{
-	if(isInit) return;
+	if(mDelayIsInit) return;
+
+	mDelay_Setup();
+
+
+	uart0DelayId = mDelay_GetDelay(UART_DELAY_MS);
+	uart1DelayId = mDelay_GetDelay(UART_DELAY_MS);
+
 
 	iUART_ClearBuffer(kUART0);
 	iUART_ClearBuffer(kUART1);
@@ -70,7 +84,7 @@ void iUART_Config()
 	UART0->C2|=UART_C2_RIE_MASK;
 	UART1->C2|=UART_C2_RIE_MASK;
 
-	isInit = true;
+	mDelayIsInit = true;
 	}
 
 void iUART_SetFrameType(UARTEnum aUART, bool data9bits)
@@ -205,6 +219,19 @@ bool iUART_GetFlag(UARTEnum aUART, UARTFlagEnum aUARTFlag)
 		}
 	}
 
+bool iUART_ReceptionDone(UARTEnum aUART)
+	{
+	switch (aUART)
+		{
+		case kUART0:
+			return mDelay_IsDelayDone(uart0DelayId);
+
+		case kUART1:
+			return mDelay_IsDelayDone(uart1DelayId);
+		}
+	return false;
+	}
+
 
 char* iUART_GetData(UARTEnum aUART)
 	{
@@ -219,6 +246,28 @@ char* iUART_GetData(UARTEnum aUART)
 	return 0;
 	}
 
+bool iUART_GetCharFromBuffer(UARTEnum aUART, char* data)
+	{
+	switch (aUART)
+		{
+		case kUART0:
+			if(uart0DataBuffer.bytesReceived == 0) return true;
+			*data = uart0DataBuffer.buffer[uart0DataBuffer.indexOut];
+			uart0DataBuffer.bytesReceived--;
+			uart0DataBuffer.indexOut = (uart0DataBuffer.indexOut+1 ) % UART_BUFFER_SIZE;
+			uart0DataBuffer.isFull = uart0DataBuffer.bytesReceived >= UART_BUFFER_SIZE;
+			return false;
+
+		case kUART1:
+			if(uart1DataBuffer.bytesReceived == 0) return true;
+			*data = uart1DataBuffer.buffer[uart1DataBuffer.indexOut];
+			uart1DataBuffer.bytesReceived--;
+			uart1DataBuffer.indexOut = (uart1DataBuffer.indexOut+1 ) % UART_BUFFER_SIZE;
+			uart1DataBuffer.isFull = uart1DataBuffer.bytesReceived >= UART_BUFFER_SIZE;
+			return false;
+		}
+	return true;
+	}
 
 // Les flags concernant la transmission sont remis à 0 en lisant le registre de statut et en
 // écrivant une donnée dans le registre de donnée, les flags concernant la réception sont
@@ -227,27 +276,33 @@ char* iUART_GetData(UARTEnum aUART)
 
 void UART0_IRQHandler()
 	{
-	if(uart0DataBuffer.index >= UART_BUFFER_SIZE)
-	{
-		iUART_ClearBuffer(kUART0);
-	}
+	if(uart0DataBuffer.isFull) return;
 
-	uart0DataBuffer.buffer[uart0DataBuffer.index] = UART0->D;
-	uart0DataBuffer.index++;
+	mDelay_DelayRelease(uart0DelayId);
+	uart0DelayId = mDelay_GetDelay(UART_DELAY_MS);
 
-	UART1->S1;
-	char data = UART1->D;
+	uart0DataBuffer.buffer[uart0DataBuffer.indexIn] = UART0->D;
+
+	uart0DataBuffer.bytesReceived++;
+	uart0DataBuffer.indexIn = (uart0DataBuffer.indexIn+1) % UART_BUFFER_SIZE;
+	uart0DataBuffer.isFull = uart0DataBuffer.bytesReceived >= UART_BUFFER_SIZE;
+
+	UART0->S1;
+	char data = UART0->D;
 	}
 
 void UART1_IRQHandler()
 	{
-	if(uart1DataBuffer.index >= UART_BUFFER_SIZE)
-	{
-		iUART_ClearBuffer(kUART1);
-	}
+	if(uart1DataBuffer.isFull) return;
 
-	uart1DataBuffer.buffer[uart1DataBuffer.index] = UART1->D;
-	uart1DataBuffer.index++;
+	mDelay_DelayRelease(uart1DelayId);
+	uart1DelayId = mDelay_GetDelay(UART_DELAY_MS);
+
+	uart1DataBuffer.buffer[uart1DataBuffer.indexIn] = UART1->D;
+
+	uart1DataBuffer.bytesReceived++;
+	uart1DataBuffer.indexIn = (uart1DataBuffer.indexIn+1) % UART_BUFFER_SIZE;
+	uart1DataBuffer.isFull = uart1DataBuffer.bytesReceived >= UART_BUFFER_SIZE;
 
 	UART1->S1;
 	char data = UART1->D;
@@ -272,14 +327,25 @@ void iUART_ClearBuffer(UARTEnum aUART)
 	switch (aUART)
 		{
 		case kUART0:
-			uart0DataBuffer.index = 0;
+
+			uart0DataBuffer.indexIn = 0;
+			uart0DataBuffer.indexOut = 0;
+			uart0DataBuffer.bytesReceived = 0;
+			uart0DataBuffer.isFull = false;
+
+
 			for(int i = 0; i < UART_BUFFER_SIZE; i++)
 				{
 				uart0DataBuffer.buffer[i] = 0;
 				}
 
 		case kUART1:
-			uart1DataBuffer.index = 0;
+
+			uart1DataBuffer.indexIn = 0;
+			uart1DataBuffer.indexOut = 0;
+			uart1DataBuffer.bytesReceived = 0;
+			uart1DataBuffer.isFull = false;
+
 			for(int i = 0; i < UART_BUFFER_SIZE; i++)
 				{
 				uart1DataBuffer.buffer[i] = 0;

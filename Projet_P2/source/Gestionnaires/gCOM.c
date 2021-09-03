@@ -23,7 +23,9 @@ void gCOM_Setup()
 //	mBLE_RenameDevice("Test123");
 
 	mBLE_Start();
-//	mBLE_WriteString("AT+NAMEBIPBOUP");
+	mBLE_WriteString("AT+ADDR?");
+	char* test = mBLE_ReadData();
+//	strcpy(test, mBLE_ReadData());
 
 
 
