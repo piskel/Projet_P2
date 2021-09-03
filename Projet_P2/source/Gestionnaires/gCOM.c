@@ -12,7 +12,7 @@
 
 #define COM_QUERY_GET_DATA 0x20
 
-static char gComBleBuffer[32];
+//static char gComBleBuffer[32];
 //static char gComUARTBuffer[32];
 
 
@@ -20,13 +20,8 @@ void gCOM_Setup()
 	{
 	mBLE_Setup();
 
-//	mBLE_RenameDevice("Test123");
 
 	mBLE_Start();
-	mBLE_WriteString("AT+ADDR?");
-	char* test = mBLE_ReadData();
-//	strcpy(test, mBLE_ReadData());
-
 
 
 	}
@@ -40,7 +35,4 @@ void gCOM_Execute()
 
 	char* test = mBLE_ReadData();
 
-//	mBLE_Start();
-//	gCOM.bleData = mBLE_ReadData();
-//	mBLE_Stop();
 	}

@@ -48,7 +48,7 @@ void mBLE_Stop()
 
 void mBLE_WriteChar(char data)
 	{
-	while(!iUART_GetFlag(kUART1, kUARTFlagTC));
+	while(!iUART_GetFlag(kUART1, kUARTFlagTC) || !iUART_ReceptionDone(kUART1));
 	iUART_SetData(kUART1, data);
 	}
 
@@ -63,16 +63,6 @@ void mBLE_WriteString(char* data)
 
 char* mBLE_ReadData()
 	{
-//	while(!iUART_GetFlag(kUART1, kUARTFlagRDRF));
-//	char* tmpData = iUART_GetData(kUART1);
-//	mBLE_ClearBuffer();
-//	if(strlen(tmpData) <= BLE_BUFFER_MAX_SIZE)
-//		{
-//		strcpy(mBleBuffer, tmpData);
-//		}
-
-//	char data[32];
-//	mBLE_ClearBuffer();
 
 	bool test = iUART_ReceptionDone(kUART1);
 
@@ -86,7 +76,6 @@ char* mBLE_ReadData()
 		index++;
 		}
 	while(!isUARTBufferEmpty || !iUART_ReceptionDone(kUART1));
-//	mBleBuffer[index] = 0;
 	return mBleBuffer;
 	}
 
