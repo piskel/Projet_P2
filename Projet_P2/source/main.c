@@ -62,6 +62,7 @@
 int main(void)
 	{
 	mCpu_Setup();
+	mMemory_Setup();
 
 	gInput_Setup();
 	gCOM_Setup();
@@ -70,7 +71,8 @@ int main(void)
 	gCompute_Setup();
 	gOutput_Setup();
 
-
+	char data[32];
+	mMemory_ReadData(0x0000, data, 32);
 
 
 	while(true)
@@ -79,6 +81,7 @@ int main(void)
 		gCOM_Execute();
 		gSensors_Execute();
 		gGUI_Execute();
+
 	}
 
 	return 0;

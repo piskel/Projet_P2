@@ -24,32 +24,23 @@ void gCOM_Setup()
 	mBLE_Setup();
 	mUARTUSB_Setup();
 
-
-
 	mBLE_Start();
 	mUARTUSB_Start();
-
-
 	}
 
 void gCOM_Execute()
 	{
 	gCOM_BLEHandler();
-
+	gCOM_UARTUSBHandler();
 
 	}
 
 void gCOM_BLEHandler()
 	{
 	char bluetoothData[32];
-	char uartUsbData[32];
 
 	strcpy(bluetoothData, mBLE_ReadData());
-	strcpy(uartUsbData, mUARTUSB_ReadData());
 	mBLE_ClearBuffer();
-	mUARTUSB_ClearBuffer();
-
-	mUARTUSB_WriteString(uartUsbData);
 
 	switch ((COMQuery)bluetoothData[0])
 		{
@@ -63,6 +54,48 @@ void gCOM_BLEHandler()
 	}
 
 
+void gCOM_UARTUSBHandler()
+	{
+	char uartUsbData[32];
+
+	for(int i = 0; i < 32; i++)
+		{
+		uartUsbData[i] = 0;
+		}
+
+	strcpy(uartUsbData, mUARTUSB_ReadData());
+	mUARTUSB_ClearBuffer();
+
+//	for(int i = 0; i < strlen(uartUsbData); i++)
+//		{
+//		if(uartUsbData[i] == 13)
+//			{
+//			mUARTUSB_WriteString("\n");
+//			}
+//		else
+//			{
+//			mUARTUSB_WriteString(uartUsbData[i]);
+//			}
+//		}
+	mUARTUSB_WriteString(uartUsbData);
+
+
+
+
+//	switch ((COMQuery)uartUsbData[0])
+//		{
+//		case kCOMQueryGetData:;
+//
+//			gCOM_QueryGetData();
+//			break;
+//		default:
+//			break;
+//		}
+
+
+
+	}
+
 void gCOM_QueryGetData()
 	{
 	int structSize = sizeof(gSensors);
@@ -71,5 +104,6 @@ void gCOM_QueryGetData()
 	memcpy(dataPacket, &gSensors, structSize);
 
 	mBLE_WriteData(dataPacket, structSize);
+	mUARTUSB_WriteData(dataPacket, structSize);
 	}
 

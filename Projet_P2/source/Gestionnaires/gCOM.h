@@ -19,6 +19,8 @@ void gCOM_Setup();
 void gCOM_Execute();
 
 void gCOM_BLEHandler();
+void gCOM_UARTUSBHandler();
+
 void gCOM_QueryGetData();
 
 
