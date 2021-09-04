@@ -14,5 +14,6 @@ void gGUI_Setup();
 void gGUI_Execute();
 void gGUI_RenderValues();
 
+void gGUI_FormatValue(int value, char* string, int pos, const char* unit);
 
 #endif /* GESTIONNAIRES_GGUI_H_ */

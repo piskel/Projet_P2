@@ -21,14 +21,16 @@
 #define GUI_PRESS_TEXT		 "Pressure   : "
 #define GUI_HUM_TEXT		 "Humidity   : "
 
-static char txtWaterLevel[20] = "";
-static char txtSoilHum[20] = "";
-static char txtLight[20] = "";
-static char txtUV[20] = "";
-static char txtIR[20] = "";
-static char txtTemp[20] = "";
-static char txtPress[20] = "";
-static char txtHum[20] = "";
+#define GUI_MAX_TEXT_SIZE 24
+
+static char txtWaterLevel[GUI_MAX_TEXT_SIZE] = "NaN";
+static char txtSoilHum[GUI_MAX_TEXT_SIZE] = "NaN";
+static char txtLight[GUI_MAX_TEXT_SIZE] = "NaN";
+static char txtUV[GUI_MAX_TEXT_SIZE] = "NaN";
+static char txtIR[GUI_MAX_TEXT_SIZE] = "NaN";
+static char txtTemp[GUI_MAX_TEXT_SIZE] = "NaN";
+static char txtPress[GUI_MAX_TEXT_SIZE] = "NaN";
+static char txtHum[GUI_MAX_TEXT_SIZE] = "NaN";
 
 static UIText* pUIWaterLevelLabel;
 static UIText* pUISoilHumLabel;
@@ -68,13 +70,13 @@ void gGUI_Setup()
 	mGUI_CreatePage("sensors_page");
 
 	pUIWaterLevelLabel 	= mGUI_CreateText("water_level_label", 	(point){0, 0}, 	false, "", txtWaterLevel);
-	pUISoilHumLabel 	= mGUI_CreateText("soil_hum_label", 	(point){0, 8}, 	false, "", GUI_SOIL_HUM_TEXT);
-	pUILightLabel		= mGUI_CreateText("light_label", 		(point){0, 16}, false, "", GUI_LIGHT_TEXT);
-	pUIUVLabel			= mGUI_CreateText("uv_label", 			(point){0, 24}, false, "", GUI_UV_TEXT);
-	pUIIRLabel			= mGUI_CreateText("ir_label", 			(point){0, 32}, false, "", GUI_IR_TEXT);
-	pUITempLabel		= mGUI_CreateText("temp_label", 		(point){0, 40}, false, "", GUI_TEMP_TEXT);
-	pUIPressLabel		= mGUI_CreateText("press_label", 		(point){0, 48}, false, "", GUI_PRESS_TEXT);
-	pUIHumLabel			= mGUI_CreateText("hum_label", 			(point){0, 56}, false, "", GUI_HUM_TEXT);
+	pUISoilHumLabel 	= mGUI_CreateText("soil_hum_label", 	(point){0, 8}, 	false, "", txtSoilHum);
+	pUILightLabel		= mGUI_CreateText("light_label", 		(point){0, 16}, false, "", txtLight);
+	pUIUVLabel			= mGUI_CreateText("uv_label", 			(point){0, 24}, false, "", txtUV);
+	pUIIRLabel			= mGUI_CreateText("ir_label", 			(point){0, 32}, false, "", txtIR);
+	pUITempLabel		= mGUI_CreateText("temp_label", 		(point){0, 40}, false, "", txtTemp);
+	pUIPressLabel		= mGUI_CreateText("press_label", 		(point){0, 48}, false, "", txtPress);
+	pUIHumLabel			= mGUI_CreateText("hum_label", 			(point){0, 56}, false, "", txtHum);
 
 	mGUI_AddElementToPage("sensors_page", "water_level_label");
 	mGUI_AddElementToPage("sensors_page", "soil_hum_label");
@@ -122,8 +124,45 @@ void gGUI_Execute()
 void gGUI_RenderValues()
 	{
 	strcpy(txtWaterLevel, GUI_WATER_LEVEL_TEXT);
-	itoa(gSensors.waterLevel, &(txtWaterLevel[13]), 10);
+//	itoa(gSensors.waterLevel, &(txtWaterLevel[13]), 10);
+	gGUI_FormatValue(gSensors.waterLevel, txtWaterLevel, 13, " %");
 
-//	pUIWaterLevelLabel->text = txtWaterLevel;
-//	strcpy(pUIWaterLevelLabel->text, txtWaterLevel);
+	strcpy(txtSoilHum, GUI_SOIL_HUM_TEXT);
+	itoa((int)gSensors.soilHumidity, &(txtSoilHum[13]), 10);
+
+	strcpy(txtLight, GUI_LIGHT_TEXT);
+	itoa(gSensors.visibleLight, &(txtLight[13]), 10);
+
+
+	strcpy(txtUV, GUI_UV_TEXT);
+	itoa(gSensors.uv, &(txtUV[13]), 10);
+
+	strcpy(txtIR, GUI_IR_TEXT);
+	itoa(gSensors.ir, &(txtIR[13]), 10);
+
+	strcpy(txtTemp, GUI_TEMP_TEXT);
+//	itoa(gSensors.temperature, &(txtTemp[13]), 10);
+	gGUI_FormatValue(gSensors.temperature, txtTemp, 13, "°C");
+
+	strcpy(txtPress, GUI_PRESS_TEXT);
+//	itoa(gSensors.pressure, &(txtPress[13]), 10);
+	gGUI_FormatValue(gSensors.pressure, txtPress, 13, " hPa");
+
+	strcpy(txtHum, GUI_HUM_TEXT);
+//	itoa(gSensors.humidity, &(txtHum[13]), 10);
+	gGUI_FormatValue(gSensors.humidity, txtHum, 13, " %");
+
+	}
+
+
+void gGUI_FormatValue(int value, char* string, int pos, const char* unit)
+	{
+	char testSize[GUI_MAX_TEXT_SIZE];
+	itoa(value, testSize, 10);
+	int valLen = strlen(testSize);
+
+	if(valLen+pos+strlen(unit) >= GUI_MAX_TEXT_SIZE) return;
+
+	itoa(value, &(string[pos]), 10);
+	strcpy(&(string[pos+valLen]), unit);
 	}
