@@ -30,11 +30,11 @@ void mWLSensor_Setup()
 bool mWLSensor_ReadValues()
 	{
 
-	iI2C0_Enable();
 
 	char tmpSensorData[20];
 
 	bool fail = false;
+	iI2C0_Enable();
 
 	if (!fail && !iI2C0_StartCom()) fail = true;
 	if (!fail && !iI2C0_SendSlaveAdd(WL_SENSOR_ADDR_H << 1 | 1)) fail = true;
@@ -59,7 +59,7 @@ bool mWLSensor_ReadValues()
 	}
 
 
-int mWLSensor_GetWaterLevel()
+unsigned char mWLSensor_GetWaterLevel()
 	{
 	if(!mWLSensor_ReadValues()) return 0;
 
@@ -72,5 +72,5 @@ int mWLSensor_GetWaterLevel()
 //	waterLevel /= 20*255;
 	waterLevel /= 51;
 
-	return (int)waterLevel;
+	return (unsigned char)waterLevel;
 	}

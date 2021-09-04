@@ -6,6 +6,8 @@
  */
 
 #include "gCOM.h"
+#include "string.h"
+
 #include "gMBox.h"
 
 #include "mBLE.h"
@@ -44,18 +46,22 @@ void gCOM_BLEHandler()
 		{
 		case kCOMQueryGetData:;
 
-			char* sensorData = (char*)calloc(sizeof(gSensors)+1,sizeof(char));
+			gCOM_QueryGetData();
 
-			sensorData[0] = gSensors.humidity;
-
-			sensorData[sizeof(gSensors)] = 0;
-
-			mBLE_WriteString(sensorData);
 			break;
 		default:
 			break;
 		}
-
 	}
 
+
+void gCOM_QueryGetData()
+	{
+	int structSize = sizeof(gSensors);
+	char dataPacket[structSize];
+
+	memcpy(dataPacket, &gSensors, structSize);
+
+	mBLE_WriteData(dataPacket, structSize);
+	}
 

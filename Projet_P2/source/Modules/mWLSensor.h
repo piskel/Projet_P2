@@ -15,7 +15,7 @@ void mWLSensor_Setup();
 
 bool mWLSensor_ReadValues();
 
-int mWLSensor_GetWaterLevel();
+unsigned char mWLSensor_GetWaterLevel();
 
 
 #endif /* MODULES_MWLSENSOR_H_ */

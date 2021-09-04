@@ -17,6 +17,7 @@ void mBLE_Stop();
 
 void mBLE_WriteChar(char data);
 void mBLE_WriteString(char* data);
+void mBLE_WriteData(char* data, int size);
 
 char* mBLE_ReadData();
 void mBLE_ClearBuffer();

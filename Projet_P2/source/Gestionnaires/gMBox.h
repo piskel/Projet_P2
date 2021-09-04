@@ -25,14 +25,14 @@ typedef struct
 
 typedef struct
 	{
-	int waterLevel;
+	unsigned char waterLevel;
 	float soilHumidity;
 	unsigned int visibleLight;
 	unsigned int ir;
 	unsigned int uv;
 	int temperature;
 	int pressure;
-	int humidity;
+	unsigned char humidity;
 	}SensorsStruct;
 
 typedef struct

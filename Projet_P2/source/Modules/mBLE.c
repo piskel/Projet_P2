@@ -59,6 +59,13 @@ void mBLE_WriteString(char* data)
 		mBLE_WriteChar(data[i]);
 		}
 	}
+void mBLE_WriteData(char* data, int size)
+	{
+	for(int i = 0; i < size; i++)
+		{
+		mBLE_WriteChar(data[i]);
+		}
+	}
 
 
 char* mBLE_ReadData()
