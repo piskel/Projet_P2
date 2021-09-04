@@ -37,7 +37,7 @@ void gSensors_Execute()
 
 
 		// Water level
-		gSensors.waterLevel = mWLSensor_GetWaterLevel()*100;
+		gSensors.waterLevel = mWLSensor_GetWaterLevel();
 
 		// Soil humidity
 		mSoilSensor_ReadValues();

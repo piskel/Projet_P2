@@ -43,7 +43,14 @@ void gCOM_BLEHandler()
 	switch ((COMQuery)bluetoothData[0])
 		{
 		case kCOMQueryGetData:;
-			mBLE_WriteString(gSensors.visibleLight);
+
+			char* sensorData = (char*)calloc(sizeof(gSensors)+1,sizeof(char));
+
+			sensorData[0] = gSensors.humidity;
+
+			sensorData[sizeof(gSensors)] = 0;
+
+			mBLE_WriteString(sensorData);
 			break;
 		default:
 			break;

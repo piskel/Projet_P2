@@ -35,6 +35,7 @@ typedef char bool;
 
 #define DISPLAY_HEIGHT 64
 #define DISPLAY_WIDTH 102
+#define DISPLAY_PAGE_HEIGHT 8
 #define DISPLAY_MEM_SIZE 816
 #define DISPLAY_BUFFER_SIZE 6528
 

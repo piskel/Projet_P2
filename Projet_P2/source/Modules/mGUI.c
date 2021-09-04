@@ -20,13 +20,12 @@ static bool buffer[DISPLAY_HEIGHT*DISPLAY_WIDTH];
 
 static UIPage** uiPageTab;
 static UIElement** uiElementTab;
-//static UIContext uiContext;
 
-static char nbUIPage = 0;
-static char nbUIElement = 0;
+static int nbUIPage = 0;
+static int nbUIElement = 0;
 
 static UIContext** uiContextTab;
-static char uiContextTabSize = 0;
+static int uiContextTabSize = 0;
 
 void mGUI_Setup()
 	{
@@ -40,8 +39,6 @@ void mGUI_Setup()
 	mGUI_CreateText("error_text", (point){0, 0}, false, "", "ERROR");
 	mGUI_AddElementToPage("error_text", "error_page");
 
-//	uiContext.uiPageName = "error_page";
-//	uiContext.cursor = -1;
 
 	mGUI_SetCurrentPage("error_page");
 	}
@@ -224,7 +221,7 @@ void mGUI_SetCurrentPage(const char* uiPageName)
 	}
 	if(strcmp(mGUI_GetPageFromName(uiPageName)->name, mGUI_GetCurrentPageName())==0) return;
 
-	UIPage* pUICurrentPage = mGUI_GetPageFromName(uiContextTab[uiContextTabSize-1]->uiPageName);
+	UIPage* pUICurrentPage = mGUI_GetPageFromName(mGUI_GetCurrentContext()->uiPageName);
 
 	// Deselects all the elements on the current page
 	for(int i = 0; i < pUICurrentPage->nbUIElement; i++)
@@ -239,8 +236,8 @@ void mGUI_SetCurrentPage(const char* uiPageName)
 	uiContextTab[uiContextTabSize-1] = (UIContext*) malloc(sizeof(UIContext));
 
 	UIPage* pUIPage = mGUI_GetPageFromName(uiPageName);
-	uiContextTab[uiContextTabSize-1]->uiPageName = pUIPage->name;
-	uiContextTab[uiContextTabSize-1]->cursor = -1;
+	mGUI_GetCurrentContext()->uiPageName = pUIPage->name;
+	mGUI_GetCurrentContext()->cursor = -1;
 
 	mGUI_NavigateInteractive(true);
 	}
@@ -258,7 +255,7 @@ void mGUI_PreviousContext()
 	// Rescale the tab size
 	uiContextTab = (UIContext**) realloc(uiContextTab, uiContextTabSize*sizeof(UIContext*));
 
-	if(uiContextTab[uiContextTabSize-1]->cursor >= 0)
+	if(mGUI_GetCurrentContext()->cursor >= 0)
 		{
 		UIElement* pUIElement = mGUI_GetElementFromName(mGUI_GetCurrentElementName());
 		pUIElement->selected = true;
@@ -285,7 +282,7 @@ void mGUI_NavigateInteractive(bool direction)
 
 	int step = direction ? 1 : -1;
 
-	int currentCursor = (uiContextTab[uiContextTabSize-1]->cursor + pUIPage->nbUIElement + step)%pUIPage->nbUIElement;
+	int currentCursor = (mGUI_GetCurrentContext()->cursor + pUIPage->nbUIElement + step)%pUIPage->nbUIElement;
 
 	do{
 		UIElement* pUIElement = mGUI_GetElementFromName(pUIPage->uiElementNameTab[currentCursor]);
@@ -293,12 +290,13 @@ void mGUI_NavigateInteractive(bool direction)
 		if(pUIElement->interactive == true)
 			{
 			pUIElement->selected = true;
-			uiContextTab[uiContextTabSize-1]->cursor = currentCursor;
+			mGUI_GetCurrentContext()->cursor = currentCursor;
 			break;
 			}
 
 		currentCursor = (currentCursor+pUIPage->nbUIElement+step)%pUIPage->nbUIElement;
-	}while(currentCursor != uiContextTab[uiContextTabSize-1]->cursor);
+
+	}while(currentCursor != mGUI_GetCurrentContext()->cursor);
 
 
 	}
@@ -331,11 +329,4 @@ void mGUI_GoToLinkedPage()
 	if(pUIContext->cursor < 0) return;
 	UIElement* pUIElement = mGUI_GetElementFromName(mGUI_GetCurrentElementName());
 	mGUI_SetCurrentPage(pUIElement->linkedPage);
-	}
-
-//  FIXME Doesn't work
-void mGUI_CopyString(const char* source, char* target)
-	{
-	target = (char*) malloc(strlen(source)+1);
-	memcpy(target, source, strlen(source)+1);
 	}

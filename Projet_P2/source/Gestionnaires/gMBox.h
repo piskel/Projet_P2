@@ -25,7 +25,7 @@ typedef struct
 
 typedef struct
 	{
-	float waterLevel;
+	int waterLevel;
 	float soilHumidity;
 	unsigned int visibleLight;
 	unsigned int ir;

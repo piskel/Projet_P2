@@ -83,17 +83,17 @@ void mDisplay_SendBuffer(bool *buffer)
 	// TODO Rename buffer size constant
 	for(int i = DISPLAY_MEM_SIZE-1; i >=0 ; i--)
 		{
-		posX = i%102;
-		posY = i/102;
+		posX = i%DISPLAY_WIDTH;
+		posY = i/DISPLAY_WIDTH;
 
 		char line = 0x00;
 
-		for(int j = 0; j < 8; j++)
+		for(int j = 0; j < DISPLAY_PAGE_HEIGHT; j++)
 			{
-			 line |= buffer[posX+102*(posY*8+7-j)] << j;
+			 line |= buffer[posX+DISPLAY_WIDTH* (posY*8 + 7-j)] << j;
 			}
 
-		mDisplay_SendCommand(0xb0+7-posY);
+		mDisplay_SendCommand(0xb0 + 7 - posY);
 		mDisplay_SendData(line);
 		}
 

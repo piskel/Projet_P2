@@ -85,6 +85,5 @@ UIContext* mGUI_GetCurrentContext();
 
 void mGUI_GoToLinkedPage();
 
-void mGUI_CopyString(const char* source, char* target);
 
 #endif /* MODULES_MGUI_H_ */

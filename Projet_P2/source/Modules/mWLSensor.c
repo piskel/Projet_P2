@@ -59,7 +59,7 @@ bool mWLSensor_ReadValues()
 	}
 
 
-float mWLSensor_GetWaterLevel()
+int mWLSensor_GetWaterLevel()
 	{
 	if(!mWLSensor_ReadValues()) return 0;
 
@@ -69,7 +69,8 @@ float mWLSensor_GetWaterLevel()
 	{
 		waterLevel += sensorData[i];
 	}
-	waterLevel /= 20*255;
+//	waterLevel /= 20*255;
+	waterLevel /= 51;
 
-	return waterLevel;
+	return (int)waterLevel;
 	}

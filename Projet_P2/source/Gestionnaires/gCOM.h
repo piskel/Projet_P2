@@ -14,10 +14,6 @@ typedef enum
 		kCOMQuerySetData = 0x21
 	} COMQuery;
 
-//typedef enum
-//	{
-//
-//	} COMDataType;
 
 void gCOM_Setup();
 void gCOM_Execute();
