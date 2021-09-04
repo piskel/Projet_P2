@@ -13,7 +13,7 @@
 void mSoilSensor_Setup();
 void mSoilSensor_RequestValues();
 bool mSoilSensor_ReadValues();
-float mSoilSensor_GetHumidity();
+int mSoilSensor_GetHumidity();
 
 
 
