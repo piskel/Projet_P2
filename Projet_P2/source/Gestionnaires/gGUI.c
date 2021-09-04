@@ -21,6 +21,15 @@
 #define GUI_PRESS_TEXT		 "Pressure   : "
 #define GUI_HUM_TEXT		 "Humidity   : "
 
+static char txtWaterLevel[20] = "";
+static char txtSoilHum[20] = "";
+static char txtLight[20] = "";
+static char txtUV[20] = "";
+static char txtIR[20] = "";
+static char txtTemp[20] = "";
+static char txtPress[20] = "";
+static char txtHum[20] = "";
+
 static UIText* pUIWaterLevelLabel;
 static UIText* pUISoilHumLabel;
 static UIText* pUILightLabel;
@@ -58,7 +67,7 @@ void gGUI_Setup()
 
 	mGUI_CreatePage("sensors_page");
 
-	pUIWaterLevelLabel 	= mGUI_CreateText("water_level_label", 	(point){0, 0}, 	false, "", GUI_WATER_LEVEL_TEXT);
+	pUIWaterLevelLabel 	= mGUI_CreateText("water_level_label", 	(point){0, 0}, 	false, "", txtWaterLevel);
 	pUISoilHumLabel 	= mGUI_CreateText("soil_hum_label", 	(point){0, 8}, 	false, "", GUI_SOIL_HUM_TEXT);
 	pUILightLabel		= mGUI_CreateText("light_label", 		(point){0, 16}, false, "", GUI_LIGHT_TEXT);
 	pUIUVLabel			= mGUI_CreateText("uv_label", 			(point){0, 24}, false, "", GUI_UV_TEXT);
@@ -112,7 +121,9 @@ void gGUI_Execute()
 
 void gGUI_RenderValues()
 	{
-//	char value[10];
-//	itoa(gSensors.waterLevel, value, 10);
-//	pUIWaterLevelLabel = value;
+	strcpy(txtWaterLevel, GUI_WATER_LEVEL_TEXT);
+	itoa(gSensors.waterLevel, &(txtWaterLevel[13]), 10);
+
+//	pUIWaterLevelLabel->text = txtWaterLevel;
+//	strcpy(pUIWaterLevelLabel->text, txtWaterLevel);
 	}
