@@ -54,7 +54,7 @@ void gGUI_Setup()
 	mGUI_CreatePage("main_menu_page");
 
 	mGUI_CreateText("main_menu_sensors", (point){0, 0}, true, "sensors_page",  "Sensors");
-	mGUI_CreateText("main_menu_com", (point){0, 8}, true, "com_menu_page", "Communication");
+	mGUI_CreateText("main_menu_com", (point){0, 8}, true, "com_menu_page", "Connectivity");
 	mGUI_CreateText("main_menu_settings", (point){0, 16}, true, "settings_menu_page", "Settings");
 	mGUI_CreateText("main_menu_about", (point){0, 24}, true, "about_page", "About");
 
@@ -131,8 +131,8 @@ void gGUI_RenderValues()
 	itoa((int)gSensors.soilHumidity, &(txtSoilHum[13]), 10);
 
 	strcpy(txtLight, GUI_LIGHT_TEXT);
-	itoa(gSensors.visibleLight, &(txtLight[13]), 10);
-
+	gGUI_FormatValue(gSensors.visibleLight, txtLight, 13, "lx");
+//	itoa(gSensors.visibleLight, &(txtLight[13]), 10);
 
 	strcpy(txtUV, GUI_UV_TEXT);
 	itoa(gSensors.uv, &(txtUV[13]), 10);
@@ -141,15 +141,12 @@ void gGUI_RenderValues()
 	itoa(gSensors.ir, &(txtIR[13]), 10);
 
 	strcpy(txtTemp, GUI_TEMP_TEXT);
-//	itoa(gSensors.temperature, &(txtTemp[13]), 10);
 	gGUI_FormatValue(gSensors.temperature, txtTemp, 13, "°C");
 
 	strcpy(txtPress, GUI_PRESS_TEXT);
-//	itoa(gSensors.pressure, &(txtPress[13]), 10);
-	gGUI_FormatValue(gSensors.pressure, txtPress, 13, " hPa");
+	gGUI_FormatValue(gSensors.pressure, txtPress, 13, "hPa");
 
 	strcpy(txtHum, GUI_HUM_TEXT);
-//	itoa(gSensors.humidity, &(txtHum[13]), 10);
 	gGUI_FormatValue(gSensors.humidity, txtHum, 13, " %");
 
 	}
