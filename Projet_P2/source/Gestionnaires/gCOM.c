@@ -11,6 +11,7 @@
 #include "gMBox.h"
 
 #include "mBLE.h"
+#include "mUARTUSB.h"
 
 //#define COM_QUERY_GET_DATA 0x20
 
@@ -21,9 +22,12 @@
 void gCOM_Setup()
 	{
 	mBLE_Setup();
+	mUARTUSB_Setup();
+
 
 
 	mBLE_Start();
+	mUARTUSB_Start();
 
 
 	}
@@ -38,16 +42,20 @@ void gCOM_Execute()
 void gCOM_BLEHandler()
 	{
 	char bluetoothData[32];
+	char uartUsbData[32];
 
 	strcpy(bluetoothData, mBLE_ReadData());
+	strcpy(uartUsbData, mUARTUSB_ReadData());
 	mBLE_ClearBuffer();
+	mUARTUSB_ClearBuffer();
+
+	mUARTUSB_WriteString(uartUsbData);
 
 	switch ((COMQuery)bluetoothData[0])
 		{
 		case kCOMQueryGetData:;
 
 			gCOM_QueryGetData();
-
 			break;
 		default:
 			break;

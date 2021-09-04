@@ -71,9 +71,6 @@ void mBLE_WriteData(char* data, int size)
 char* mBLE_ReadData()
 	{
 
-	bool test = iUART_ReceptionDone(kUART1);
-
-
 	bool isUARTBufferEmpty = false;
 	int index = 0;
 	do

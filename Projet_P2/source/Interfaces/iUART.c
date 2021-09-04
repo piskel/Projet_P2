@@ -57,16 +57,21 @@ void iUART_Config()
 	iDio_PinConfig(kPortE, kPin22, kAlternate1); // UART0_CTS
 	iDio_PinConfig(kPortE, kPin23, kAlternate1); // UART0_RTS
 
-	iDio_SetPortDirection(kPortE, kMaskIo22, kIoOutput);
+	iDio_SetPortDirection(kPortE, kMaskIo22, kIoInput);
 	iDio_SetPortDirection(kPortE, kMaskIo23, kIoOutput);
+
 
 	iDio_PinConfig(kPortE, kPin0, kAlternate3); // UART1_TX
 	iDio_PinConfig(kPortE, kPin1, kAlternate3); // UART1_RX
 	iDio_PinConfig(kPortE, kPin2, kAlternate1); // UART1_CTS
 	iDio_PinConfig(kPortE, kPin3, kAlternate1); // UART1_RTS
 
-	iDio_SetPortDirection(kPortE, kMaskIo2, kIoOutput);
+	iDio_SetPortDirection(kPortE, kMaskIo2, kIoInput);
 	iDio_SetPortDirection(kPortE, kMaskIo3, kIoOutput);
+//	iDio_SetPort(kPortE, kMaskIo3, kIoOff);
+
+	iUART_SetRTS(kUART0, false);
+	iUART_SetRTS(kUART1, false);
 
 	// Baud rate : 115200
 	// Baud rate = bus clock freq (24MHz)/(SBR[12:0]*16)
@@ -321,6 +326,29 @@ void iUART_SetData(UARTEnum aUART, char data)
 		}
 	}
 
+void iUART_SetRTS(UARTEnum aUART, bool state)
+	{
+
+	switch (aUART)
+		{
+		case kUART0:
+			iDio_SetPort(kPortE, kMaskIo23, state ? kIoOff: kIoOn);
+		case kUART1:
+			iDio_SetPort(kPortE, kMaskIo3, state ? kIoOff: kIoOn);
+		}
+	}
+
+bool iUART_GetCTS(UARTEnum aUART)
+	{
+	switch (aUART)
+		{
+		case kUART0:
+			return !iDio_GetPort(kPortE, kMaskIo22);
+		case kUART1:
+			return !iDio_GetPort(kPortE, kMaskIo2);
+		}
+	return false;
+	}
 
 void iUART_ClearBuffer(UARTEnum aUART)
 	{

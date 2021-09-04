@@ -68,6 +68,9 @@ char* iUART_GetData(UARTEnum aUART);
 bool iUART_GetCharFromBuffer(UARTEnum aUART, char *data);
 void iUART_SetData(UARTEnum aUART, char data);
 
+void iUART_SetRTS(UARTEnum aUART, bool state);
+bool iUART_GetCTS(UARTEnum aUART);
+
 void iUART_ClearBuffer(UARTEnum aUART);
 
 #endif /* INTERFACES_IUART_H_ */
