@@ -12,6 +12,23 @@
 
 #include "mPump.h"
 
+#define GUI_WATER_LEVEL_TEXT "Water lvl. : "
+#define GUI_SOIL_HUM_TEXT 	 "Soil hum.  : "
+#define GUI_LIGHT_TEXT		 "Vis. light : "
+#define GUI_UV_TEXT			 "UV         : "
+#define GUI_IR_TEXT			 "IR         : "
+#define GUI_TEMP_TEXT		 "Temp.      : "
+#define GUI_PRESS_TEXT		 "Pressure   : "
+#define GUI_HUM_TEXT		 "Humidity   : "
+
+static UIText* pUIWaterLevelLabel;
+static UIText* pUISoilHumLabel;
+static UIText* pUILightLabel;
+static UIText* pUIUVLabel;
+static UIText* pUIIRLabel;
+static UIText* pUITempLabel;
+static UIText* pUIPressLabel;
+static UIText* pUIHumLabel;
 
 
 void gGUI_Setup()
@@ -25,105 +42,49 @@ void gGUI_Setup()
 
 	mGUI_CreatePage("main_menu_page");
 
-	mGUI_CreateText("main_menu_sensors", (point){0, 0}, true, "sensors_menu_page",  "Sensors");
-	mGUI_AddElementToPage("main_menu_sensors", "main_menu_page");
-
+	mGUI_CreateText("main_menu_sensors", (point){0, 0}, true, "sensors_page",  "Sensors");
 	mGUI_CreateText("main_menu_com", (point){0, 8}, true, "com_menu_page", "Communication");
-	mGUI_AddElementToPage("main_menu_com", "main_menu_page");
-
 	mGUI_CreateText("main_menu_settings", (point){0, 16}, true, "settings_menu_page", "Settings");
-	mGUI_AddElementToPage("main_menu_settings", "main_menu_page");
-
 	mGUI_CreateText("main_menu_about", (point){0, 24}, true, "about_page", "About");
-	mGUI_AddElementToPage("main_menu_about", "main_menu_page");
+
+	mGUI_AddElementToPage("main_menu_page", "main_menu_sensors");
+	mGUI_AddElementToPage("main_menu_page", "main_menu_com");
+	mGUI_AddElementToPage("main_menu_page", "main_menu_settings");
+	mGUI_AddElementToPage("main_menu_page", "main_menu_about");
 
 	///////////////////////////////////////////////////////////
-	// SENSORS MENU ///////////////////////////////////////////
+	// SENSORS PAGE ///////////////////////////////////////////
 	///////////////////////////////////////////////////////////
 
-	mGUI_CreatePage("sensors_menu_page");
+	mGUI_CreatePage("sensors_page");
 
-	mGUI_CreateText("sensors_menu_water_level", (point){0, 0}, true, "water_level_page", "Water level");
-	mGUI_AddElementToPage("sensors_menu_water_level", "sensors_menu_page");
+	pUIWaterLevelLabel 	= mGUI_CreateText("water_level_label", 	(point){0, 0}, 	false, "", GUI_WATER_LEVEL_TEXT);
+	pUISoilHumLabel 	= mGUI_CreateText("soil_hum_label", 	(point){0, 8}, 	false, "", GUI_SOIL_HUM_TEXT);
+	pUILightLabel		= mGUI_CreateText("light_label", 		(point){0, 16}, false, "", GUI_LIGHT_TEXT);
+	pUIUVLabel			= mGUI_CreateText("uv_label", 			(point){0, 24}, false, "", GUI_UV_TEXT);
+	pUIIRLabel			= mGUI_CreateText("ir_label", 			(point){0, 32}, false, "", GUI_IR_TEXT);
+	pUITempLabel		= mGUI_CreateText("temp_label", 		(point){0, 40}, false, "", GUI_TEMP_TEXT);
+	pUIPressLabel		= mGUI_CreateText("press_label", 		(point){0, 48}, false, "", GUI_PRESS_TEXT);
+	pUIHumLabel			= mGUI_CreateText("hum_label", 			(point){0, 56}, false, "", GUI_HUM_TEXT);
 
-	mGUI_CreateText("sensors_menu_soil_humidity", (point){0, 8}, true, "soil_humidity_page", "Soil humidity");
-	mGUI_AddElementToPage("sensors_menu_soil_humidity", "sensors_menu_page");
-
-
-	mGUI_CreateText("sensors_menu_light_uv_ir", (point){0, 16}, true, "light_uv_ir_page", "Light/UV/IR");
-	mGUI_AddElementToPage("sensors_menu_light_uv_ir", "sensors_menu_page");
-
-	mGUI_CreateText("sensors_menu_temp_press_hum", (point){0, 24}, true, "temp_press_hum_page", "Temp/Press/Hum");
-	mGUI_AddElementToPage("sensors_menu_temp_press_hum", "sensors_menu_page");
-
-	///////////////////////////////////////////////////////////
-	// WATER LEVEL ////////////////////////////////////////////
-	///////////////////////////////////////////////////////////
-
-	mGUI_CreatePage("water_level_page");
-	mGUI_CreateText("water_level_text", (point){0, 0}, false, "", "N/A");
-	mGUI_AddElementToPage("water_level_text", "water_level_page");
+	mGUI_AddElementToPage("sensors_page", "water_level_label");
+	mGUI_AddElementToPage("sensors_page", "soil_hum_label");
+	mGUI_AddElementToPage("sensors_page", "light_label");
+	mGUI_AddElementToPage("sensors_page", "uv_label");
+	mGUI_AddElementToPage("sensors_page", "ir_label");
+	mGUI_AddElementToPage("sensors_page", "temp_label");
+	mGUI_AddElementToPage("sensors_page", "press_label");
+	mGUI_AddElementToPage("sensors_page", "hum_label");
 
 
-	///////////////////////////////////////////////////////////
-	// SOIL HUMIDITY //////////////////////////////////////////
-	///////////////////////////////////////////////////////////
-
-	mGUI_CreatePage("soil_humidity_page");
-	mGUI_CreateText("soil_humidity_text", (point){0, 0}, false, "", "N/A");
-	mGUI_AddElementToPage("soil_humidity_text", "soil_humidity_page");
-
-	///////////////////////////////////////////////////////////
-	// UV/LIGHT/IR ////////////////////////////////////////////
-	///////////////////////////////////////////////////////////
-
-	mGUI_CreatePage("light_uv_ir_page");
-	mGUI_CreateText("light_text", (point){0, 0}, false, "", "N/A");
-	mGUI_CreateText("ir_text", (point){0, 8}, false, "", "N/A");
-	mGUI_CreateText("uv_text", (point){0, 16}, false, "", "N/A");
-	mGUI_AddElementToPage("light_text", "light_uv_ir_page");
-	mGUI_AddElementToPage("ir_text", "light_uv_ir_page");
-	mGUI_AddElementToPage("uv_text", "light_uv_ir_page");
-
-	///////////////////////////////////////////////////////////
-	// TMP/PRESS/HUM //////////////////////////////////////////
-	///////////////////////////////////////////////////////////
-
-	mGUI_CreatePage("temp_press_hum_page");
-	mGUI_CreateText("temp_text", (point){0, 0}, false, "", "N/A");
-	mGUI_CreateText("press_text", (point){0, 8}, false, "", "N/A");
-	mGUI_CreateText("hum_text", (point){0, 16}, false, "", "N/A");
-	mGUI_AddElementToPage("temp_text", "temp_press_hum_page");
-	mGUI_AddElementToPage("press_text", "temp_press_hum_page");
-	mGUI_AddElementToPage("hum_text", "temp_press_hum_page");
-
-
-	///////////////////////////////////////////////////////////
-	// COM MENU ///////////////////////////////////////////////
-	///////////////////////////////////////////////////////////
-
-	mGUI_CreatePage("com_menu_page");
-	mGUI_CreateText("com_menu_ble", (point){0, 0}, true, "ble_page","Bluetooth \x15");
-	mGUI_AddElementToPage("com_menu_ble", "com_menu_page");
-
-
-	///////////////////////////////////////////////////////////
-	// BLUETOOTH //////////////////////////////////////////////
-	///////////////////////////////////////////////////////////
-
-	mGUI_CreatePage("ble_page");
-	mGUI_CreateText("ble_status_text", (point){0, 0}, false, "","N/A");
-	mGUI_AddElementToPage("ble_status_text", "ble_page");
 
 	mGUI_SetInitContext("main_menu_page");
-
 	}
 
 void gGUI_Execute()
 	{
 	if(gInput.buttonJustPressedTab[0])
 		{
-//		mGUI_SetCurrentPage("main_menu_page");
 		mGUI_PreviousContext();
 		}
 	else if(gInput.buttonJustPressedTab[1]) // Move up
@@ -139,59 +100,19 @@ void gGUI_Execute()
 		mGUI_GoToLinkedPage();
 		}
 
-	UIText* pUIWaterLevelText = (UIText*)mGUI_GetElementFromName("water_level_text");
-	UIText* pUISoilHumidityText = (UIText*)mGUI_GetElementFromName("soil_humidity_text");
-	UIText* pUILightText = (UIText*)mGUI_GetElementFromName("light_text");
-	UIText* pUIIRText = (UIText*)mGUI_GetElementFromName("ir_text");
-	UIText* pUIUVText = (UIText*)mGUI_GetElementFromName("uv_text");
-
-	UIText* pUITempText = (UIText*)mGUI_GetElementFromName("temp_text");
-	UIText* pUIPressText = (UIText*)mGUI_GetElementFromName("press_text");
-	UIText* pUIHumText = (UIText*)mGUI_GetElementFromName("hum_text");
-	UIText* pUIBleText = (UIText*)mGUI_GetElementFromName("ble_text");
-
-
-
-	char waterLeveText[10];
-	itoa((int)(gSensors.waterLevel), waterLeveText, 10);
-	pUIWaterLevelText->text = waterLeveText;
-
-	char soilHumidity[10];
-	itoa((int)(gSensors.soilHumidity), soilHumidity, 10);
-	pUISoilHumidityText->text = soilHumidity;
-
-	char visibleLight[10];
-	itoa((int)(gSensors.visibleLight), visibleLight, 10);
-	pUILightText->text = visibleLight;
-
-	char ir[10];
-	itoa((int)(gSensors.ir), ir, 10);
-	pUIIRText->text = ir;
-
-	char uv[10];
-	itoa((int)(gSensors.uv), uv, 10);
-	pUIUVText->text = uv;
-
-
-	char temp[10];
-	itoa((int)(gSensors.temperature), temp, 10);
-	pUITempText->text = temp;
-
-
-	char press[10];
-	itoa((int)(gSensors.pressure), press, 10);
-	pUIPressText->text = press;
-
-
-	char hum[10];
-	itoa((int)(gSensors.humidity), hum, 10);
-	pUIHumText->text = hum;
-
-//	pUIBleText->text = gCOM.bleData;
+	gGUI_RenderValues();
 
 	mGUI_PrintCurrentPage();
 
 	gGUI.currentPageName = mGUI_GetCurrentPageName();
 	gGUI.currentElementName = mGUI_GetCurrentElementName();
 
+	}
+
+
+void gGUI_RenderValues()
+	{
+//	char value[10];
+//	itoa(gSensors.waterLevel, value, 10);
+//	pUIWaterLevelLabel = value;
 	}

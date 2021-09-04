@@ -12,6 +12,7 @@
 void gGUI_Setup();
 
 void gGUI_Execute();
+void gGUI_RenderValues();
 
 
 #endif /* GESTIONNAIRES_GGUI_H_ */

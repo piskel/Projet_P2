@@ -56,15 +56,15 @@ typedef struct UIContext
 
 void mGUI_Setup();
 
-UIPage* mGUI_CreatePage(const char* name);
+UIPage* mGUI_CreatePage(char* name);
 
-UIText* mGUI_CreateText(const char* name, point position, bool interactive, const char* linkedPage, const char* text);
-UIImage* mGUI_CreateImage(const char* name, point position, bool interactive, const char* linkedPage, bool* image, point imageSize);
+UIText* mGUI_CreateText(char* name, point position, bool interactive, char* linkedPage, char* text);
+UIImage* mGUI_CreateImage(char* name, point position, bool interactive, char* linkedPage, bool* image, point imageSize);
 
 UIPage* mGUI_GetPageFromName(const char* name);
 UIElement* mGUI_GetElementFromName(const char* name);
 
-void mGUI_AddElementToPage(const char* uiElementName, const char* uiPageName);
+void mGUI_AddElementToPage(const char* uiPageName, char* uiElementName);
 
 void mGUI_PrintPage(const char* name);
 void mGUI_PrintElement(const char* name);
@@ -74,6 +74,9 @@ void mGUI_PrintImage(UIImage* pUIImage);
 void mGUI_SetInitContext(const char* uiPageName);
 void mGUI_SetCurrentPage(const char* uiPageName);
 void mGUI_PrintCurrentPage();
+
+
+void mGUI_PreviousContext();
 void mGUI_NavigateInteractive(bool direction);
 
 char* mGUI_GetCurrentPageName();

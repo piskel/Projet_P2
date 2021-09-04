@@ -22,11 +22,11 @@ static UIPage** uiPageTab;
 static UIElement** uiElementTab;
 //static UIContext uiContext;
 
-static int nbUIPage = 0;
-static int nbUIElement = 0;
+static char nbUIPage = 0;
+static char nbUIElement = 0;
 
 static UIContext** uiContextTab;
-static int uiContextTabSize = 0;
+static char uiContextTabSize = 0;
 
 void mGUI_Setup()
 	{
@@ -46,7 +46,7 @@ void mGUI_Setup()
 	mGUI_SetCurrentPage("error_page");
 	}
 
-UIPage* mGUI_CreatePage(const char* name)
+UIPage* mGUI_CreatePage(char* name)
 	{
 
 	uiPageTab = (UIPage**) realloc(uiPageTab, (nbUIPage+1)*sizeof(UIPage*));
@@ -62,7 +62,7 @@ UIPage* mGUI_CreatePage(const char* name)
 	return uiPageTab[nbUIPage];
 	}
 
-UIText* mGUI_CreateText(const char* name, point position, bool interactive, const char* linkedPage, const char* text)
+UIText* mGUI_CreateText(char* name, point position, bool interactive, char* linkedPage, char* text)
 	{
 	uiElementTab = (UIElement**) realloc(uiElementTab, (nbUIElement+1)*sizeof(UIElement*));
 	uiElementTab[nbUIElement] = (UIElement*) malloc(sizeof(UIText));
@@ -79,10 +79,10 @@ UIText* mGUI_CreateText(const char* name, point position, bool interactive, cons
 
 	nbUIElement++;
 
-	return uiElementTab[nbUIElement];
+	return pUIText;
 	}
 
-UIImage* mGUI_CreateImage(const char* name, point position, bool interactive, const char* linkedPage, bool* image, point imageSize)
+UIImage* mGUI_CreateImage(char* name, point position, bool interactive, char* linkedPage, bool* image, point imageSize)
 	{
 	uiElementTab = (UIElement**) realloc(uiElementTab, (nbUIElement+1)*sizeof(UIElement*));
 	uiElementTab[nbUIElement] = (UIElement*) malloc(sizeof(UIImage));
@@ -101,7 +101,7 @@ UIImage* mGUI_CreateImage(const char* name, point position, bool interactive, co
 
 	nbUIElement++;
 
-	return uiElementTab[nbUIElement];
+	return pUIImage;
 	}
 
 
@@ -129,7 +129,7 @@ UIElement* mGUI_GetElementFromName(const char* name)
 	return uiElementTab[0]; // Returns the error text
 	}
 
-void mGUI_AddElementToPage(const char* uiElementName, const char* uiPageName)
+void mGUI_AddElementToPage(const char* uiPageName, char* uiElementName)
 	{
 
 	UIPage* pUIPage = mGUI_GetPageFromName(uiPageName);
