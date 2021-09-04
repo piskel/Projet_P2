@@ -12,7 +12,7 @@ typedef struct Font
 	{
 	char width;
 	char height;
-	unsigned long charList[128];
+	unsigned long charList[255];
 	} font;
 
 
