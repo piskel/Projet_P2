@@ -64,6 +64,7 @@ bool mSoilSensor_ReadValues()
 	{
 	if(!mDelay_IsDelayDone(mSoilSensorDelayId)) return false;
 	mDelay_DelayRelease(mSoilSensorDelayId);
+
 	char tmpSensorData[2];
 	bool fail = false;
 
@@ -71,6 +72,7 @@ bool mSoilSensor_ReadValues()
 	if (!fail && !iI2C0_StartCom()) fail = true;
 	if (!fail && !iI2C0_SendSlaveAdd(SOIL_SENSOR_ADDR << 1 | SOIL_SENSOR_READ_BIT)) fail = true;
 	if (!fail && !iI2C0_ReadBytesAndStopCom(tmpSensorData, 2)) fail = true;
+	iI2C0_Disable();
 
 
 	if(!fail)
@@ -81,10 +83,8 @@ bool mSoilSensor_ReadValues()
 		{
 		mSoilSensorErrorCounter++;
 		}
-	iI2C0_Disable();
 
 	mSoilSensorValueRead = true;
-
 	return !fail;
 
 	}

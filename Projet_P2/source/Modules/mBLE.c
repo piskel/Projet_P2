@@ -48,7 +48,9 @@ void mBLE_Stop()
 
 void mBLE_WriteChar(char data)
 	{
-	while(!iUART_GetFlag(kUART1, kUARTFlagTC) || !iUART_ReceptionDone(kUART1));
+	while(!iUART_GetFlag(kUART1, kUARTFlagTC) || !iUART_ReceptionDone(kUART1)){};
+
+//	while(!iUART_GetFlag(kUART1, kUARTFlagTC)){};
 	iUART_SetData(kUART1, data);
 	}
 
@@ -58,6 +60,8 @@ void mBLE_WriteString(char* data)
 		{
 		mBLE_WriteChar(data[i]);
 		}
+
+//	mBLE_WriteChar(0x00);
 	}
 void mBLE_WriteData(char* data, int size)
 	{

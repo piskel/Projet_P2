@@ -17,7 +17,7 @@
 static UARTDataBuffer uart0DataBuffer;
 static UARTDataBuffer uart1DataBuffer;
 
-static bool mDelayIsInit = false;
+static bool iUARTIsInit = false;
 
 static int uart0DelayId;
 static int uart1DelayId;
@@ -25,7 +25,7 @@ static int uart1DelayId;
 
 void iUART_Config()
 	{
-	if(mDelayIsInit) return;
+	if(iUARTIsInit) return;
 
 	mDelay_Setup();
 
@@ -89,7 +89,7 @@ void iUART_Config()
 	UART0->C2|=UART_C2_RIE_MASK;
 	UART1->C2|=UART_C2_RIE_MASK;
 
-	mDelayIsInit = true;
+	iUARTIsInit = true;
 	}
 
 void iUART_SetFrameType(UARTEnum aUART, bool data9bits)

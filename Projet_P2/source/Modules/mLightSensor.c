@@ -87,7 +87,6 @@ void mLightSensor_SingleWrite(char address, char data)
 
  unsigned int mLightSensor_GetVisibleLight()
  	 {
-//	 while(iDio_GetPort(kPortC, kMaskIo0) == true){};
 
 	 char vis[2] = {0x00, 0x00};
 	 vis[0] = mLightSensor_SingleRead(0x22);
@@ -98,7 +97,6 @@ void mLightSensor_SingleWrite(char address, char data)
 
  unsigned int mLightSensor_GetIR()
  	 {
-//	 while(iDio_GetPort(kPortC, kMaskIo0) == true){};
 
 	 char vis[2] = {0x00, 0x00};
 	 vis[0] = mLightSensor_SingleRead(0x24);
@@ -110,8 +108,6 @@ void mLightSensor_SingleWrite(char address, char data)
  // UV not working
  unsigned int mLightSensor_GetUV()
  	 {
-//	 while(iDio_GetPort(kPortC, kMaskIo0) == true){};
-
 	 char vis[2] = {0x00, 0x00};
 	 vis[0] = mLightSensor_SingleRead(0x2C);
 	 vis[1] = mLightSensor_SingleRead(0x2D);

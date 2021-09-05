@@ -25,10 +25,10 @@ static bool isI2C1Init = false;
 void iI2C0_Config()
 	{
 		if(isI2C0Init) return;
-
 		void iI2C0_Reset();
-
 		iDio_EnablePortClk();
+
+
 		// I2C clock enable
 		// System Clock Gating Control Register 4 (SIM_SCGC4)
 		SIM->SCGC4 |= SIM_SCGC4_I2C0_MASK;
