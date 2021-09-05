@@ -29,7 +29,7 @@
  */
  
 /**
- * @file    Laboratoire_1.c
+ * @file    main.c
  * @brief   Application entry point.
  */
 
@@ -41,28 +41,15 @@
 #include "gCompute.h"
 #include "gOutput.h"
 
-/* TODO: insert other include files here. */
-
-/* TODO: insert other definitions and declarations here. */
 
 /*
  * @brief   Application entry point.
  */
 
-// System Integration Module, System Clock Gating Control Register 5
-//unsigned int *gSimSCGC5Ptr=(unsigned int*)0x40048038;
-
-// Port Control and Interrupts (crossbar)
-//unsigned int *gPCRPtr;
-
-#ifndef M_PI
-#    define M_PI 3.1415926535897932
-#endif
-
 int main(void)
 	{
 	mCpu_Setup();
-	mMemory_Setup();
+//	mMemory_Setup();
 
 	gInput_Setup();
 	gCOM_Setup();
@@ -71,8 +58,15 @@ int main(void)
 	gCompute_Setup();
 	gOutput_Setup();
 
-	char data[32];
-	mMemory_ReadData(0x0000, data, 32);
+//	char data[32];
+//	char dataRead[32];
+//	for(int i = 0; i < 32; i++)
+//		{
+//		data[i] = 0;
+//		}
+//
+//	mMemory_WriteByte(0x0000, 0x12);
+//	mMemory_ReadData(0x0000, dataRead, 32);
 
 
 	while(true)
