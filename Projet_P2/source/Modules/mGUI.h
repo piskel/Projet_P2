@@ -81,6 +81,8 @@ void mGUI_NavigateInteractive(bool direction);
 
 char* mGUI_GetCurrentPageName();
 char* mGUI_GetCurrentElementName();
+UIPage* mGUI_GetCurrentPage();
+UIElement* mGUI_GetCurrentElement();
 UIContext* mGUI_GetCurrentContext();
 
 void mGUI_GoToLinkedPage();

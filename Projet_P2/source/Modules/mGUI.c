@@ -317,6 +317,16 @@ char* mGUI_GetCurrentElementName()
 	return mGUI_GetPageFromName(uiContextTab[uiContextTabSize-1]->uiPageName)->uiElementNameTab[uiContextTab[uiContextTabSize-1]->cursor];
 	}
 
+
+UIPage* mGUI_GetCurrentPage()
+	{
+	return mGUI_GetPageFromName(mGUI_GetCurrentPageName());
+	}
+UIElement* mGUI_GetCurrentElement()
+	{
+	return mGUI_GetElementFromName(mGUI_GetCurrentElementName());
+	}
+
 UIContext* mGUI_GetCurrentContext()
 	{
 	return uiContextTab[uiContextTabSize-1];
