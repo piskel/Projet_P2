@@ -13,6 +13,7 @@ void gGUI_Setup();
 
 void gGUI_Execute();
 void gGUI_RenderValues();
+void gGUI_HandleActions();
 
 void gGUI_FormatValue(int value, char* string, int pos, const char* unit);
 

@@ -6,8 +6,10 @@
  */
 
 #include "gGUI.h"
-#include "gMBox.h"
+#include "string.h"
+#include "stdlib.h"
 
+#include "gMBox.h"
 #include "mGUI.h"
 
 #include "mPump.h"
@@ -87,6 +89,19 @@ void gGUI_Setup()
 	mGUI_AddElementToPage("sensors_page", "press_label");
 	mGUI_AddElementToPage("sensors_page", "hum_label");
 
+	///////////////////////////////////////////////////////////
+	// SETTINGS PAGE //////////////////////////////////////////
+	///////////////////////////////////////////////////////////
+
+	mGUI_CreatePage("settings_menu_page");
+
+	mGUI_CreateText("settings_reset_i2c0", (point){0, 0}, true, "",  "Reset I2C 0");
+	mGUI_CreateText("settings_reset_i2c1", (point){0, 8}, true, "",  "Reset I2C 1");
+
+	mGUI_AddElementToPage("settings_menu_page", "settings_reset_i2c0");
+	mGUI_AddElementToPage("settings_menu_page", "settings_reset_i2c1");
+
+
 
 
 	mGUI_SetInitContext("main_menu_page");
@@ -108,7 +123,7 @@ void gGUI_Execute()
 		}
 	else if(gInput.buttonJustPressedTab[3])
 		{
-		mGUI_GoToLinkedPage();
+		gGUI_HandleActions();
 		}
 
 	gGUI_RenderValues();
@@ -148,6 +163,17 @@ void gGUI_RenderValues()
 
 	strcpy(txtHum, GUI_HUM_TEXT);
 	gGUI_FormatValue(gSensors.humidity, txtHum, 13, " %");
+
+	}
+
+
+void gGUI_HandleActions()
+	{
+	if(strlen(mGUI_GetCurrentElement()->linkedPage) != 0)
+		{
+		mGUI_GoToLinkedPage();
+		return;
+		}
 
 	}
 
