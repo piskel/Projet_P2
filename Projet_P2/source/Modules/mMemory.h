@@ -11,7 +11,7 @@
 void mMemory_Setup();
 
 void mMemory_ReadData(unsigned int address, char* aData, int size);
-void mMemory_WriteData(unsigned int address, char* aData, int size);
-
+//void mMemory_WriteData(unsigned int address, char* aData, int size);
+void mMemory_WriteByte(unsigned int address, char data);
 
 #endif /* MODULES_MMEMORY_H_ */
