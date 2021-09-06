@@ -9,6 +9,7 @@
 #include "iUART.h"
 #include "string.h"
 #include "mDelay.h"
+#include "iDio.h"
 // BLE Baud rate: 115200
 
 #define BLE_COM_RES "OK+Set:"
@@ -25,10 +26,55 @@ static char mBleBuffer[BLE_BUFFER_MAX_SIZE];
 
 void mBLE_Setup()
 	{
+	iDio_EnablePortClk();
+	mDelay_Setup();
+
+	iDio_PinConfig(kPortE, kPin4, kAlternate1); // PIO0
+	iDio_PinConfig(kPortE, kPin5, kAlternate1); // Reset_n
+
+	iDio_SetPortDirection(kPortE, kMaskIo4, kIoOutput);
+	iDio_SetPortDirection(kPortE, kMaskIo5, kIoOutput);
+
+	iDio_SetPort(kPortE, kMaskIo4, kIoOff);
+	iDio_SetPort(kPortE, kMaskIo5, kIoOff);
+
+	int resetDelay;
+//	resetDelay = mDelay_GetDelay(100);
+//	while(!mDelay_IsDelayDone(resetDelay)){};
+//	mDelay_DelayRelease(resetDelay);
+
+	iDio_SetPort(kPortE, kMaskIo4, kIoOn);
+	iDio_SetPort(kPortE, kMaskIo5, kIoOn);
+
+
+	resetDelay = mDelay_GetDelay(100);
+	while(!mDelay_IsDelayDone(resetDelay)){};
+	mDelay_DelayRelease(resetDelay);
+
 	mBLE_ClearBuffer();
 	iUART_Config();
 	iUART_SetParity(kUART1, false);
 	iUART_SetFrameType(kUART1, false);
+
+	mBLE_Start();
+
+	mBLE_WriteString("AT+NAMEP2_LUC");
+
+	resetDelay = mDelay_GetDelay(100);
+	while(!mDelay_IsDelayDone(resetDelay)){};
+	mDelay_DelayRelease(resetDelay);
+
+	mBLE_WriteString("AT+UUID?");
+
+	mBLE_Stop();
+
+
+//	resetDelay = mDelay_GetDelay(10);
+//	while(!mDelay_IsDelayDone(resetDelay)){};
+//
+//	mBLE_WriteString("AT+UUID?");
+
+
 	}
 
 void mBLE_Start()

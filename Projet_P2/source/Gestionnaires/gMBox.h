@@ -19,7 +19,8 @@ typedef struct
 typedef struct
 	{
 //	char bleData[32];
-	bool bleRunning;
+//	bool bleRunning;
+//	bool uartRunning;
 
 	}COMStruct;
 

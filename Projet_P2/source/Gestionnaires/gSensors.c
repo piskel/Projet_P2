@@ -21,12 +21,18 @@ int gSensorsDelayId = 0;
 
 void gSensors_Setup()
 	{
+	mDelay_Setup();
+
+	int tmpDelay = mDelay_GetDelay(100);
+	while(!mDelay_IsDelayDone(tmpDelay));
+	mDelay_DelayRelease(tmpDelay);
+
 	mWLSensor_Setup();
 	mSoilSensor_Setup();
 	mLightSensor_Setup();
 	mBME280_Setup();
 
-	mDelay_Setup();
+
 	gSensorsDelayId = mDelay_GetDelay(SENSOR_DELAY_MS);
 	}
 

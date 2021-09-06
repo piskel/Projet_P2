@@ -18,6 +18,7 @@
 //static char gComBleBuffer[32];
 //static char gComUARTBuffer[32];
 
+static int gCOMTestDelay;
 
 void gCOM_Setup()
 	{
@@ -26,6 +27,8 @@ void gCOM_Setup()
 
 	mBLE_Start();
 	mUARTUSB_Start();
+
+	char test = mBLE_ReadData();
 	}
 
 void gCOM_Execute()
@@ -45,7 +48,6 @@ void gCOM_BLEHandler()
 	switch ((COMQuery)bluetoothData[0])
 		{
 		case kCOMQueryGetData:;
-
 			gCOM_QueryGetData();
 			break;
 		default:
@@ -65,33 +67,7 @@ void gCOM_UARTUSBHandler()
 
 	strcpy(uartUsbData, mUARTUSB_ReadData());
 	mUARTUSB_ClearBuffer();
-
-//	for(int i = 0; i < strlen(uartUsbData); i++)
-//		{
-//		if(uartUsbData[i] == 13)
-//			{
-//			mUARTUSB_WriteString("\n");
-//			}
-//		else
-//			{
-//			mUARTUSB_WriteString(uartUsbData[i]);
-//			}
-//		}
 	mUARTUSB_WriteString(uartUsbData);
-
-
-
-
-//	switch ((COMQuery)uartUsbData[0])
-//		{
-//		case kCOMQueryGetData:;
-//
-//			gCOM_QueryGetData();
-//			break;
-//		default:
-//			break;
-//		}
-
 
 
 	}
