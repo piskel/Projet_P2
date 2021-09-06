@@ -30,7 +30,6 @@ typedef struct
 	float soilHumidity;
 	unsigned int visibleLight;
 	unsigned int ir;
-	unsigned int uv;
 	int temperature;
 	int pressure;
 	unsigned char humidity;

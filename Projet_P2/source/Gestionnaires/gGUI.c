@@ -17,7 +17,6 @@
 #define GUI_WATER_LEVEL_TEXT "Water lvl. : "
 #define GUI_SOIL_HUM_TEXT 	 "Soil hum.  : "
 #define GUI_LIGHT_TEXT		 "Vis. light : "
-#define GUI_UV_TEXT			 "UV         : "
 #define GUI_IR_TEXT			 "IR         : "
 #define GUI_TEMP_TEXT		 "Temp.      : "
 #define GUI_PRESS_TEXT		 "Pressure   : "
@@ -28,7 +27,6 @@
 static char txtWaterLevel[GUI_MAX_TEXT_SIZE] = "NaN";
 static char txtSoilHum[GUI_MAX_TEXT_SIZE] = "NaN";
 static char txtLight[GUI_MAX_TEXT_SIZE] = "NaN";
-static char txtUV[GUI_MAX_TEXT_SIZE] = "NaN";
 static char txtIR[GUI_MAX_TEXT_SIZE] = "NaN";
 static char txtTemp[GUI_MAX_TEXT_SIZE] = "NaN";
 static char txtPress[GUI_MAX_TEXT_SIZE] = "NaN";
@@ -37,7 +35,6 @@ static char txtHum[GUI_MAX_TEXT_SIZE] = "NaN";
 static UIText* pUIWaterLevelLabel;
 static UIText* pUISoilHumLabel;
 static UIText* pUILightLabel;
-static UIText* pUIUVLabel;
 static UIText* pUIIRLabel;
 static UIText* pUITempLabel;
 static UIText* pUIPressLabel;
@@ -74,16 +71,14 @@ void gGUI_Setup()
 	pUIWaterLevelLabel 	= mGUI_CreateText("water_level_label", 	(point){0, 0}, 	false, "", txtWaterLevel);
 	pUISoilHumLabel 	= mGUI_CreateText("soil_hum_label", 	(point){0, 8}, 	false, "", txtSoilHum);
 	pUILightLabel		= mGUI_CreateText("light_label", 		(point){0, 16}, false, "", txtLight);
-	pUIUVLabel			= mGUI_CreateText("uv_label", 			(point){0, 24}, false, "", txtUV);
-	pUIIRLabel			= mGUI_CreateText("ir_label", 			(point){0, 32}, false, "", txtIR);
-	pUITempLabel		= mGUI_CreateText("temp_label", 		(point){0, 40}, false, "", txtTemp);
-	pUIPressLabel		= mGUI_CreateText("press_label", 		(point){0, 48}, false, "", txtPress);
-	pUIHumLabel			= mGUI_CreateText("hum_label", 			(point){0, 56}, false, "", txtHum);
+	pUIIRLabel			= mGUI_CreateText("ir_label", 			(point){0, 24}, false, "", txtIR);
+	pUITempLabel		= mGUI_CreateText("temp_label", 		(point){0, 32}, false, "", txtTemp);
+	pUIPressLabel		= mGUI_CreateText("press_label", 		(point){0, 40}, false, "", txtPress);
+	pUIHumLabel			= mGUI_CreateText("hum_label", 			(point){0, 48}, false, "", txtHum);
 
 	mGUI_AddElementToPage("sensors_page", "water_level_label");
 	mGUI_AddElementToPage("sensors_page", "soil_hum_label");
 	mGUI_AddElementToPage("sensors_page", "light_label");
-	mGUI_AddElementToPage("sensors_page", "uv_label");
 	mGUI_AddElementToPage("sensors_page", "ir_label");
 	mGUI_AddElementToPage("sensors_page", "temp_label");
 	mGUI_AddElementToPage("sensors_page", "press_label");
@@ -93,13 +88,13 @@ void gGUI_Setup()
 	// SETTINGS PAGE //////////////////////////////////////////
 	///////////////////////////////////////////////////////////
 
-	mGUI_CreatePage("settings_menu_page");
-
-	mGUI_CreateText("settings_reset_i2c0", (point){0, 0}, true, "",  "Reset I2C 0");
-	mGUI_CreateText("settings_reset_i2c1", (point){0, 8}, true, "",  "Reset I2C 1");
-
-	mGUI_AddElementToPage("settings_menu_page", "settings_reset_i2c0");
-	mGUI_AddElementToPage("settings_menu_page", "settings_reset_i2c1");
+//	mGUI_CreatePage("settings_menu_page");
+//
+//	mGUI_CreateText("settings_reset_i2c0", (point){0, 0}, true, "",  "Reset I2C 0");
+//	mGUI_CreateText("settings_reset_i2c1", (point){0, 8}, true, "",  "Reset I2C 1");
+//
+//	mGUI_AddElementToPage("settings_menu_page", "settings_reset_i2c0");
+//	mGUI_AddElementToPage("settings_menu_page", "settings_reset_i2c1");
 
 
 
@@ -148,9 +143,6 @@ void gGUI_RenderValues()
 	strcpy(txtLight, GUI_LIGHT_TEXT);
 	gGUI_FormatValue(gSensors.visibleLight, txtLight, 13, "lx");
 //	itoa(gSensors.visibleLight, &(txtLight[13]), 10);
-
-	strcpy(txtUV, GUI_UV_TEXT);
-	itoa(gSensors.uv, &(txtUV[13]), 10);
 
 	strcpy(txtIR, GUI_IR_TEXT);
 	itoa(gSensors.ir, &(txtIR[13]), 10);

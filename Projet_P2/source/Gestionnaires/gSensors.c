@@ -54,7 +54,6 @@ void gSensors_Execute()
 		// Light
 		gSensors.visibleLight = mLightSensor_GetVisibleLight();
 		gSensors.ir = mLightSensor_GetIR();
-		gSensors.uv = mLightSensor_GetUV();
 
 		// BME280
 		gSensors.temperature = mBME280_GetTemperature();
