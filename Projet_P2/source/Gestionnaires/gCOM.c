@@ -50,9 +50,12 @@ void gCOM_BLEHandler()
 	char response[32];
 	int size = 0;
 
-	gCOM_HandleQuery(&bluetoothData, &response, &size);
-	mBLE_WriteData(response, size);
+	gCOM_HandleQuery(bluetoothData, response, &size);
 
+	if(size > 0)
+		{
+		mBLE_WriteData(response, size);
+		}
 	}
 
 
@@ -92,35 +95,43 @@ void gCOM_HandleQuery(const char* query, char* response, int* size)
 		response[i] = 0;
 		}
 
+
+	response[0] = query[0];
+	*size = 1;
+
 	switch ((COMQuery)query[0])
 		{
 		case kCOMQueryGetWL:;
-			response[0] = gSensors.waterLevel;
-			*size = sizeof(gSensors.waterLevel);
+			response[1] = gSensors.waterLevel;
+			*size += sizeof(gSensors.waterLevel);
+			break;
 
 		case kCOMQueryGetSoilHum:;
-			response[0] = gSensors.soilHumidity;
-			*size = sizeof(gSensors.soilHumidity);
+			response[1] = gSensors.soilHumidity;
+			*size += sizeof(gSensors.soilHumidity);
 			break;
 
 		case kCOMQueryGetVisLight:;
-			response[0] = gSensors.visibleLight;
-			*size = sizeof(gSensors.visibleLight);
+			response[1] = gSensors.visibleLight;
+			*size += sizeof(gSensors.visibleLight);
 			break;
 
 		case kCOMQueryGetIR:;
-			response[0] = gSensors.ir;
-			*size = sizeof(gSensors.ir);
+			response[1] = gSensors.ir;
+			*size += sizeof(gSensors.ir);
 			break;
 
 		case kCOMQueryGetTemp:;
-			response[0] = gSensors.temperature;
-			*size = sizeof(gSensors.temperature);
+			response[1] = gSensors.temperature;
+			*size += sizeof(gSensors.temperature);
 			break;
 
 		case kCOMQueryGetHum:;
-			response[0] = gSensors.humidity;
-			*size = sizeof(gSensors.humidity);
+			response[1] = gSensors.humidity;
+			*size += sizeof(gSensors.humidity);
+			break;
+		default:;
+			*size = 0;
 			break;
 
 		}

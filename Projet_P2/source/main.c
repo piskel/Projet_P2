@@ -40,6 +40,7 @@
 #include "gGUI.h"
 #include "gCompute.h"
 #include "gOutput.h"
+#include "mMemory.h"
 
 
 /*
@@ -64,7 +65,7 @@ int main(void)
 //		{
 //		data[i] = 0;
 //		}
-//
+
 //	mMemory_WriteByte(0x0000, 0x12);
 //	mMemory_ReadData(0x0000, dataRead, 32);
 
