@@ -40,7 +40,7 @@
 #include "gGUI.h"
 #include "gCompute.h"
 #include "gOutput.h"
-
+#include "mMemory.h"
 
 /*
  * @brief   Application entry point.
@@ -56,6 +56,13 @@ int main(void)
 	gGUI_Setup();
 	gCompute_Setup();
 	gOutput_Setup();
+
+	mMemory_Setup();
+
+	char data[1] = {0x00};
+	mMemory_WriteByte(0x0000, 0xAB);
+	mMemory_ReadData(0x0000, data, 1);
+
 
 
 	while(true)

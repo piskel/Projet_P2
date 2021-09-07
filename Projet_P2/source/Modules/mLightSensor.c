@@ -55,6 +55,8 @@ void mLightSensor_Setup()
 
 void mLightSensor_SingleWrite(char address, char data)
 	{
+
+	iI2C1_SetSpeed(0x5F);
 	iI2C1_Enable();
 	if(!iI2C1_StartCom()){mLightSensorErrorCounter++;return;}
 	if(!iI2C1_SendSlaveAdd(LIGHT_SENSOR_ADDR << 1 | LIGHT_SENSOR_WRITE_BIT)){mLightSensorErrorCounter++;return;}
@@ -66,6 +68,8 @@ void mLightSensor_SingleWrite(char address, char data)
 
  char mLightSensor_SingleRead(char address)
 	{
+
+	iI2C1_SetSpeed(0x5F);
 	char data;
 	iI2C1_Enable();
 	if(!iI2C1_StartCom()){mLightSensorErrorCounter++;return 0x00;}

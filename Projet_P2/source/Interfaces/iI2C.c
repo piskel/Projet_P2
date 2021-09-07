@@ -612,3 +612,16 @@ bool iI2C1_ReadBytesAndStopCom(char *aData, char aNbByte)
 	if(!iI2C1_ReadLastByte(aData, aNbByte)) check = false;
 	return check;
 	}
+
+
+void iI2C0_SetSpeed(char speed)
+	{
+	I2C0->F = speed;
+	I2C0->F |= I2C_F_ICR(0x12) | I2C_F_MULT(0);
+	}
+void iI2C1_SetSpeed(char speed)
+	{
+	I2C1->F = speed;
+	I2C1->F |= I2C_F_ICR(0x12) | I2C_F_MULT(0);
+	}
+

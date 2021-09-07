@@ -160,4 +160,8 @@ bool iI2C1_StopCom(void);
 bool iI2C0_ReadBytesAndStopCom(char* aData, char aNbByte);
 bool iI2C1_ReadBytesAndStopCom(char* aData, char aNbByte);
 
+void iI2C0_SetSpeed(char speed);
+void iI2C1_SetSpeed(char speed);
+
+
 #endif

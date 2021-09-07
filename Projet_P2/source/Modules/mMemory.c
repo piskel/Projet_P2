@@ -52,6 +52,7 @@ void mMemory_Setup()
 
 void mMemory_ReadData(unsigned int address, char* aData, int size)
 	{
+	iI2C1_SetSpeed(0x00);
 	iDio_SetPort(kPortC, kMaskIo17, kIoOff); // Write protection OFF
 	iI2C1_Enable();
 	if(!iI2C1_StartCom()){mMemoryErrorCounter++;return;}
@@ -88,6 +89,7 @@ void mMemory_ReadData(unsigned int address, char* aData, int size)
 
 void mMemory_WriteByte(unsigned int address, char data)
 	{
+	iI2C1_SetSpeed(0x00);
 	iDio_SetPort(kPortC, kMaskIo17, kIoOff); // Write protection OFF
 	iI2C1_Enable();
 	if(!iI2C1_StartCom()){mMemoryErrorCounter++;return;}
