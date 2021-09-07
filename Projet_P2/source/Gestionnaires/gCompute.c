@@ -9,6 +9,9 @@
 
 #include "gMBox.h"
 
+#define LOW_SOIL_HUM_THRESHOLD 30
+#define LOW_LIGHT_THRESHOLD 270
+
 static bool guiPumpMem = false;
 static bool comPumpMem = false;
 
@@ -30,6 +33,10 @@ void gCompute_Execute()
 		{
 		gCompute.enablePump = gCOM.enablePump;
 		}
+	else
+	{
+//		gCompute.enablePump =gSensors.soilHumidity < LOW_SOIL_HUM_THRESHOLD && gSensors.visibleLight < LOW_LIGHT_THRESHOLD;
+	}
 	guiPumpMem = gGUI.enablePump;
 	comPumpMem = gCOM.enablePump;
 

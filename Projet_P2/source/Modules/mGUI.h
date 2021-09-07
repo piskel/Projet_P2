@@ -59,7 +59,7 @@ void mGUI_Setup();
 UIPage* mGUI_CreatePage(char* name);
 
 UIText* mGUI_CreateText(char* name, point position, bool interactive, char* linkedPage, char* text);
-UIImage* mGUI_CreateImage(char* name, point position, bool interactive, char* linkedPage, bool* image, point imageSize);
+UIImage* mGUI_CreateImage(char* name, point position, bool interactive, char* linkedPage, const bool* image, point imageSize);
 
 UIPage* mGUI_GetPageFromName(const char* name);
 UIElement* mGUI_GetElementFromName(const char* name);

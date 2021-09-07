@@ -39,9 +39,6 @@ void mBLE_Setup()
 	iDio_SetPort(kPortE, kMaskIo5, kIoOff);
 
 	int resetDelay;
-//	resetDelay = mDelay_GetDelay(100);
-//	while(!mDelay_IsDelayDone(resetDelay)){};
-//	mDelay_DelayRelease(resetDelay);
 
 	iDio_SetPort(kPortE, kMaskIo4, kIoOn);
 	iDio_SetPort(kPortE, kMaskIo5, kIoOn);
@@ -67,12 +64,6 @@ void mBLE_Setup()
 	mBLE_Stop();
 
 
-//	resetDelay = mDelay_GetDelay(10);
-//	while(!mDelay_IsDelayDone(resetDelay)){};
-//
-//	mBLE_WriteString("AT+UUID?");
-
-
 	}
 
 void mBLE_Start()
@@ -94,7 +85,6 @@ void mBLE_WriteChar(char data)
 	{
 	while(!iUART_GetFlag(kUART1, kUARTFlagTC) || !iUART_ReceptionDone(kUART1)){};
 
-//	while(!iUART_GetFlag(kUART1, kUARTFlagTC)){};
 	iUART_SetData(kUART1, data);
 	}
 
@@ -104,7 +94,6 @@ void mBLE_WriteString(char* data)
 		{
 		mBLE_WriteChar(data[i]);
 		}
-
 //	mBLE_WriteChar(0x00);
 	}
 void mBLE_WriteData(char* data, int size)
@@ -139,24 +128,3 @@ void mBLE_ClearBuffer()
 		}
 
 	}
-
-//bool mBLE_RenameDevice(char* name)
-//	{
-//	char command[32] = BLE_COM_RENAME;
-//	char response[32] = BLE_COM_RENAME_RES;
-//
-//	char tmpName[strlen(name)+1];
-//	strcpy(tmpName, name);
-//	int test = strlen(tmpName);
-//	strcat(command, tmpName);
-//	strcat(response, tmpName);
-//
-//	iUART_ClearBuffer(kUART1);
-//	mBLE_Start();
-//	mBLE_WriteString(command);
-//	mBLE_Stop();
-//	char* result = mBLE_ReadData();
-//
-//	return strcmp(result, response);
-//	}
-

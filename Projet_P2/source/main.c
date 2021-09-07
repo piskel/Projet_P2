@@ -40,7 +40,6 @@
 #include "gGUI.h"
 #include "gCompute.h"
 #include "gOutput.h"
-#include "mMemory.h"
 
 
 /*
@@ -50,7 +49,6 @@
 int main(void)
 	{
 	mCpu_Setup();
-//	mMemory_Setup();
 
 	gInput_Setup();
 	gCOM_Setup();
@@ -58,16 +56,6 @@ int main(void)
 	gGUI_Setup();
 	gCompute_Setup();
 	gOutput_Setup();
-
-//	char data[32];
-//	char dataRead[32];
-//	for(int i = 0; i < 32; i++)
-//		{
-//		data[i] = 0;
-//		}
-
-//	mMemory_WriteByte(0x0000, 0x12);
-//	mMemory_ReadData(0x0000, dataRead, 32);
 
 
 	while(true)
@@ -78,7 +66,6 @@ int main(void)
 		gGUI_Execute();
 		gCompute_Execute();
 		gOutput_Execute();
-
 	}
 
 	return 0;

@@ -22,6 +22,4 @@ void mBLE_WriteData(char* data, int size);
 char* mBLE_ReadData();
 void mBLE_ClearBuffer();
 
-//bool mBLE_RenameDevice(char* name);
-
 #endif /* MODULES_MBLE_H_ */

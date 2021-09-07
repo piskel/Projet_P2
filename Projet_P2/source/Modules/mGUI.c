@@ -79,7 +79,7 @@ UIText* mGUI_CreateText(char* name, point position, bool interactive, char* link
 	return pUIText;
 	}
 
-UIImage* mGUI_CreateImage(char* name, point position, bool interactive, char* linkedPage, bool* image, point imageSize)
+UIImage* mGUI_CreateImage(char* name, point position, bool interactive, char* linkedPage, const bool* image, point imageSize)
 	{
 	uiElementTab = (UIElement**) realloc(uiElementTab, (nbUIElement+1)*sizeof(UIElement*));
 	uiElementTab[nbUIElement] = (UIElement*) malloc(sizeof(UIImage));
@@ -93,7 +93,8 @@ UIImage* mGUI_CreateImage(char* name, point position, bool interactive, char* li
 	pUIImage->super.selected = false;
 	pUIImage->super.linkedPage = linkedPage;
 
-	memcpy(pUIImage->image, image, sizeof(bool)*imageSize.x*imageSize.y);
+//	memcpy(&(pUIImage->image), &image, sizeof(bool)*imageSize.x*imageSize.y);
+	pUIImage->image = image;
 	pUIImage->imageSize = imageSize;
 
 	nbUIElement++;
@@ -185,7 +186,7 @@ void mGUI_PrintText(UIText* pUIText)
 
 void mGUI_PrintImage(UIImage* pUIImage)
 	{
-
+	mGraphics_DrawImage(buffer, pUIImage->image, pUIImage->imageSize, pUIImage->super.position, pUIImage->super.selected);
 	}
 
 void mGUI_SetInitContext(const char* uiPageName)

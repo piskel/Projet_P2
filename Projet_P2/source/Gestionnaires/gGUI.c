@@ -40,6 +40,36 @@ static UIText* pUITempLabel;
 static UIText* pUIPressLabel;
 static UIText* pUIHumLabel;
 
+// 7x7
+static bool imSkull[49]= {
+		0, 1, 1, 1, 1, 1, 0,
+		1, 0, 0, 1, 0, 0, 1,
+		1, 0, 0, 1, 0, 0, 1,
+		1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 0, 1, 1, 1,
+		0, 1, 1, 1, 1, 1, 0,
+		0, 1, 0, 1, 0, 1, 0
+};
+
+// 11x14
+static bool imFlower[154] = {
+		0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
+		1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1,
+		1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+		0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+		1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+		1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1,
+		1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1,
+		0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0
+};
+
+
 
 void gGUI_Setup()
 	{
@@ -61,6 +91,15 @@ void gGUI_Setup()
 //	mGUI_AddElementToPage("main_menu_page", "main_menu_com");
 	mGUI_AddElementToPage("main_menu_page", "main_menu_settings");
 	mGUI_AddElementToPage("main_menu_page", "main_menu_about");
+
+
+
+
+	mGUI_CreateImage("main_menu_im_test", (point){10, 32}, false, "", imFlower, (point){11, 14});
+	mGUI_AddElementToPage("main_menu_page", "main_menu_im_test");
+
+	mGUI_CreateImage("main_menu_im_test2", (point){20, 42}, false, "", imSkull, (point){7, 7});
+	mGUI_AddElementToPage("main_menu_page", "main_menu_im_test2");
 
 	///////////////////////////////////////////////////////////
 	// SENSORS PAGE ///////////////////////////////////////////
