@@ -54,11 +54,11 @@ void gGUI_Setup()
 
 	mGUI_CreateText("main_menu_sensors", (point){0, 0}, true, "sensors_page",  "Sensors");
 	mGUI_CreateText("main_menu_com", (point){0, 8}, true, "com_menu_page", "Connectivity");
-	mGUI_CreateText("main_menu_settings", (point){0, 16}, true, "settings_menu_page", "Settings");
-	mGUI_CreateText("main_menu_about", (point){0, 24}, true, "about_page", "About");
+	mGUI_CreateText("main_menu_settings", (point){0, 8}, true, "settings_menu_page", "Settings");
+	mGUI_CreateText("main_menu_about", (point){0, 16}, true, "about_page", "About");
 
 	mGUI_AddElementToPage("main_menu_page", "main_menu_sensors");
-	mGUI_AddElementToPage("main_menu_page", "main_menu_com");
+//	mGUI_AddElementToPage("main_menu_page", "main_menu_com");
 	mGUI_AddElementToPage("main_menu_page", "main_menu_settings");
 	mGUI_AddElementToPage("main_menu_page", "main_menu_about");
 
@@ -88,14 +88,29 @@ void gGUI_Setup()
 	// SETTINGS PAGE //////////////////////////////////////////
 	///////////////////////////////////////////////////////////
 
-//	mGUI_CreatePage("settings_menu_page");
-//
-//	mGUI_CreateText("settings_reset_i2c0", (point){0, 0}, true, "",  "Reset I2C 0");
+	mGUI_CreatePage("settings_menu_page");
+
+	mGUI_CreateText("settings_toggle_pump", (point){0, 0}, true, "",  "Toggle pump");
 //	mGUI_CreateText("settings_reset_i2c1", (point){0, 8}, true, "",  "Reset I2C 1");
-//
-//	mGUI_AddElementToPage("settings_menu_page", "settings_reset_i2c0");
+
+	mGUI_AddElementToPage("settings_menu_page", "settings_toggle_pump");
 //	mGUI_AddElementToPage("settings_menu_page", "settings_reset_i2c1");
 
+	///////////////////////////////////////////////////////////
+	// ABOUT PAGE /////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
+
+	mGUI_CreatePage("about_page");
+
+	mGUI_CreateText("label_about_1", (point){8,  0}, false, "", "Plant monitoring");
+	mGUI_CreateText("label_about_2", (point){24, 24}, false, "", "HE-ARC 2021");
+	mGUI_CreateText("label_about_3", (point){32, 48}, false, "", "Made by");
+	mGUI_CreateText("label_about_4", (point){16, 56}, false, "", "Luc Froidevaux");
+
+	mGUI_AddElementToPage("about_page", "label_about_1");
+	mGUI_AddElementToPage("about_page", "label_about_2");
+	mGUI_AddElementToPage("about_page", "label_about_3");
+	mGUI_AddElementToPage("about_page", "label_about_4");
 
 
 
@@ -165,6 +180,14 @@ void gGUI_HandleActions()
 		{
 		mGUI_GoToLinkedPage();
 		return;
+		}
+	else
+		{
+		if(mGUI_GetCurrentElement() == mGUI_GetElementFromName("settings_toggle_pump"))
+			{
+//			gOutput.enablePump = !gOutput.enablePump;
+			gGUI.enablePump = !gGUI.enablePump;
+			}
 		}
 
 	}

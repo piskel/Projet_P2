@@ -10,14 +10,15 @@
 
 typedef enum
 	{
-//		kCOMQueryGetData = 0x20,
-//		kCOMQuerySetData = 0x21
 		kCOMQueryGetWL = 0x10,
 		kCOMQueryGetSoilHum = 0x11,
 		kCOMQueryGetVisLight = 0x12,
 		kCOMQueryGetIR = 0x13,
 		kCOMQueryGetTemp = 0x14,
-		kCOMQueryGetHum= 0x15,
+		kCOMQueryGetPress = 0x15,
+		kCOMQueryGetHum = 0x16,
+		kCOMQueryEnablePump = 0x30,
+		kCOMQueryDisablePump = 0x31,
 	} COMQuery;
 
 

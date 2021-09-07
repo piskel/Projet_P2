@@ -22,12 +22,13 @@ typedef struct
 //	bool bleRunning;
 //	bool uartRunning;
 
+	bool enablePump;
 	}COMStruct;
 
 typedef struct
 	{
 	unsigned char waterLevel;
-	float soilHumidity;
+	unsigned char soilHumidity;
 	unsigned int visibleLight;
 	unsigned int ir;
 	int temperature;
@@ -39,11 +40,14 @@ typedef struct
 	{
 	char* currentPageName;
 	char* currentElementName;
+
+	bool enablePump;
 	}GUIStruct;
 
 typedef struct
 	{
 
+	bool enablePump;
 	}ComputeStruct;
 
 typedef struct

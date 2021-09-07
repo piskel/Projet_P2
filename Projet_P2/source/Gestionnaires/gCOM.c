@@ -126,10 +126,28 @@ void gCOM_HandleQuery(const char* query, char* response, int* size)
 			*size += sizeof(gSensors.temperature);
 			break;
 
+		case kCOMQueryGetPress:;
+			response[1] = gSensors.pressure;
+			*size += sizeof(gSensors.pressure);
+			break;
+
 		case kCOMQueryGetHum:;
 			response[1] = gSensors.humidity;
 			*size += sizeof(gSensors.humidity);
 			break;
+
+		case kCOMQueryEnablePump:;
+//			gOutput.enablePump = true;
+			gCOM.enablePump = true;
+			*size = 0;
+			break;
+
+		case kCOMQueryDisablePump:;
+//			gOutput.enablePump = false;
+			gCOM.enablePump = false;
+			*size = 0;
+			break;
+
 		default:;
 			*size = 0;
 			break;

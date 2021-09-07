@@ -19,7 +19,7 @@ void gOutput_Setup()
 	}
 void gOutput_Execute()
 	{
-	if(gOutput.enablePump)
+	if(gCompute.enablePump)
 		{
 		mPump_Enable();
 		}

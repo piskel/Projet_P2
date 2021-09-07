@@ -76,6 +76,8 @@ int main(void)
 		gCOM_Execute();
 		gSensors_Execute();
 		gGUI_Execute();
+		gCompute_Execute();
+		gOutput_Execute();
 
 	}
 
