@@ -153,14 +153,16 @@ void gGUI_RenderValues()
 	gGUI_FormatValue(gSensors.waterLevel, txtWaterLevel, 13, " %");
 
 	strcpy(txtSoilHum, GUI_SOIL_HUM_TEXT);
-	itoa((int)gSensors.soilHumidity, &(txtSoilHum[13]), 10);
+//	itoa((int)gSensors.soilHumidity, &(txtSoilHum[13]), 10);
+	gGUI_FormatValue(gSensors.soilHumidity, txtSoilHum, 13, " %");
 
 	strcpy(txtLight, GUI_LIGHT_TEXT);
 	gGUI_FormatValue(gSensors.visibleLight, txtLight, 13, "lx");
 //	itoa(gSensors.visibleLight, &(txtLight[13]), 10);
 
 	strcpy(txtIR, GUI_IR_TEXT);
-	itoa(gSensors.ir, &(txtIR[13]), 10);
+	gGUI_FormatValue(gSensors.ir, txtIR, 13, "lx");
+//	itoa(gSensors.ir, &(txtIR[13]), 10);
 
 	strcpy(txtTemp, GUI_TEMP_TEXT);
 	gGUI_FormatValue(gSensors.temperature, txtTemp, 13, "°C");
