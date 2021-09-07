@@ -94,6 +94,7 @@ int mSoilSensor_GetHumidity()
 	{
 	int value = sensorData[0] << 8 | sensorData[1];
 	float result = (float)(value-200)/1800*100;
+	result = result*100/45;
 	return result;
 	}
 
