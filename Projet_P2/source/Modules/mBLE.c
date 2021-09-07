@@ -47,7 +47,7 @@ void mBLE_Setup()
 	iDio_SetPort(kPortE, kMaskIo5, kIoOn);
 
 
-	resetDelay = mDelay_GetDelay(100);
+	resetDelay = mDelay_GetDelay(200);
 	while(!mDelay_IsDelayDone(resetDelay)){};
 	mDelay_DelayRelease(resetDelay);
 
@@ -58,13 +58,11 @@ void mBLE_Setup()
 
 	mBLE_Start();
 
-	mBLE_WriteString("AT+NAMEP2_LUC");
-
 	resetDelay = mDelay_GetDelay(100);
 	while(!mDelay_IsDelayDone(resetDelay)){};
 	mDelay_DelayRelease(resetDelay);
 
-	mBLE_WriteString("AT+UUID?");
+	mBLE_WriteString("AT+NAMEP2_LUC");
 
 	mBLE_Stop();
 
