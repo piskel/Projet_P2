@@ -50,7 +50,7 @@ int main(void)
 	{
 	mCpu_Setup();
 
-//	gSettings_Setup();
+	gSettings_Setup();
 	gInput_Setup();
 	gCOM_Setup();
 	gSensors_Setup();
@@ -59,20 +59,13 @@ int main(void)
 	gOutput_Setup();
 
 
-	char test[8] = {0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF, 0xAB, 0xCD};
-	char testResult[8];
-	mMemory_Setup();
-	mMemory_WriteData(0x0000, test, 8);
-	mMemory_ReadData(0x0000, testResult, 8);
-
-
 
 
 
 
 	while(true)
 	{
-//		gSettings_Execute();
+		gSettings_Execute();
 		gInput_Execute();
 		gCOM_Execute();
 		gSensors_Execute();

@@ -41,7 +41,7 @@ void gCOM_Setup()
 void gCOM_Execute()
 	{
 	// Checking if the settings were applied in the memory
-	if(memcmp(&(gCOM.settings), &gSettings, sizeof(SettingsStruct)) == true)
+	if(memcmp(&(gCOM.settings), &gSettings, sizeof(SettingsStruct)) == 0 && gCOM.saveSettings == true)
 		{
 		gCOM.saveSettings = false;
 		}
@@ -158,7 +158,8 @@ void gCOM_HandleQuery(const char* query, char* response, int* size)
 			break;
 
 		case kCOMQueryGetSettings:;
-			memcpy(&(response[1]), &gSettings, sizeof(SettingsStruct));
+			memcpy(&response[1], &gSettings, sizeof(SettingsStruct));
+			*size +=sizeof(SettingsStruct);
 			break;
 
 		case kCOMQuerySetSettings:;
