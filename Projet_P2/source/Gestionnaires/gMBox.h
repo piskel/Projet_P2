@@ -12,6 +12,12 @@
 
 typedef struct
 	{
+	int lightThreshold;
+	int soilHumThreshold;
+	}SettingsStruct;
+
+typedef struct
+	{
 	bool buttonStateTab[4];
 	bool buttonJustPressedTab[4];
 	}InputStruct;
@@ -23,6 +29,9 @@ typedef struct
 //	bool uartRunning;
 
 	bool enablePump;
+
+	bool saveSettings;
+	SettingsStruct settings;
 	}COMStruct;
 
 typedef struct
@@ -55,6 +64,7 @@ typedef struct
 	bool enablePump;
 	}OutputStruct;
 
+extern SettingsStruct gSettings;
 extern InputStruct gInput;
 extern COMStruct gCOM;
 extern SensorsStruct gSensors;

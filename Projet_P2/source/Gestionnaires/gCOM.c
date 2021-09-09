@@ -6,12 +6,14 @@
  */
 
 #include "gCOM.h"
+#include "def.h"
 #include "string.h"
 
 #include "gMBox.h"
 
 #include "mBLE.h"
 #include "mUARTUSB.h"
+#include "mMemory.h"
 
 //#define COM_QUERY_GET_DATA 0x20
 
@@ -20,24 +22,33 @@
 
 #define BLE_MAX_PACKET_SIZE 20
 
-static int gCOMTestDelay;
+//static int gCOMTestDelay;
 
 void gCOM_Setup()
 	{
 	mBLE_Setup();
 	mUARTUSB_Setup();
 
+
 	mBLE_Start();
 	mUARTUSB_Start();
 
-	char test = mBLE_ReadData();
+	memcpy((char*)&(gCOM.settings), &gSettings, sizeof(SettingsStruct));
+
+//	char test = mBLE_ReadData();
 	}
 
 void gCOM_Execute()
 	{
+	// Checking if the settings were applied in the memory
+	if(memcmp(&(gCOM.settings), &gSettings, sizeof(SettingsStruct)) == true)
+		{
+		gCOM.saveSettings = false;
+		}
+
+
 	gCOM_BLEHandler();
 	gCOM_UARTUSBHandler();
-
 	}
 
 void gCOM_BLEHandler()
@@ -137,15 +148,24 @@ void gCOM_HandleQuery(const char* query, char* response, int* size)
 			break;
 
 		case kCOMQueryEnablePump:;
-//			gOutput.enablePump = true;
 			gCOM.enablePump = true;
 			*size = 0;
 			break;
 
 		case kCOMQueryDisablePump:;
-//			gOutput.enablePump = false;
 			gCOM.enablePump = false;
 			*size = 0;
+			break;
+
+		case kCOMQueryGetSettings:;
+			memcpy(&(response[1]), &gSettings, sizeof(SettingsStruct));
+			break;
+
+		case kCOMQuerySetSettings:;
+
+			memcpy((char*)&(gCOM.settings), &(query[1]), sizeof(SettingsStruct));
+			gCOM.saveSettings = true;
+
 			break;
 
 		default:;

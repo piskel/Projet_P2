@@ -7,6 +7,7 @@
 
 #include "gMBox.h"
 
+SettingsStruct gSettings;
 InputStruct gInput;
 COMStruct gCOM;
 SensorsStruct gSensors;

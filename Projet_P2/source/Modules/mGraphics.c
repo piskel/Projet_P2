@@ -35,6 +35,7 @@ void mGraphics_DrawLine(bool *buffer, point startPos, point endPos, bool white, 
 
 	  for (;;){
 	    mGraphics_DrawPixel(buffer, startPos, white);
+
 	    if (startPos.x == endPos.x && startPos.y == endPos.y) break;
 	    e2 = 2 * err;
 	    if (e2 >= dy)
@@ -61,10 +62,7 @@ void mGraphics_DrawBox(bool *buffer, point startPos, point endPos, bool white, i
 			{
 			point drawPoint = {x:startPos.x+posX, y:startPos.y+posY};
 
-			if(mGraphics_IsPointInRange(drawPoint))
-				{
-				buffer[drawPoint.x+drawPoint.y*DISPLAY_WIDTH] = white;
-				}
+			mGraphics_DrawPixel(buffer, drawPoint, white);
 			}
 
 		}
@@ -90,8 +88,8 @@ void mGraphics_DrawImage(bool *buffer, const bool *image, point imageSize, point
 
 	for(int i = 0; i < totalImgPixel; i++)
 		{
-		point imgDrawPos = {i%imageSize.x, (i/imageSize.x)};
-		point displayDrawPos = {imgDrawPos.x+pos.x, imgDrawPos.y+pos.y};
+		point imgDrawPos = {i%imageSize.x, (i/imageSize.x)}; // Drawing position in image
+		point displayDrawPos = {imgDrawPos.x+pos.x, imgDrawPos.y+pos.y}; // Drawing position on screen
 
 		mGraphics_DrawPixel(buffer, displayDrawPos, image[(imgDrawPos.x+(imgDrawPos.y)*imageSize.x)] == !inverseColor);
 		}
@@ -107,10 +105,12 @@ void mGraphics_DrawText(bool *buffer, char *text, font f, point pos, bool invers
 		{
 
 		bool bmpChar[f.width*f.height];
+
 		for(int j = 0; j < f.width*f.height; j++)
 			{
 				bmpChar[j] = (f.charList[text[i]] >> j) & 0x01;
 			}
+
 		mGraphics_DrawImage(
 				buffer,
 				bmpChar,

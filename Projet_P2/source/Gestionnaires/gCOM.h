@@ -19,6 +19,8 @@ typedef enum
 		kCOMQueryGetHum = 0x16,
 		kCOMQueryEnablePump = 0x30,
 		kCOMQueryDisablePump = 0x31,
+		kCOMQueryGetSettings = 0x32,
+		kCOMQuerySetSettings = 0x33,
 	} COMQuery;
 
 

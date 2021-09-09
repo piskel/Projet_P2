@@ -66,25 +66,13 @@ void mMemory_ReadData(unsigned int address, char* aData, int size)
 	iDio_SetPort(kPortC, kMaskIo17, kIoOn); // Write protection ON
 	}
 
-//void mMemory_WriteData(unsigned int address, char* aData, int size)
-//	{
-//
-//	iDio_SetPort(kPortC, kMaskIo17, kIoOff); // Write protection OFF
-//	iI2C1_Enable();
-//	if(!iI2C1_StartCom()){mMemoryErrorCounter++;return;}
-//	if(!iI2C1_SendSlaveAdd(MEM_ADDR << 1 | MEM_WRITE_BIT)){mMemoryErrorCounter++;return;}
-//	if(!iI2C1_SendByte(address >> 8 & 0xFF)){mMemoryErrorCounter++;return;}
-//	if(!iI2C1_SendByte(address & 0xFF)){mMemoryErrorCounter++;return;}
-//
-//	for(int i = 0; i < size; i++)
-//		{
-//		if(!iI2C1_SendByte(aData[i])){mMemoryErrorCounter++;return;}
-//		}
-//	iI2C1_StopCom();
-//	iI2C1_Disable();
-//
-//	iDio_SetPort(kPortC, kMaskIo17, kIoOn); // Write protection ON
-//	}
+void mMemory_WriteData(unsigned int address, char* aData, int size)
+	{
+	for(int i = 0; i < size; i++)
+		{
+		mMemory_WriteByte(address+i, aData[i]);
+		}
+	}
 
 
 void mMemory_WriteByte(unsigned int address, char data)
@@ -100,5 +88,9 @@ void mMemory_WriteByte(unsigned int address, char data)
 	iI2C1_StopCom();
 	iI2C1_Disable();
 	iDio_SetPort(kPortC, kMaskIo17, kIoOn); // Write protection ON
+
+	int tmpDelay = mDelay_GetDelay(5);
+	while(!mDelay_IsDelayDone(tmpDelay));
+	mDelay_DelayRelease(tmpDelay);
 	}
 
