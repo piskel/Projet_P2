@@ -17,16 +17,7 @@
 void gSettings_Setup()
 	{
 	mMemory_Setup();
-
-
-//	mMemory_WriteByte(LIGHT_THRESHOLD, 260)
-//	int lt = 270;
-//	char data[4];
-//	mMemory_WriteData(LIGHT_THRESHOLD, &lt, sizeof(int));
-//	mMemory_ReadData(LIGHT_THRESHOLD, data, sizeof(int));
-
 	mMemory_ReadData(SETTINGS_ADDR, (char*)&gSettings, sizeof(gSettings));
-
 	}
 
 void gSettings_Execute()

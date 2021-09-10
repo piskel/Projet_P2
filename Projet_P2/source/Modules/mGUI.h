@@ -54,14 +54,14 @@ typedef struct UIPage
 	{
 	char* name;
 	char** uiElementNameTab;
-	int nbUIElement;
+	char nbUIElement;
 	}UIPage;
 
 // When pressing a button, we look at the context to know which action to perform
 typedef struct UIContext
 	{
 	char* uiPageName;
-	int cursor;
+	char cursor;
 	} UIContext;
 
 void mGUI_Setup();
