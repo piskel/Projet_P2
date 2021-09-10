@@ -56,36 +56,38 @@ typedef struct UIContext
 
 void mGUI_Setup();
 
+// UI Instantiation
 UIPage* mGUI_CreatePage(char* name);
-
 UIText* mGUI_CreateText(char* name, point position, bool interactive, char* linkedPage, char* text);
 UIImage* mGUI_CreateImage(char* name, point position, bool interactive, char* linkedPage, const bool* image, point imageSize);
 
+// UI Initialization
+void mGUI_AddElementToPage(const char* uiPageName, char* uiElementName);
+void mGUI_SetInitContext(const char* uiPageName);
+
+// UI Getters
 UIPage* mGUI_GetPageFromName(const char* name);
 UIElement* mGUI_GetElementFromName(const char* name);
-
-void mGUI_AddElementToPage(const char* uiPageName, char* uiElementName);
-
-void mGUI_PrintPage(const char* name);
-void mGUI_PrintElement(const char* name);
-void mGUI_PrintText(UIText* pUIText);
-void mGUI_PrintImage(UIImage* pUIImage);
-
-void mGUI_SetInitContext(const char* uiPageName);
-void mGUI_SetCurrentPage(const char* uiPageName);
-void mGUI_PrintCurrentPage();
-
-
-void mGUI_PreviousContext();
-void mGUI_NavigateInteractive(bool direction);
-
 char* mGUI_GetCurrentPageName();
 char* mGUI_GetCurrentElementName();
 UIPage* mGUI_GetCurrentPage();
 UIElement* mGUI_GetCurrentElement();
 UIContext* mGUI_GetCurrentContext();
 
+// UI Navigation
+void mGUI_SetCurrentPage(const char* uiPageName);
+void mGUI_PreviousContext();
+void mGUI_NavigateInteractive(bool direction);
 void mGUI_GoToLinkedPage();
+
+// UI Printing
+void mGUI_PrintPage(const char* name);
+void mGUI_PrintElement(const char* name);
+void mGUI_PrintText(UIText* pUIText);
+void mGUI_PrintImage(UIImage* pUIImage);
+void mGUI_PrintCurrentPage();
+
+
 
 
 #endif /* MODULES_MGUI_H_ */

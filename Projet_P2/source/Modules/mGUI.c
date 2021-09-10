@@ -39,9 +39,13 @@ void mGUI_Setup()
 	mGUI_CreateText("error_text", (point){0, 0}, false, "", "ERROR");
 	mGUI_AddElementToPage("error_text", "error_page");
 
-
 	mGUI_SetCurrentPage("error_page");
 	}
+
+
+///////////////////////////////////////////////////////////////
+// UI INSTANTIATION ///////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 
 UIPage* mGUI_CreatePage(char* name)
 	{
@@ -52,7 +56,6 @@ UIPage* mGUI_CreatePage(char* name)
 	uiPageTab[nbUIPage]->name = name;
 	uiPageTab[nbUIPage]->nbUIElement = 0;
 	uiPageTab[nbUIPage]->uiElementNameTab = (char**) malloc(sizeof(char*));
-
 
 	nbUIPage++;
 
@@ -103,29 +106,10 @@ UIImage* mGUI_CreateImage(char* name, point position, bool interactive, char* li
 	}
 
 
-UIPage* mGUI_GetPageFromName(const char* name)
-	{
-	for(int i = 0; i < nbUIPage; i++)
-		{
-		if(strcmp(uiPageTab[i]->name, name) == 0)
-			{
-			return uiPageTab[i];
-			}
-		}
-	return uiPageTab[0]; // Returns the error page
-	}
 
-UIElement* mGUI_GetElementFromName(const char* name)
-	{
-	for(int i = 0; i < nbUIElement; i++)
-		{
-		if(strcmp(uiElementTab[i]->name, name) == 0)
-			{
-			return uiElementTab[i];
-			}
-		}
-	return uiElementTab[0]; // Returns the error text
-	}
+///////////////////////////////////////////////////////////////
+// UI INITIALIZATION //////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 
 void mGUI_AddElementToPage(const char* uiPageName, char* uiElementName)
 	{
@@ -137,56 +121,6 @@ void mGUI_AddElementToPage(const char* uiPageName, char* uiElementName)
 
 	pUIPage->nbUIElement++;
 
-	}
-
-
-
-void mGUI_PrintPage(const char* name)
-	{
-
-	mGraphics_FillBuffer(buffer, false);
-
-	UIPage* pUIPage = mGUI_GetPageFromName(name);
-
-	for(int i = 0; i < pUIPage->nbUIElement; i++)
-		{
-		mGUI_PrintElement(pUIPage->uiElementNameTab[i]);
-		}
-	mGraphics_Print(buffer);
-	}
-
-void mGUI_PrintElement(const char* name)
-	{
-	UIElement* pUIElement = mGUI_GetElementFromName(name);
-
-	switch (pUIElement->uiElementType)
-		{
-		case kUIText:
-			mGUI_PrintText((UIText*)pUIElement);
-			break;
-
-		case kUIImage:
-			mGUI_PrintImage((UIImage*)pUIElement);
-			break;
-
-		default:
-			break;
-		}
-
-	}
-
-void mGUI_PrintText(UIText* pUIText)
-	{
-	point textSize = mGraphics_GetTextSize(pUIText->text, pixelFont4x5);
-	point textPosition = {pUIText->super.position.x+1, pUIText->super.position.y+1};
-	point endPosition = {pUIText->super.position.x+textSize.x+1, pUIText->super.position.y+textSize.y+1};
-	mGraphics_DrawBox(buffer, pUIText->super.position, endPosition, pUIText->super.selected, 1, true);
-	mGraphics_DrawText(buffer, pUIText->text, pixelFont4x5, textPosition, pUIText->super.selected);
-	}
-
-void mGUI_PrintImage(UIImage* pUIImage)
-	{
-	mGraphics_DrawImage(buffer, pUIImage->image, pUIImage->imageSize, pUIImage->super.position, pUIImage->super.selected);
 	}
 
 void mGUI_SetInitContext(const char* uiPageName)
@@ -212,24 +146,85 @@ void mGUI_SetInitContext(const char* uiPageName)
 		}
 	}
 
+
+
+///////////////////////////////////////////////////////////////
+// UI GETTERS /////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+
+UIPage* mGUI_GetPageFromName(const char* name)
+	{
+	for(int i = 0; i < nbUIPage; i++)
+		{
+		if(strcmp(uiPageTab[i]->name, name) == 0)
+			{
+			return uiPageTab[i];
+			}
+		}
+	return uiPageTab[0]; // Returns the error page
+	}
+
+UIElement* mGUI_GetElementFromName(const char* name)
+	{
+	for(int i = 0; i < nbUIElement; i++)
+		{
+		if(strcmp(uiElementTab[i]->name, name) == 0)
+			{
+			return uiElementTab[i];
+			}
+		}
+	return uiElementTab[0]; // Returns the error text
+	}
+
+char* mGUI_GetCurrentPageName()
+	{
+	return uiContextTab[uiContextTabSize-1]->uiPageName;
+	}
+
+char* mGUI_GetCurrentElementName()
+	{
+	return mGUI_GetPageFromName(uiContextTab[uiContextTabSize-1]->uiPageName)->uiElementNameTab[uiContextTab[uiContextTabSize-1]->cursor];
+	}
+
+UIPage* mGUI_GetCurrentPage()
+	{
+	return mGUI_GetPageFromName(mGUI_GetCurrentPageName());
+	}
+
+UIElement* mGUI_GetCurrentElement()
+	{
+	return mGUI_GetElementFromName(mGUI_GetCurrentElementName());
+	}
+
+UIContext* mGUI_GetCurrentContext()
+	{
+	return uiContextTab[uiContextTabSize-1];
+	}
+
+
+///////////////////////////////////////////////////////////////
+// UI NAVIGATION //////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+
 void mGUI_SetCurrentPage(const char* uiPageName)
 	{
 
 	if(uiContextTabSize == 0)
-	{
+		{
 		mGUI_SetInitContext(uiPageName);
 		return;
-	}
+		}
+
 	if(strcmp(mGUI_GetPageFromName(uiPageName)->name, mGUI_GetCurrentPageName())==0) return;
 
 	UIPage* pUICurrentPage = mGUI_GetPageFromName(mGUI_GetCurrentContext()->uiPageName);
 
 	// Deselects all the elements on the current page
 	for(int i = 0; i < pUICurrentPage->nbUIElement; i++)
-	{
+		{
 		UIElement* pUIElement = mGUI_GetElementFromName(pUICurrentPage->uiElementNameTab[i]);
 		pUIElement->selected = false;
-	}
+		}
 
 	uiContextTabSize++;
 	uiContextTab = (UIContext**) realloc(uiContextTab, uiContextTabSize*sizeof(UIContext*));
@@ -253,7 +248,7 @@ void mGUI_PreviousContext()
 
 	free(uiContextTab[uiContextTabSize]); // Free value in the tab
 
-	// Rescale the tab size
+	// Rescales the tab size
 	uiContextTab = (UIContext**) realloc(uiContextTab, uiContextTabSize*sizeof(UIContext*));
 
 	if(mGUI_GetCurrentContext()->cursor >= 0)
@@ -285,7 +280,8 @@ void mGUI_NavigateInteractive(bool direction)
 
 	int currentCursor = (mGUI_GetCurrentContext()->cursor + pUIPage->nbUIElement + step)%pUIPage->nbUIElement;
 
-	do{
+	do
+		{
 		UIElement* pUIElement = mGUI_GetElementFromName(pUIPage->uiElementNameTab[currentCursor]);
 
 		if(pUIElement->interactive == true)
@@ -297,42 +293,8 @@ void mGUI_NavigateInteractive(bool direction)
 
 		currentCursor = (currentCursor+pUIPage->nbUIElement+step)%pUIPage->nbUIElement;
 
-	}while(currentCursor != mGUI_GetCurrentContext()->cursor);
-
-
+		}while(currentCursor != mGUI_GetCurrentContext()->cursor);
 	}
-
-void mGUI_PrintCurrentPage()
-	{
-	mGUI_PrintPage(uiContextTab[uiContextTabSize-1]->uiPageName);
-	}
-
-
-char* mGUI_GetCurrentPageName()
-	{
-	return uiContextTab[uiContextTabSize-1]->uiPageName;
-	}
-
-char* mGUI_GetCurrentElementName()
-	{
-	return mGUI_GetPageFromName(uiContextTab[uiContextTabSize-1]->uiPageName)->uiElementNameTab[uiContextTab[uiContextTabSize-1]->cursor];
-	}
-
-
-UIPage* mGUI_GetCurrentPage()
-	{
-	return mGUI_GetPageFromName(mGUI_GetCurrentPageName());
-	}
-UIElement* mGUI_GetCurrentElement()
-	{
-	return mGUI_GetElementFromName(mGUI_GetCurrentElementName());
-	}
-
-UIContext* mGUI_GetCurrentContext()
-	{
-	return uiContextTab[uiContextTabSize-1];
-	}
-
 
 void mGUI_GoToLinkedPage()
 	{
@@ -340,4 +302,59 @@ void mGUI_GoToLinkedPage()
 	if(pUIContext->cursor < 0) return;
 	UIElement* pUIElement = mGUI_GetElementFromName(mGUI_GetCurrentElementName());
 	mGUI_SetCurrentPage(pUIElement->linkedPage);
+	}
+
+///////////////////////////////////////////////////////////////
+// UI PRINTING ////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+
+void mGUI_PrintPage(const char* name)
+	{
+	mGraphics_FillBuffer(buffer, false);
+
+	UIPage* pUIPage = mGUI_GetPageFromName(name);
+
+	for(int i = 0; i < pUIPage->nbUIElement; i++)
+		{
+		mGUI_PrintElement(pUIPage->uiElementNameTab[i]);
+		}
+	mGraphics_Print(buffer);
+	}
+
+void mGUI_PrintElement(const char* name)
+	{
+	UIElement* pUIElement = mGUI_GetElementFromName(name);
+
+	switch (pUIElement->uiElementType)
+		{
+		case kUIText:
+			mGUI_PrintText((UIText*)pUIElement);
+			break;
+
+		case kUIImage:
+			mGUI_PrintImage((UIImage*)pUIElement);
+			break;
+
+		default:
+			break;
+		}
+	}
+
+void mGUI_PrintText(UIText* pUIText)
+	{
+	point textSize = mGraphics_GetTextSize(pUIText->text, pixelFont4x5);
+	point textPosition = {pUIText->super.position.x+1, pUIText->super.position.y+1};
+	point endPosition = {pUIText->super.position.x+textSize.x+1, pUIText->super.position.y+textSize.y+1};
+	mGraphics_DrawBox(buffer, pUIText->super.position, endPosition, pUIText->super.selected, 1, true);
+	mGraphics_DrawText(buffer, pUIText->text, pixelFont4x5, textPosition, pUIText->super.selected);
+	}
+
+void mGUI_PrintImage(UIImage* pUIImage)
+	{
+	mGraphics_DrawImage(buffer, pUIImage->image, pUIImage->imageSize, pUIImage->super.position, pUIImage->super.selected);
+	}
+
+void mGUI_PrintCurrentPage()
+	{
+	mGUI_PrintPage(uiContextTab[uiContextTabSize-1]->uiPageName);
 	}
