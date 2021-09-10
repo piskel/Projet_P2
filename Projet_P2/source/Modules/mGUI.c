@@ -106,6 +106,31 @@ UIImage* mGUI_CreateImage(char* name, point position, bool interactive, char* li
 	}
 
 
+UIGraph* mGUI_CreateGraph(char* name, point position, bool interactive, char* linkedPage, point size, char maxPoints)
+	{
+	uiElementTab = (UIElement**) realloc(uiElementTab, (nbUIElement+1)*sizeof(UIElement*));
+	uiElementTab[nbUIElement] = (UIElement*) malloc(sizeof(UIGraph));
+
+	UIGraph* pUIGraph = (UIGraph*)uiElementTab[nbUIElement];
+
+	pUIGraph->super.name = name;
+	pUIGraph->super.position = position;
+	pUIGraph->super.uiElementType = kUIGraph;
+	pUIGraph->super.interactive = interactive;
+	pUIGraph->super.selected = false;
+	pUIGraph->super.linkedPage = linkedPage;
+
+	pUIGraph->size = size;
+	pUIGraph->points = (int*) malloc(sizeof(int)*maxPoints);
+	pUIGraph->maxPoints = maxPoints;
+	pUIGraph->cursor = 0;
+	pUIGraph->nbPoints = 0;
+
+	nbUIElement++;
+
+	return pUIGraph;
+	}
+
 
 ///////////////////////////////////////////////////////////////
 // UI INITIALIZATION //////////////////////////////////////////
@@ -201,6 +226,10 @@ UIContext* mGUI_GetCurrentContext()
 	return uiContextTab[uiContextTabSize-1];
 	}
 
+bool* mGUI_GetBuffer()
+	{
+	return buffer;
+	}
 
 ///////////////////////////////////////////////////////////////
 // UI NAVIGATION //////////////////////////////////////////////
@@ -305,6 +334,30 @@ void mGUI_GoToLinkedPage()
 	}
 
 ///////////////////////////////////////////////////////////////
+// UI EDITING /////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+
+void mGUI_AddPointToGraph(const char* uiGraphName, int point)
+	{
+	UIGraph* pUIGraph = (UIGraph*)mGUI_GetElementFromName(uiGraphName);
+	if(pUIGraph->super.uiElementType != kUIGraph) return; // Error, element is not a graph
+
+	int currentCursor = (pUIGraph->cursor + pUIGraph->nbPoints)%pUIGraph->maxPoints;
+	pUIGraph->points[currentCursor] = point;
+
+	// TODO Can be simplified
+	pUIGraph->nbPoints++;
+
+	// Moves the cursor forward when the list of points is full
+	if(pUIGraph->nbPoints > pUIGraph->maxPoints)
+		{
+		pUIGraph->nbPoints--;
+		pUIGraph->cursor = (pUIGraph->cursor+1)%pUIGraph->maxPoints;
+		}
+	}
+
+
+///////////////////////////////////////////////////////////////
 // UI PRINTING ////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
@@ -335,6 +388,10 @@ void mGUI_PrintElement(const char* name)
 			mGUI_PrintImage((UIImage*)pUIElement);
 			break;
 
+		case kUIGraph:
+			mGUI_PrintGraph((UIGraph*)pUIElement);
+			break;
+
 		default:
 			break;
 		}
@@ -353,6 +410,52 @@ void mGUI_PrintImage(UIImage* pUIImage)
 	{
 	mGraphics_DrawImage(buffer, pUIImage->image, pUIImage->imageSize, pUIImage->super.position, pUIImage->super.selected);
 	}
+
+void mGUI_PrintGraph(UIGraph* pUIGraph)
+	{
+	float pointsDistance = (float)(pUIGraph->size.x) / pUIGraph->maxPoints; // Could be change to nbPoints to have adaptive effect
+
+	if(pUIGraph->nbPoints <= 0) return; // Abort line printing if there is no points
+
+	int maxVal = pUIGraph->points[0];
+	int minVal = pUIGraph->points[0];
+	for(int i = 1; i < pUIGraph->nbPoints; i++)
+		{
+		int currentVal = pUIGraph->points[i];
+		if(currentVal < minVal){minVal = currentVal;}
+		if(currentVal > maxVal){maxVal = currentVal;}
+		}
+
+	int vShift = -minVal; // Vertical shift of points
+	float multiplier = (float)pUIGraph->size.y / (maxVal-minVal);
+
+	int prevCursor = pUIGraph->cursor;
+
+	for(int i = 1; i < pUIGraph->nbPoints; i++)
+		{
+		int currentCursor = (pUIGraph->cursor + i)%pUIGraph->maxPoints;
+		int currentVal = pUIGraph->points[currentCursor];
+		int prevVal = pUIGraph->points[prevCursor];
+
+		point graphPos = pUIGraph->super.position;
+
+
+		point prevLocalPos = (point){
+			x: graphPos.x + (i-1)*pointsDistance,
+			y: graphPos.y + pUIGraph->size.y - (prevVal+vShift)*multiplier
+			};
+
+		point localPos = (point){
+			x: graphPos.x + i*pointsDistance,
+			y: graphPos.y + pUIGraph->size.y - (currentVal+vShift)*multiplier
+			};
+
+		prevCursor = (pUIGraph->cursor+i)%pUIGraph->nbPoints;
+
+		mGraphics_DrawLine(buffer, prevLocalPos, localPos, true, 1);
+		}
+	}
+
 
 void mGUI_PrintCurrentPage()
 	{

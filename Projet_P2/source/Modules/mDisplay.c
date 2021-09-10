@@ -90,13 +90,27 @@ void mDisplay_SendBuffer(bool *buffer)
 
 		for(int j = 0; j < DISPLAY_PAGE_HEIGHT; j++)
 			{
-			 line |= buffer[posX+DISPLAY_WIDTH* (posY*8 + 7-j)] << j;
+			line |= buffer[posX+DISPLAY_WIDTH* (posY*8 + 7-j)] << j;
 			}
 
 		mDisplay_SendCommand(0xb0 + 7 - posY);
 		mDisplay_SendData(line);
 		}
+	}
 
+
+void mDisplay_SendBufferNew(char* buffer)
+	{
+	int posX, posY = 0;
+
+	for(int i = DISPLAY_MEM_SIZE-1; i >=0 ; i--)
+		{
+		posX = i%DISPLAY_WIDTH;
+		posY = i/DISPLAY_WIDTH;
+
+		mDisplay_SendCommand(0xb0 + 7 - posY);
+		mDisplay_SendData(buffer[i]);
+		}
 	}
 
 

@@ -27,33 +27,35 @@ void mGraphics_FillBuffer(bool *buffer, bool white)
 void mGraphics_DrawLine(bool *buffer, point startPos, point endPos, bool white, int thickness)
 	{
 
-	  int dx = abs(endPos.x - startPos.x);
-	  int sx = startPos.x < endPos.x ? 1 : -1;
-	  int dy = -abs(endPos.y - startPos.y);
-	  int sy = startPos.y < endPos.y ? 1 : -1;
-	  int err = dx + dy, e2;
+	int dx = abs(endPos.x - startPos.x);
+	int sx = startPos.x < endPos.x ? 1 : -1;
+	int dy = -abs(endPos.y - startPos.y);
+	int sy = startPos.y < endPos.y ? 1 : -1;
+	int err = dx + dy, e2;
 
-	  for (;;){
-	    mGraphics_DrawPixel(buffer, startPos, white);
+	for (;;)
+		{
+		mGraphics_DrawPixel(buffer, startPos, white);
 
-	    if (startPos.x == endPos.x && startPos.y == endPos.y) break;
-	    e2 = 2 * err;
-	    if (e2 >= dy)
-	    {
-	    	err += dy;
-	    	startPos.x += sx;
-	    }
-	    if (e2 <= dx)
-	    {
-	    	err += dx;
-	    	startPos.y += sy;
-	    }
-	  }
-
+		if (startPos.x == endPos.x && startPos.y == endPos.y) break;
+		e2 = 2 * err;
+		if (e2 >= dy)
+			{
+			err += dy;
+			startPos.x += sx;
+			}
+		if (e2 <= dx)
+			{
+			err += dx;
+			startPos.y += sy;
+			}
+		}
 	}
 
 
 // TODO Handle reverse start and end coordinates
+// TODO Handle fill
+// TODO Handle thickness
 void mGraphics_DrawBox(bool *buffer, point startPos, point endPos, bool white, int thickness, bool fill)
 	{
 	for(int posY = 0; posY <= (endPos.y-startPos.y); posY++)
@@ -64,7 +66,6 @@ void mGraphics_DrawBox(bool *buffer, point startPos, point endPos, bool white, i
 
 			mGraphics_DrawPixel(buffer, drawPoint, white);
 			}
-
 		}
 	}
 
@@ -81,6 +82,15 @@ void mGraphics_DrawPixel(bool *buffer, point pos, bool white)
 		buffer[pos.x+pos.y*DISPLAY_WIDTH] = white;
 		}
 	}
+
+void mGraphics_DrawPixelNew(char* buffer, point pos, bool enable)
+	{
+	if(mGraphics_IsPointInRange(pos))
+		{
+
+		}
+	}
+
 void mGraphics_DrawImage(bool *buffer, const bool *image, point imageSize, point pos, bool inverseColor)
 	{
 
@@ -93,10 +103,7 @@ void mGraphics_DrawImage(bool *buffer, const bool *image, point imageSize, point
 
 		mGraphics_DrawPixel(buffer, displayDrawPos, image[(imgDrawPos.x+(imgDrawPos.y)*imageSize.x)] == !inverseColor);
 		}
-
 	}
-
-
 
 void mGraphics_DrawText(bool *buffer, char *text, font f, point pos, bool inverseColor)
 	{
@@ -118,7 +125,6 @@ void mGraphics_DrawText(bool *buffer, char *text, font f, point pos, bool invers
 				(point){pos.x+i*(f.width+1), pos.y},
 				inverseColor);
 		}
-
 	}
 
 point mGraphics_GetTextSize(char* text, font f)

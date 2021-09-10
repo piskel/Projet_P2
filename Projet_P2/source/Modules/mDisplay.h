@@ -20,7 +20,8 @@ void mDisplay_SendData(char data);
 void mDisplay_SendCommand(char command);
 void mDisplay_OnOff(bool mode);
 void mDisplay_SetContrast(char contrast);
-void mDisplay_SendBuffer(bool *buffer);
+void mDisplay_SendBuffer(bool* buffer);
+void mDisplay_SendBufferNew(char* buffer);
 void mDisplay_Clear();
 
 #endif /* MDISPLAY_H_ */

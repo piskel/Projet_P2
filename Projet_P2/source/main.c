@@ -34,6 +34,8 @@
  */
 
 #include "mCpu.h"
+
+#include "gSettings.h"
 #include "gInput.h"
 #include "gCOM.h"
 #include "gSensors.h"
@@ -57,10 +59,6 @@ int main(void)
 	gGUI_Setup();
 	gCompute_Setup();
 	gOutput_Setup();
-
-
-
-
 
 
 	while(true)

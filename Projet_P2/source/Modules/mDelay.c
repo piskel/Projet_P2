@@ -16,7 +16,7 @@ Description dans le fichier iAd.h
 #define kPit0Per 1
 #define kPit1Per 10
 
-static mDelayIsInit = false;
+static int mDelayIsInit = false;
 
 //------------------------------------------------------------
 // Configuration du module mDelay

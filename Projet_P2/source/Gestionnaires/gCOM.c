@@ -15,14 +15,7 @@
 #include "mUARTUSB.h"
 #include "mMemory.h"
 
-//#define COM_QUERY_GET_DATA 0x20
-
-//static char gComBleBuffer[32];
-//static char gComUARTBuffer[32];
-
 #define BLE_MAX_PACKET_SIZE 20
-
-//static int gCOMTestDelay;
 
 void gCOM_Setup()
 	{
@@ -35,7 +28,6 @@ void gCOM_Setup()
 
 	memcpy((char*)&(gCOM.settings), &gSettings, sizeof(SettingsStruct));
 
-//	char test = mBLE_ReadData();
 	}
 
 void gCOM_Execute()
@@ -166,7 +158,7 @@ void gCOM_HandleQuery(const char* query, char* response, int* size)
 
 			memcpy((char*)&(gCOM.settings), &(query[1]), sizeof(SettingsStruct));
 			gCOM.saveSettings = true;
-
+			*size = 0;
 			break;
 
 		default:;

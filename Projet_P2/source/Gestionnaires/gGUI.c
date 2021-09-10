@@ -14,6 +14,8 @@
 
 #include "mPump.h"
 
+#include "pixelImage.h"
+
 #define GUI_WATER_LEVEL_TEXT "Water lvl. : "
 #define GUI_SOIL_HUM_TEXT 	 "Soil hum.  : "
 #define GUI_LIGHT_TEXT		 "Vis. light : "
@@ -40,35 +42,12 @@ static UIText* pUITempLabel;
 static UIText* pUIPressLabel;
 static UIText* pUIHumLabel;
 
-// 7x7
-static bool imSkull[49]= {
-		0, 1, 1, 1, 1, 1, 0,
-		1, 0, 0, 1, 0, 0, 1,
-		1, 0, 0, 1, 0, 0, 1,
-		1, 1, 1, 1, 1, 1, 1,
-		1, 1, 1, 0, 1, 1, 1,
-		0, 1, 1, 1, 1, 1, 0,
-		0, 1, 0, 1, 0, 1, 0
-};
 
-// 11x14
-static bool imFlower[154] = {
-		0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0,
-		1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1,
-		1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-		0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-		0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-		1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
-		1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1,
-		1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1,
-		0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0
-};
+extern PixelImage imSkull;
+extern PixelImage imFlower;
 
+#define GUI_GRAPH_UPDATE 100
+static int mGUIGraphDelay;
 
 
 void gGUI_Setup()
@@ -87,18 +66,18 @@ void gGUI_Setup()
 	mGUI_CreateText("main_menu_settings", (point){0, 8}, true, "settings_menu_page", "Settings");
 	mGUI_CreateText("main_menu_about", (point){0, 16}, true, "about_page", "About");
 
+	mGUI_CreateText("main_menu_test", (point){0, 24}, true, "test_page", "Test");
+
 	mGUI_AddElementToPage("main_menu_page", "main_menu_sensors");
-//	mGUI_AddElementToPage("main_menu_page", "main_menu_com");
 	mGUI_AddElementToPage("main_menu_page", "main_menu_settings");
 	mGUI_AddElementToPage("main_menu_page", "main_menu_about");
+	mGUI_AddElementToPage("main_menu_page", "main_menu_test");
 
 
-
-
-	mGUI_CreateImage("main_menu_im_test", (point){10, 32}, false, "", imFlower, (point){11, 14});
+	mGUI_CreateImage("main_menu_im_test", (point){40, 32}, false, "", imFlower.image, imFlower.size);
 	mGUI_AddElementToPage("main_menu_page", "main_menu_im_test");
 
-	mGUI_CreateImage("main_menu_im_test2", (point){20, 42}, false, "", imSkull, (point){7, 7});
+	mGUI_CreateImage("main_menu_im_test2", (point){50, 42}, false, "", imSkull.image, imSkull.size);
 	mGUI_AddElementToPage("main_menu_page", "main_menu_im_test2");
 
 	///////////////////////////////////////////////////////////
@@ -128,12 +107,8 @@ void gGUI_Setup()
 	///////////////////////////////////////////////////////////
 
 	mGUI_CreatePage("settings_menu_page");
-
 	mGUI_CreateText("settings_toggle_pump", (point){0, 0}, true, "",  "Toggle pump");
-//	mGUI_CreateText("settings_reset_i2c1", (point){0, 8}, true, "",  "Reset I2C 1");
-
 	mGUI_AddElementToPage("settings_menu_page", "settings_toggle_pump");
-//	mGUI_AddElementToPage("settings_menu_page", "settings_reset_i2c1");
 
 	///////////////////////////////////////////////////////////
 	// ABOUT PAGE /////////////////////////////////////////////
@@ -151,9 +126,18 @@ void gGUI_Setup()
 	mGUI_AddElementToPage("about_page", "label_about_3");
 	mGUI_AddElementToPage("about_page", "label_about_4");
 
+	///////////////////////////////////////////////////////////
+	// TEST PAGE //////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
 
+	mGUI_CreatePage("test_page");
+	mGUI_CreateGraph("test_graph", (point){0, 0}, false, "", (point){100, 50}, 30);
+	mGUI_AddElementToPage("test_page", "test_graph");
 
 	mGUI_SetInitContext("main_menu_page");
+
+	mGUIGraphDelay = mDelay_GetDelay(GUI_GRAPH_UPDATE);
+
 	}
 
 void gGUI_Execute()
@@ -181,6 +165,14 @@ void gGUI_Execute()
 
 	gGUI.currentPageName = mGUI_GetCurrentPageName();
 	gGUI.currentElementName = mGUI_GetCurrentElementName();
+
+
+	if(mDelay_IsDelayDone(mGUIGraphDelay))
+		{
+		mDelay_DelayRelease(mGUIGraphDelay);
+		mGUI_AddPointToGraph("test_graph", gSensors.visibleLight);
+		mGUIGraphDelay = mDelay_GetDelay(GUI_GRAPH_UPDATE);
+		}
 
 	}
 

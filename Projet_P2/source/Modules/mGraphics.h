@@ -19,6 +19,7 @@ void mGraphics_DrawLine(bool *buffer, point startPos, point endPos, bool white, 
 void mGraphics_DrawBox(bool *buffer, point startPos, point endPos, bool white, int thickness, bool fill);
 void mGraphics_DrawCircle(bool *buffer, point startPos, point endPos, bool white, int thickness, bool fill);
 void mGraphics_DrawPixel(bool *buffer, point pos, bool white);
+void mGraphics_DrawPixelNew(char* buffer, point pos, bool enable);
 void mGraphics_DrawImage(bool *buffer, const bool *image, point imageSize, point pos, bool inverseColor);
 void mGraphics_DrawText(bool *buffer, char *text, font f, point pos, bool inverseColor);
 point mGraphics_GetTextSize(char* text, font f);

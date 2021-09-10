@@ -268,7 +268,6 @@ const font pixelFont4x5 = {
 			0b0,
 			0b0,
 			0b0,
-			0b0,
 			0b0
 		}
 };
